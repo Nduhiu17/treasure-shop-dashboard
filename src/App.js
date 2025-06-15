@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Button } from "./components/ui/button";
 import OrdersManagement from "./features/orders/OrdersManagement";
-import WritersManagement from "./features/writers/WritersManagement";
+import UsersManagement from "./features/users/UsersManagement";
 import OrderTypesManagement from "./features/orderTypes/OrderTypesManagement";
 import { AuthProvider, useAuth } from "./features/auth/AuthProvider";
 import LoginPage from "./features/auth/LoginPage";
@@ -17,8 +17,8 @@ const menuItems = [
     )
   },
   {
-    key: 'writers',
-    label: 'Writers',
+    key: 'users',
+    label: 'Users',
     icon: (
       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4a4 4 0 11-8 0 4 4 0 018 0zm6 4v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>
     )
@@ -40,8 +40,8 @@ const Dashboard = () => {
     switch (currentPage) {
       case 'orders':
         return <OrdersManagement />;
-      case 'writers':
-        return <WritersManagement />;
+      case 'users':
+        return <UsersManagement />;
       case 'order-types':
         return <OrderTypesManagement />;
       default:
