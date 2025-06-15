@@ -28,6 +28,13 @@ export const AuthProvider = ({ children }) => {
     if (!jwt) throw new Error('No token returned from API');
     setToken(jwt);
     localStorage.setItem('jwt_token', jwt);
+    // Save user details and roles to localStorage
+    if (data.user) {
+      localStorage.setItem('user', JSON.stringify(data.user));
+      if (data.user.roles) {
+        localStorage.setItem('roles', JSON.stringify(data.user.roles));
+      }
+    }
   };
 
   const authFetcher = useCallback(async (url, options = {}) => {
@@ -56,6 +63,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     getAllOrders: (page = 1, pageSize = 10, status) => authFetcher(`/api/admin/orders?page=${page}&page_size=${pageSize}${status ? `&status=${status}` : ''}`),
+    getAllWriterOrders: (page = 1, pageSize = 10, writer_id) => authFetcher(`/api/writers/orders?writer_id=${String(writer_id)}&page=${page}&page_size=${pageSize}$}`),
+
     assignOrder: (orderId, writerId) => authFetcher(`/api/admin/orders/${orderId}/assign`, {
       method: 'PUT',
       body: JSON.stringify({ writer_id: writerId }),
@@ -75,5 +84,12 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   const api = context?.api || {};
-  return { ...context, api };
+  // Get user from context or localStorage
+  let user = null;
+  try {
+    user = context?.user || JSON.parse(localStorage.getItem('user'));
+  } catch (e) {
+    user = null;
+  }
+  return { ...context, api, user };
 };
