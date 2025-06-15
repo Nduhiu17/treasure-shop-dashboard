@@ -286,6 +286,13 @@ const UserProfile = () => {
                             >
                               Applying Feedback
                             </button>
+                          ) : order.status === "approved" ? (
+                            <button
+                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 text-white font-semibold shadow cursor-not-allowed opacity-80"
+                              disabled
+                            >
+                              Completed
+                            </button>
                           ) : (
                             <span className="text-blue-700 font-semibold">View</span>
                           )
