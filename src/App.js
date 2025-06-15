@@ -52,27 +52,27 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       {/* Header */}
-      <header className="bg-white shadow-sm py-4 px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <h1 className="text-2xl sm:text-3xl font-bold text-blue-900">Treasure Shop Admin</h1>
-        <Button onClick={logout} variant="destructive" className="w-full sm:w-auto">Logout</Button>
+      <header className="bg-white shadow-sm py-3 px-2 xs:px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-blue-900 text-center sm:text-left">Treasure Shop Admin</h1>
+        <Button onClick={logout} variant="destructive" className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">Logout</Button>
       </header>
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col sm:flex-row">
         {/* Sidebar Navigation */}
-        <aside className="w-full sm:w-64 bg-blue-900 text-white p-4 sm:p-6 flex-shrink-0">
+        <aside className="w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0">
           <nav aria-label="Main menu">
-            <ul className="flex flex-row sm:flex-col gap-2">
+            <ul className="flex flex-row sm:flex-col gap-1 xs:gap-2">
               {menuItems.map((item) => (
                 <li key={item.key}>
                   <Button
                     onClick={() => setCurrentPage(item.key)}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-blue-100 transition-all duration-200 text-left text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900
+                    className={`w-full flex items-center gap-2 px-2 xs:px-3 py-2 rounded-lg border border-blue-100 transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900
                       bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 shadow-sm
                       ${currentPage === item.key ? 'ring-2 ring-blue-400 font-bold shadow-md' : ''}
                     `}
                     aria-current={currentPage === item.key ? 'page' : undefined}
                   >
-                    <span className="mr-1 flex items-center">{React.cloneElement(item.icon, { className: 'w-5 h-5 mr-1' })}</span>
+                    <span className="mr-1 flex items-center">{React.cloneElement(item.icon, { className: 'w-4 h-4 xs:w-5 xs:h-5 mr-1' })}</span>
                     <span>{item.label}</span>
                   </Button>
                 </li>
@@ -81,7 +81,7 @@ const Dashboard = () => {
           </nav>
         </aside>
         {/* Content */}
-        <main className="flex-1 p-2 sm:p-6">
+        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0">
           {renderContent()}
         </main>
       </div>

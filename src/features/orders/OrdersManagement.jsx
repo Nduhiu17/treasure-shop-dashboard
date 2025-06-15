@@ -206,15 +206,15 @@ const OrdersManagement = () => {
   };
 
   return (
-    <Card className="m-2 sm:m-4 p-2 sm:p-6 shadow-lg border-0">
-      <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-900">Orders Management</h2>
-      <Tabs value={activeStatus} onValueChange={handleTabChange} className="mb-6">
-        <TabsList className="flex w-full overflow-x-auto gap-2 bg-white/90 rounded-xl shadow border border-blue-100 p-2">
+    <Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0">
+      <h2 className="text-base xs:text-lg sm:text-xl font-semibold mb-2 xs:mb-4 text-blue-900">All Orders</h2>
+      <Tabs value={activeStatus} onValueChange={handleTabChange} className="mb-4 xs:mb-6">
+        <TabsList className="flex w-full overflow-x-auto gap-1 xs:gap-2 bg-white/90 rounded-xl shadow border border-blue-100 p-1 xs:p-2">
           {ORDER_STATUSES.map((status) => (
             <TabsTrigger
               key={status.key}
               value={status.key}
-              className={`capitalize px-6 py-2 rounded-lg text-base font-semibold transition-all duration-150
+              className={`capitalize px-3 xs:px-6 py-1 xs:py-2 rounded-lg text-xs xs:text-base font-semibold transition-all duration-150
                 focus:outline-none focus:ring-2 focus:ring-blue-400
                 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-400 data-[state=active]:text-white data-[state=active]:shadow-lg
                 data-[state=inactive]:bg-blue-50 data-[state=inactive]:text-blue-900 data-[state=inactive]:hover:bg-blue-100
@@ -243,15 +243,15 @@ const OrdersManagement = () => {
                   {paginatedOrders.length > 0 ? (
                     paginatedOrders.map((order) => (
                       <TableRow key={order.id} className="hover:bg-blue-50">
-                        <TableCell className="max-w-[120px] truncate">{order.title}</TableCell>
-                        <TableCell>{order.user_id.slice(-6)}</TableCell>
+                        <TableCell className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base">{order.title}</TableCell>
+                        <TableCell className="text-xs xs:text-sm sm:text-base">{order.user_id.slice(-6)}</TableCell>
                         <TableCell>
                           <span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
                         </TableCell>
-                        <TableCell>{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
-                        <TableCell>${order.price.toFixed(2)}</TableCell>
+                        <TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
+                        <TableCell className="text-xs xs:text-sm sm:text-base">${order.price.toFixed(2)}</TableCell>
                         <TableCell>
-                          <Button onClick={() => handleAssignClick(order)} disabled={order.status !== 'awaiting_assignment'} className="w-full sm:w-auto text-xs sm:text-sm">
+                          <Button onClick={() => handleAssignClick(order)} disabled={order.status !== 'awaiting_assignment'} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
                             Assign Writer
                           </Button>
                         </TableCell>
@@ -259,22 +259,22 @@ const OrdersManagement = () => {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center">No orders found.</TableCell>
+                      <TableCell colSpan={6} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</TableCell>
                     </TableRow>
                   )}
                 </TableBody>
               </Table>
             </div>
             {/* Pagination */}
-            <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-2">
+            <div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
               <nav
-                className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-3 py-2 gap-1"
+                className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-2 xs:px-3 py-1 xs:py-2 gap-1"
                 aria-label="Pagination"
               >
                 <Button
                   onClick={handlePrevPage}
                   disabled={currentPage === 1}
-                  className="rounded-full px-3 py-1 text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+                  className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
                   aria-label="Previous page"
                 >
                   &lt;
@@ -283,7 +283,7 @@ const OrdersManagement = () => {
                   <Button
                     key={i + 1}
                     onClick={() => setCurrentPage(i + 1)}
-                    className={`rounded-full px-3 py-1 text-base font-semibold mx-0.5 border-none shadow-none transition-colors
+                    className={`rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-semibold mx-0.5 border-none shadow-none transition-colors
                       ${currentPage === i + 1
                         ? 'bg-blue-700 text-white ring-2 ring-blue-400'
                         : 'bg-transparent text-blue-700 hover:bg-blue-100'}
@@ -296,13 +296,13 @@ const OrdersManagement = () => {
                 <Button
                   onClick={handleNextPage}
                   disabled={currentPage === totalPages}
-                  className="rounded-full px-3 py-1 text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+                  className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
                   aria-label="Next page"
                 >
                   &gt;
                 </Button>
               </nav>
-              <span className="text-sm text-gray-600">Page {currentPage} of {totalPages}</span>
+              <span className="text-xs xs:text-sm sm:text-base text-gray-600">Page {currentPage} of {totalPages}</span>
             </div>
           </TabsContent>
         ))}
@@ -313,13 +313,13 @@ const OrdersManagement = () => {
         title={`Assign Writer to Order: ${selectedOrder?.title}`}
       >
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block text-gray-700 text-xs xs:text-sm font-bold mb-2">
             Select Writer:
           </label>
           <Select
             value={selectedWriterId}
             onChange={(e) => setSelectedWriterId(e.target.value)}
-            className="bg-white"
+            className="bg-white text-xs xs:text-sm sm:text-base"
           >
             <option value="">Choose a writer</option>
             {writers.map((writer) => (
@@ -329,7 +329,7 @@ const OrdersManagement = () => {
             ))}
           </Select>
         </div>
-        <Button onClick={handleAssignConfirm} disabled={!selectedWriterId} className="w-full sm:w-auto">Confirm Assignment</Button>
+        <Button onClick={handleAssignConfirm} disabled={!selectedWriterId} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">Confirm Assignment</Button>
       </Dialog>
     </Card>
   );

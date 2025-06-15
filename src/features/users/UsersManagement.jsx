@@ -68,21 +68,21 @@ const UsersManagement = () => {
 	};
 
 	return (
-		<Card className="m-2 sm:m-4 p-2 sm:p-6 shadow-lg border-0">
-			<h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-900">
+		<Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0">
+			<h2 className="text-base xs:text-lg sm:text-xl font-semibold mb-2 xs:mb-4 text-blue-900">
 				Users Management
 			</h2>
 			<Tabs
 				value={activeRole}
 				onValueChange={handleTabChange}
-				className="mb-6"
+				className="mb-4 xs:mb-6"
 			>
-				<TabsList className="flex w-full justify-center gap-2 bg-white/90 rounded-xl shadow border border-blue-100 p-2">
+				<TabsList className="flex w-full justify-center gap-1 xs:gap-2 bg-white/90 rounded-xl shadow border border-blue-100 p-1 xs:p-2">
 					{ROLES.map((role) => (
 						<TabsTrigger
 							key={role.key}
 							value={role.key}
-							className={`capitalize px-6 py-2 rounded-lg text-base font-semibold transition-all duration-150
+							className={`capitalize px-3 xs:px-6 py-1 xs:py-2 rounded-lg text-xs xs:text-base font-semibold transition-all duration-150
           focus:outline-none focus:ring-2 focus:ring-blue-400
           data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-400 data-[state=active]:text-white data-[state=active]:shadow-lg
           data-[state=inactive]:bg-blue-50 data-[state=inactive]:text-blue-900 data-[state=inactive]:hover:bg-blue-100
@@ -111,10 +111,10 @@ const UsersManagement = () => {
 									{paginatedUsers.length > 0 ? (
 										paginatedUsers.map((user) => (
 											<TableRow key={user.id} className="hover:bg-blue-50">
-												<TableCell>{user.email}</TableCell>
-												<TableCell>{user.username}</TableCell>
-												<TableCell>{user.first_name}</TableCell>
-												<TableCell>{user.last_name}</TableCell>
+												<TableCell className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base">{user.email}</TableCell>
+												<TableCell className="text-xs xs:text-sm sm:text-base">{user.username}</TableCell>
+												<TableCell className="text-xs xs:text-sm sm:text-base">{user.first_name}</TableCell>
+												<TableCell className="text-xs xs:text-sm sm:text-base">{user.last_name}</TableCell>
 												<TableCell>
 													<span className="inline-block px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs font-semibold">
 														{user.roles.join(", ")}
@@ -124,7 +124,7 @@ const UsersManagement = () => {
 													<Button
 														variant="destructive"
 														disabled
-														className="w-full sm:w-auto text-xs sm:text-sm"
+														className="w-full sm:w-auto text-xs xs:text-sm sm:text-base"
 													>
 														Delete (Disabled)
 													</Button>
@@ -135,7 +135,7 @@ const UsersManagement = () => {
 										<TableRow>
 											<TableCell
 												colSpan={6}
-												className="text-center"
+												className="text-center text-xs xs:text-sm sm:text-base"
 											>
 												No users found.
 											</TableCell>
@@ -145,15 +145,15 @@ const UsersManagement = () => {
 							</Table>
 						</div>
 						{/* Pagination */}
-						<div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-2">
+						<div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
 							<nav
-								className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-3 py-2 gap-1"
+								className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-2 xs:px-3 py-1 xs:py-2 gap-1"
 								aria-label="Pagination"
 							>
 								<Button
 									onClick={handlePrevPage}
 									disabled={currentPage === 1}
-									className="rounded-full px-3 py-1 text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+									className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
 									aria-label="Previous page"
 								>
 									&lt;
@@ -162,16 +162,12 @@ const UsersManagement = () => {
 									<Button
 										key={i + 1}
 										onClick={() => setCurrentPage(i + 1)}
-										className={`rounded-full px-3 py-1 text-base font-semibold mx-0.5 border-none shadow-none transition-colors
-                      ${
-												currentPage === i + 1
-													? "bg-blue-700 text-white ring-2 ring-blue-400"
-													: "bg-transparent text-blue-700 hover:bg-blue-100"
-											}
+										className={`rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-semibold mx-0.5 border-none shadow-none transition-colors
+                      ${currentPage === i + 1
+                        ? 'bg-blue-700 text-white ring-2 ring-blue-400'
+                        : 'bg-transparent text-blue-700 hover:bg-blue-100'}
                     `}
-										aria-current={
-											currentPage === i + 1 ? "page" : undefined
-										}
+										aria-current={currentPage === i + 1 ? 'page' : undefined}
 									>
 										{i + 1}
 									</Button>
@@ -179,13 +175,13 @@ const UsersManagement = () => {
 								<Button
 									onClick={handleNextPage}
 									disabled={currentPage === totalPages}
-									className="rounded-full px-3 py-1 text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+									className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
 									aria-label="Next page"
 								>
 									&gt;
 								</Button>
 							</nav>
-							<span className="text-sm text-gray-600">
+							<span className="text-xs xs:text-sm sm:text-base text-gray-600">
 								Page {currentPage} of {totalPages}
 							</span>
 						</div>

@@ -19,11 +19,11 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-2 sm:p-4">
-      <Card className="w-full max-w-md mx-auto p-6 sm:p-8 shadow-xl border-0">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 text-blue-900">Admin Login</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <Card className="w-full max-w-md mx-auto p-2 xs:p-3 sm:p-4 md:p-8 shadow-xl border-0">
+        <h2 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-center mb-3 xs:mb-4 sm:mb-6 text-blue-900">Admin Login</h2>
+        <form onSubmit={handleSubmit} className="space-y-2 xs:space-y-3 sm:space-y-4">
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            <label className="block text-gray-700 text-xs xs:text-sm sm:text-base font-bold mb-1 xs:mb-2" htmlFor="email">
               Email (ignored)
             </label>
             <Input
@@ -32,11 +32,11 @@ const LoginPage = () => {
               placeholder="admin@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-white"
+              className="bg-white text-xs xs:text-sm sm:text-base h-8 xs:h-9 sm:h-10"
             />
           </div>
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+            <label className="block text-gray-700 text-xs xs:text-sm sm:text-base font-bold mb-1 xs:mb-2" htmlFor="password">
               Password (ignored)
             </label>
             <Input
@@ -45,13 +45,13 @@ const LoginPage = () => {
               placeholder="********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-white"
+              className="bg-white text-xs xs:text-sm sm:text-base h-8 xs:h-9 sm:h-10"
             />
           </div>
-          <Button type="submit" className="w-full py-2 text-base" disabled={loading}>
+          <Button type="submit" className="w-full py-2 text-xs xs:text-sm sm:text-base" disabled={loading}>
             {loading ? "Redirecting..." : "Enter Dashboard"}
           </Button>
-          <p className="text-center text-xs text-gray-500 mt-2">Login is currently bypassed for quick access.</p>
+          <p className="text-center text-[10px] xs:text-xs sm:text-sm text-gray-500 mt-1 xs:mt-2">Login is currently bypassed for quick access.</p>
         </form>
       </Card>
     </div>
