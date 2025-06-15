@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Button } from "./components/ui/button";
 import OrdersManagement from "./features/orders/OrdersManagement";
 import UsersManagement from "./features/users/UsersManagement";
 import OrderTypesManagement from "./features/orderTypes/OrderTypesManagement";
 import { AuthProvider, useAuth } from "./features/auth/AuthProvider";
+import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from "./features/auth/LoginPage";
 
 // --- Dashboard Layout ---
@@ -91,24 +92,43 @@ const Dashboard = () => {
 
 
 // --- Main App Component ---
+function AppContent() {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect to /login if not authenticated
+  useEffect(() => {
+    if (!token) {
+      navigate('/login', { replace: true });
+    }
+  }, [token, navigate]);
+
+  return (
+    <div className="font-sans antialiased">
+      {token ? <Dashboard /> : null}
+    </div>
+  );
+}
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/*" element={<AppContent />} />
+    </Routes>
+  );
+}
+
 const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <AppContent />
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
       </AuthProvider>
     </QueryClientProvider>
-  );
-}
-
-function AppContent() {
-  const { token } = useAuth();
-
-  return (
-    <div className="font-sans antialiased">
-      {token ? <Dashboard /> : <LoginPage />}
-    </div>
   );
 }

@@ -12,10 +12,22 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('jwt_token');
   }, []);
 
+  // Updated login to use API
   const login = async (email, password) => {
-    const dummyToken = "your_dummy_jwt_token_here_for_bypass";
-    setToken(dummyToken);
-    localStorage.setItem('jwt_token', dummyToken);
+    const response = await fetch('http://localhost:8080/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    if (!response.ok) {
+      if (response.status === 401) throw new Error('Invalid email or password');
+      throw new Error('Login failed');
+    }
+    const data = await response.json();
+    const jwt = data.token || data.access_token || data.jwt || data.JWT || data.accessToken;
+    if (!jwt) throw new Error('No token returned from API');
+    setToken(jwt);
+    localStorage.setItem('jwt_token', jwt);
   };
 
   const authFetcher = useCallback(async (url, options = {}) => {
@@ -43,11 +55,14 @@ export const AuthProvider = ({ children }) => {
   const apiWithAuth = React.useMemo(() => ({
     login,
     logout,
-    getAllOrders: (page = 1, pageSize = 10) => authFetcher(`/api/admin/orders?page=${page}&page_size=${pageSize}`),
+    getAllOrders: (page = 1, pageSize = 10, status) => authFetcher(`/api/admin/orders?page=${page}&page_size=${pageSize}${status ? `&status=${status}` : ''}`),
     assignOrder: (orderId, writerId) => authFetcher(`/api/admin/orders/${orderId}/assign`, {
       method: 'PUT',
       body: JSON.stringify({ writer_id: writerId }),
     }),
+    getUsersByRole: (role, page = 1, pageSize = 10) => authFetcher(`/api/admin/users?role=${role}&page=${page}&page_size=${pageSize}`),
+    getOrderTypes: (page = 1, pageSize = 10) => authFetcher(`/api/admin/order-types?page=${page}&page_size=${pageSize}`),
+    getWriters: (page = 1, pageSize = 100) => authFetcher(`/api/writers?page=${page}&page_size=${pageSize}`),
   }), [authFetcher, login, logout]);
 
   return (
