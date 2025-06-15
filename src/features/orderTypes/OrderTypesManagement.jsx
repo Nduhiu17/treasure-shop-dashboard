@@ -5,8 +5,10 @@ import { Button } from "../../components/ui/button";
 import { Dialog } from "../../components/ui/dialog";
 import { Input } from "../../components/ui/input";
 
+const PAGE_SIZE = 10;
+
 const OrderTypesManagement = () => {
-  // Hardcoded order types
+  // Hardcoded order types (add more for pagination demo)
   const hardcodedOrderTypes = [
     {
       id: "684c3c2c670dd03bd9e6cf03",
@@ -39,10 +41,15 @@ const OrderTypesManagement = () => {
       created_by: "684c3b4bca82dae8451e1c5f",
       created_at: "2025-06-13T15:10:00.000Z",
       updated_at: "2025-06-13T15:10:00.000Z"
-    }
+    },
+    // Add more mock order types for pagination demo if needed
   ];
 
-  const orderTypes = hardcodedOrderTypes;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalOrderTypes = hardcodedOrderTypes.length;
+  const totalPages = Math.max(1, Math.ceil(totalOrderTypes / PAGE_SIZE));
+  const paginatedOrderTypes = hardcodedOrderTypes.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
   const isLoading = false;
   const isError = false;
   const error = null;
@@ -64,6 +71,9 @@ const OrderTypesManagement = () => {
     alert("Deleting order types is disabled in hardcoded mode.");
   };
 
+  const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
+  const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
+
   if (isLoading) return <div className="text-center py-8">Loading order types...</div>;
   if (isError) return <div className="text-red-500 text-center py-8">Error: {error.message}</div>;
 
@@ -80,7 +90,7 @@ const OrderTypesManagement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orderTypes.map((type) => (
+            {paginatedOrderTypes.map((type) => (
               <TableRow key={type.id} className="hover:bg-blue-50">
                 <TableCell>{type.name}</TableCell>
                 <TableCell>{type.description}</TableCell>
@@ -91,8 +101,52 @@ const OrderTypesManagement = () => {
                 </TableCell>
               </TableRow>
             ))}
+            {paginatedOrderTypes.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3} className="text-center">No order types found.</TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
+      </div>
+      {/* Pagination */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-2">
+        <nav
+          className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-3 py-2 gap-1"
+          aria-label="Pagination"
+        >
+          <Button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            className="rounded-full px-3 py-1 text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+            aria-label="Previous page"
+          >
+            &lt;
+          </Button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <Button
+              key={i + 1}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`rounded-full px-3 py-1 text-base font-semibold mx-0.5 border-none shadow-none transition-colors
+                ${currentPage === i + 1
+                  ? 'bg-blue-700 text-white ring-2 ring-blue-400'
+                  : 'bg-transparent text-blue-700 hover:bg-blue-100'}
+              `}
+              aria-current={currentPage === i + 1 ? 'page' : undefined}
+            >
+              {i + 1}
+            </Button>
+          ))}
+          <Button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="rounded-full px-3 py-1 text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+            aria-label="Next page"
+          >
+            &gt;
+          </Button>
+        </nav>
+        <span className="text-sm text-gray-600">Page {currentPage} of {totalPages}</span>
       </div>
       <Dialog
         isOpen={showAddOrderTypeDialog}
