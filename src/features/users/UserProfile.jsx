@@ -9,6 +9,9 @@ const UserProfile = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const PAGE_SIZE = 10;
 
   useEffect(() => {
     if (!user) return;
@@ -18,14 +21,13 @@ const UserProfile = () => {
     const roles = user.roles || [];
     // Only run this effect when user or user.roles changes
     // Role-based filtering
-    let url = `http://localhost:8080/api/admin/orders`;
+    let url = `http://localhost:8080/api/admin/orders?page=${currentPage}&page_size=${PAGE_SIZE}`;
     if (roles.includes("super_admin") || roles.includes("admin")) {
       // No filter, show all orders
     } else if (roles.includes("writer")) {
-     url = `http://localhost:8080/api/writer/orders/${user.id}`;
-    //   url += `?writer_id=${String(user.id)}`;
+      url = `http://localhost:8080/api/writer/orders/${user.id}?page=${currentPage}&page_size=${PAGE_SIZE}`;
     } else if (roles.length === 1 && roles[0] === "user") {
-      url = `http://localhost:8080/api/orders/me`;
+      url = `http://localhost:8080/api/orders/me?page=${currentPage}&page_size=${PAGE_SIZE}`;
     }
     fetch(url,
       {
@@ -39,6 +41,7 @@ const UserProfile = () => {
       .then(res => res.json())
       .then(data => {
         setOrders(data.orders || []);
+        setTotal(data.total || 0);
         setLoading(false);
       })
       .catch(err => {
@@ -46,7 +49,11 @@ const UserProfile = () => {
         setLoading(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user && user.id, user && JSON.stringify(user.roles)]);
+  }, [user && user.id, user && JSON.stringify(user.roles), currentPage]);
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
+  const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
 
   if (!user) {
     return <div className="flex justify-center items-center min-h-[40vh]"><Loader /></div>;
@@ -84,28 +91,62 @@ const UserProfile = () => {
         ) : orders.length === 0 ? (
           <div className="text-center text-gray-500 py-8">No orders found.</div>
         ) : (
-          <div className="overflow-x-auto rounded-lg">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Writer</TableHead>
-                  <TableHead>Price</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {orders.map(order => (
-                  <TableRow key={order.id} className="hover:bg-blue-50">
-                    <TableCell className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base">{order.title}</TableCell>
-                    <TableCell className="text-xs xs:text-sm sm:text-base">{order.status}</TableCell>
-                    <TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
-                    <TableCell className="text-xs xs:text-sm sm:text-base">${order.price?.toFixed(2)}</TableCell>
+          <>
+            <div className="overflow-x-auto rounded-lg">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Writer</TableHead>
+                    <TableHead>Price</TableHead>
                   </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {orders.map(order => (
+                    <TableRow key={order.id} className="hover:bg-blue-50">
+                      <TableCell className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base">{order.title}</TableCell>
+                      <TableCell className="text-xs xs:text-sm sm:text-base">{order.status}</TableCell>
+                      <TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
+                      <TableCell className="text-xs xs:text-sm sm:text-base">${order.price?.toFixed(2)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            {/* Pagination */}
+            <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-2">
+              <nav className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-2 py-1 gap-1" aria-label="Pagination">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                  className="rounded-full px-3 py-1 text-xs sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+                  aria-label="Previous page"
+                >
+                  &lt;
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i + 1}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`rounded-full px-3 py-1 text-xs sm:text-base font-medium mx-0.5 border-none shadow-none transition-colors ${currentPage === i + 1 ? 'bg-blue-700 text-white ring-2 ring-blue-400' : 'bg-transparent text-blue-700 hover:bg-blue-100'}`}
+                    aria-current={currentPage === i + 1 ? 'page' : undefined}
+                  >
+                    {i + 1}
+                  </button>
                 ))}
-              </TableBody>
-            </Table>
-          </div>
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                  className="rounded-full px-3 py-1 text-xs sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+                  aria-label="Next page"
+                >
+                  &gt;
+                </button>
+              </nav>
+              <span className="text-xs sm:text-base text-gray-600">Page {currentPage} of {totalPages}</span>
+            </div>
+          </>
         )}
       </Card>
     </div>
