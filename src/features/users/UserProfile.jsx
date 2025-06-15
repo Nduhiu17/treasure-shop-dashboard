@@ -5,7 +5,7 @@ import Loader from "../../components/ui/Loader";
 import { useAuth } from "../auth/AuthProvider";
 
 const UserProfile = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth(); // Add logout from context
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -68,7 +68,14 @@ const UserProfile = () => {
 
   return (
     <div className="max-w-3xl mx-auto mt-8">
-      <Card className="p-6 mb-8 shadow-lg border-0">
+      <Card className="p-6 mb-8 shadow-lg border-0 relative">
+        {/* Logout Button */}
+        <button
+          onClick={logout}
+          className="absolute top-4 right-4 px-4 py-2 bg-gradient-to-r from-red-500 to-red-700 text-white rounded-lg font-semibold shadow hover:from-red-600 hover:to-red-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
+        >
+          Logout
+        </button>
         <h2 className="text-xl font-bold text-blue-900 mb-4">User Profile</h2>
         <div className="mb-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
