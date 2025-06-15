@@ -134,7 +134,7 @@ const OrdersManagement = () => {
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">${order.price?.toFixed(2)}</TableCell>
 														<TableCell>
-															<Button onClick={() => handleAssignClick(order)} disabled={order.status !== 'paid'} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
+															<Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
 																Assign Writer
 															</Button>
 														</TableCell>
