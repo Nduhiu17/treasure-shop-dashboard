@@ -1,131 +1,11 @@
 import React, { useState, createContext, useContext, useCallback } from 'react';
-import { QueryClient, QueryClientProvider, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-// --- Shadcn UI Components (Simplified for demonstration) ---
-// In a real project, you would install and import these properly.
-// For this example, we'll use basic HTML elements styled with Tailwind,
-// or simple custom components to represent Shadcn functionality.
-
-const Button = ({ children, onClick, variant = 'default', className = '', ...props }) => {
-  let bgColor = 'bg-blue-500 hover:bg-blue-600';
-  let textColor = 'text-white';
-  let padding = 'px-4 py-2';
-  let rounded = 'rounded-md';
-
-  if (variant === 'outline') {
-    bgColor = 'bg-white hover:bg-gray-100 border border-gray-300';
-    textColor = 'text-gray-700';
-  } else if (variant === 'destructive') {
-    bgColor = 'bg-red-500 hover:bg-red-600';
-  } else if (variant === 'secondary') {
-    bgColor = 'bg-gray-200 hover:bg-gray-300';
-    textColor = 'text-gray-800';
-  }
-
-  return (
-    <button
-      className={`${bgColor} ${textColor} ${padding} ${rounded} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ${className}`}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
-
-const Input = ({ type = 'text', placeholder, value, onChange, className = '', ...props }) => (
-  <input
-    type={type}
-    placeholder={placeholder}
-    value={value}
-    onChange={onChange}
-    className={`w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${className}`}
-    {...props}
-  />
-);
-
-const Card = ({ children, className = '' }) => (
-  <div className={`bg-white p-6 rounded-lg shadow-md ${className}`}>
-    {children}
-  </div>
-);
-
-const Table = ({ children, className = '' }) => (
-  <div className={`overflow-x-auto rounded-lg border border-gray-200 ${className}`}>
-    <table className="min-w-full divide-y divide-gray-200">
-      {children}
-    </table>
-  </div>
-);
-
-const TableHeader = ({ children }) => (
-  <thead className="bg-gray-50">
-    {children}
-  </thead>
-);
-
-const TableBody = ({ children }) => (
-  <tbody className="bg-white divide-y divide-gray-200">
-    {children}
-  </tbody>
-);
-
-const TableHead = ({ children, className = '' }) => (
-  <th className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${className}`}>
-    {children}
-  </th>
-);
-
-const TableRow = ({ children }) => (
-  <tr>{children}</tr>
-);
-
-const TableCell = ({ children, className = '' }) => (
-  <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${className}`}>
-    {children}
-  </td>
-);
-
-const Select = ({ children, value, onChange, className = '', ...props }) => (
-  <select
-    value={value}
-    onChange={onChange}
-    className={`w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${className}`}
-    {...props}
-  >
-    {children}
-  </select>
-);
-
-const Dialog = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50">
-      <div className="relative w-auto my-6 mx-auto max-w-lg">
-        <Card className="relative flex flex-col w-full outline-none focus:outline-none">
-          <div className="flex items-start justify-between p-5 border-b border-solid border-gray-200 rounded-t">
-            <h3 className="text-2xl font-semibold">{title}</h3>
-            <button
-              className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-              onClick={onClose}
-            >
-              <span className="text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                ×
-              </span>
-            </button>
-          </div>
-          <div className="relative p-6 flex-auto">
-            {children}
-          </div>
-          <div className="flex items-center justify-end p-6 border-t border-solid border-gray-200 rounded-b">
-            <Button variant="secondary" onClick={onClose}>Close</Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
-};
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Button } from "./components/ui/button";
+import { Card } from "./components/ui/card";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "./components/ui/table";
+import { Dialog } from "./components/ui/dialog";
+import { Input } from "./components/ui/input";
+import { Select } from "./components/ui/select";
 
 // --- API Client ---
 const API_BASE_URL = 'http://localhost:8080'; // From openapi.yaml
@@ -216,25 +96,23 @@ const useAuth = () => {
 // --- Login Page ---
 const LoginPage = () => {
   const { login } = useAuth();
-  const [email, setEmail] = useState(''); // Keep state for input fields, though not used for login bypass
-  const [password, setPassword] = useState(''); // Keep state for input fields, though not used for login bypass
-  const [loading, setLoading] = useState(false); // Keep loading state for visual feedback
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Directly call login, which now bypasses the API
-    await login(); // No arguments needed for the bypassed login
+    await login();
     setLoading(false);
-    // No error handling here since login is always successful for bypass
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <Card className="w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Admin Login (Bypass Active)</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-2 sm:p-4">
+      <Card className="w-full max-w-md mx-auto p-6 sm:p-8 shadow-xl border-0">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 text-blue-900">Admin Login</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
               Email (ignored)
             </label>
@@ -244,9 +122,10 @@ const LoginPage = () => {
               placeholder="admin@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="bg-white"
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
               Password (ignored)
             </label>
@@ -256,12 +135,13 @@ const LoginPage = () => {
               placeholder="********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="bg-white"
             />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Redirecting...' : 'Enter Dashboard'}
+          <Button type="submit" className="w-full py-2 text-base" disabled={loading}>
+            {loading ? "Redirecting..." : "Enter Dashboard"}
           </Button>
-          <p className="text-center text-sm text-gray-500 mt-4">Login is currently bypassed for quick access.</p>
+          <p className="text-center text-xs text-gray-500 mt-2">Login is currently bypassed for quick access.</p>
         </form>
       </Card>
     </div>
@@ -352,53 +232,84 @@ const OrdersManagement = () => {
   };
 
   return (
-    <Card className="m-4 p-6">
-      <h2 className="text-xl font-semibold mb-4">All Orders</h2>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>User ID</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Writer ID</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedOrders.length > 0 ? (
-            paginatedOrders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>{order.title}</TableCell>
-                <TableCell>{order.user_id.slice(-6)}</TableCell>
-                <TableCell>{order.status}</TableCell>
-                <TableCell>{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
-                <TableCell>${order.price.toFixed(2)}</TableCell>
-                <TableCell>
-                  <Button onClick={() => handleAssignClick(order)} disabled={order.status !== 'awaiting_assignment'}>
-                    Assign Writer
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
+    <Card className="m-2 sm:m-4 p-2 sm:p-6 shadow-lg border-0">
+      <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-900">All Orders</h2>
+      <div className="overflow-x-auto rounded-lg">
+        <Table>
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={6} className="text-center">No orders found.</TableCell>
+              <TableHead>Title</TableHead>
+              <TableHead>User ID</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Writer ID</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-
-      <div className="flex justify-between items-center mt-4">
-        <Button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Previous
-        </Button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <Button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </Button>
+          </TableHeader>
+          <TableBody>
+            {paginatedOrders.length > 0 ? (
+              paginatedOrders.map((order) => (
+                <TableRow key={order.id} className="hover:bg-blue-50">
+                  <TableCell className="max-w-[120px] truncate">{order.title}</TableCell>
+                  <TableCell>{order.user_id.slice(-6)}</TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
+                  </TableCell>
+                  <TableCell>{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
+                  <TableCell>${order.price.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <Button onClick={() => handleAssignClick(order)} disabled={order.status !== 'awaiting_assignment'} className="w-full sm:w-auto text-xs sm:text-sm">
+                      Assign Writer
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">No orders found.</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
-
+      <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-2">
+        <nav
+          className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-3 py-2 gap-1"
+          aria-label="Pagination"
+        >
+          <Button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            className="rounded-full px-3 py-1 text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+            aria-label="Previous page"
+          >
+            &lt;
+          </Button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <Button
+              key={i + 1}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`rounded-full px-3 py-1 text-base font-semibold mx-0.5 border-none shadow-none transition-colors
+                ${currentPage === i + 1
+                  ? 'bg-blue-700 text-white ring-2 ring-blue-400'
+                  : 'bg-transparent text-blue-700 hover:bg-blue-100'}
+              `}
+              aria-current={currentPage === i + 1 ? 'page' : undefined}
+            >
+              {i + 1}
+            </Button>
+          ))}
+          <Button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="rounded-full px-3 py-1 text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
+            aria-label="Next page"
+          >
+            &gt;
+          </Button>
+        </nav>
+        <span className="text-sm text-gray-600">Page {currentPage} of {totalPages}</span>
+      </div>
       <Dialog
         isOpen={!!selectedOrder}
         onClose={() => setSelectedOrder(null)}
@@ -411,6 +322,7 @@ const OrdersManagement = () => {
           <Select
             value={selectedWriterId}
             onChange={(e) => setSelectedWriterId(e.target.value)}
+            className="bg-white"
           >
             <option value="">Choose a writer</option>
             {writers.map((writer) => (
@@ -420,9 +332,7 @@ const OrdersManagement = () => {
             ))}
           </Select>
         </div>
-        <Button onClick={handleAssignConfirm} disabled={!selectedWriterId}>
-          Confirm Assignment
-        </Button>
+        <Button onClick={handleAssignConfirm} disabled={!selectedWriterId} className="w-full sm:w-auto">Confirm Assignment</Button>
       </Dialog>
     </Card>
   );
@@ -524,30 +434,31 @@ const WritersManagement = () => {
   if (isError) return <div className="text-red-500 text-center py-8">Error: {error.message}</div>;
 
   return (
-    <Card className="m-4 p-6">
-      <h2 className="text-xl font-semibold mb-4">Writers Management (Hardcoded)</h2>
-      <Button onClick={() => setShowAddWriterDialog(true)} className="mb-4">Add New Writer (Disabled)</Button>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Email</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {writers.map((writer) => (
-            <TableRow key={writer.id}>
-              <TableCell>{writer.email}</TableCell>
-              <TableCell>
-                <Button variant="destructive" onClick={() => handleDeleteWriter(writer.id)} disabled={true}>
-                  Delete (Disabled)
-                </Button>
-              </TableCell>
+    <Card className="m-2 sm:m-4 p-2 sm:p-6 shadow-lg border-0">
+      <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-900">Writers Management (Hardcoded)</h2>
+      <Button onClick={() => setShowAddWriterDialog(true)} className="mb-4 w-full sm:w-auto">Add New Writer (Disabled)</Button>
+      <div className="overflow-x-auto rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Email</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
+          </TableHeader>
+          <TableBody>
+            {writers.map((writer) => (
+              <TableRow key={writer.id} className="hover:bg-blue-50">
+                <TableCell>{writer.email}</TableCell>
+                <TableCell>
+                  <Button variant="destructive" onClick={() => handleDeleteWriter(writer.id)} disabled className="w-full sm:w-auto text-xs sm:text-sm">
+                    Delete (Disabled)
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       <Dialog
         isOpen={showAddWriterDialog}
         onClose={() => setShowAddWriterDialog(false)}
@@ -564,6 +475,7 @@ const WritersManagement = () => {
             value={newWriterEmail}
             onChange={(e) => setNewWriterEmail(e.target.value)}
             required
+            className="bg-white"
           />
         </div>
         <div className="mb-6">
@@ -577,13 +489,11 @@ const WritersManagement = () => {
             value={newWriterPassword}
             onChange={(e) => setNewWriterPassword(e.target.value)}
             required
+            className="bg-white"
           />
         </div>
-        <Button onClick={handleCreateWriter} disabled={true}>
-          Create Writer (Disabled)
-        </Button>
+        <Button onClick={handleCreateWriter} disabled className="w-full sm:w-auto">Create Writer (Disabled)</Button>
       </Dialog>
-
       <Dialog
         isOpen={showDeleteConfirm}
         onClose={cancelDeleteWriter}
@@ -591,8 +501,8 @@ const WritersManagement = () => {
       >
         <div className="mb-4">Are you sure you want to delete this writer?</div>
         <div className="flex justify-end gap-2">
-          <Button variant="secondary" onClick={cancelDeleteWriter}>Cancel</Button>
-          <Button variant="destructive" onClick={confirmDeleteWriter}>Delete</Button>
+          <Button variant="secondary" onClick={cancelDeleteWriter} className="w-full sm:w-auto">Cancel</Button>
+          <Button variant="destructive" onClick={confirmDeleteWriter} className="w-full sm:w-auto">Delete</Button>
         </div>
       </Dialog>
     </Card>
@@ -664,37 +574,32 @@ const OrderTypesManagement = () => {
   if (isError) return <div className="text-red-500 text-center py-8">Error: {error.message}</div>;
 
   return (
-    <Card className="m-4 p-6">
-      <h2 className="text-xl font-semibold mb-4">Order Types Management (Hardcoded)</h2>
-      {/* Button to add new order type is hidden or disabled */}
-      {/* <Button onClick={() => setShowAddOrderTypeDialog(true)} className="mb-4">Add New Order Type</Button> */}
-      <Table>
-        <TableHeader>
-          {/* Ensure TableRow is directly inside TableHeader */}
-          <TableRow>
-            {/* Removed TableHead for ID */}
-            <TableHead>Name</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orderTypes.map((type) => (
-            <TableRow key={type.id}>
-              {/* Removed TableCell for ID */}
-              <TableCell>{type.name}</TableCell>
-              <TableCell>{type.description}</TableCell>
-              <TableCell>
-                {/* Delete button is disabled for hardcoded data */}
-                <Button variant="destructive" onClick={() => handleDeleteOrderType(type.id)} disabled={true}>
-                  Delete
-                </Button>
-              </TableCell>
+    <Card className="m-2 sm:m-4 p-2 sm:p-6 shadow-lg border-0">
+      <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-900">Order Types Management (Hardcoded)</h2>
+      <div className="overflow-x-auto rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
+          </TableHeader>
+          <TableBody>
+            {orderTypes.map((type) => (
+              <TableRow key={type.id} className="hover:bg-blue-50">
+                <TableCell>{type.name}</TableCell>
+                <TableCell>{type.description}</TableCell>
+                <TableCell>
+                  <Button variant="destructive" onClick={() => handleDeleteOrderType(type.id)} disabled className="w-full sm:w-auto text-xs sm:text-sm">
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       <Dialog
         isOpen={showAddOrderTypeDialog}
         onClose={() => setShowAddOrderTypeDialog(false)}
@@ -710,6 +615,7 @@ const OrderTypesManagement = () => {
             value={newOrderTypeName}
             onChange={(e) => setNewOrderTypeName(e.target.value)}
             required
+            className="bg-white"
           />
         </div>
         <div className="mb-6">
@@ -722,11 +628,10 @@ const OrderTypesManagement = () => {
             value={newOrderTypeDescription}
             onChange={(e) => setNewOrderTypeDescription(e.target.value)}
             required
+            className="bg-white"
           />
         </div>
-        <Button onClick={handleCreateOrderType} disabled={true}>
-          Create Order Type (Disabled)
-        </Button>
+        <Button onClick={handleCreateOrderType} disabled className="w-full sm:w-auto">Create Order Type (Disabled)</Button>
       </Dialog>
     </Card>
   );
@@ -734,9 +639,33 @@ const OrderTypesManagement = () => {
 
 
 // --- Dashboard Layout ---
+const menuItems = [
+  {
+    key: 'orders',
+    label: 'Orders',
+    icon: (
+      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7V6a2 2 0 012-2h14a2 2 0 012 2v1M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7M3 7h18" /></svg>
+    )
+  },
+  {
+    key: 'writers',
+    label: 'Writers',
+    icon: (
+      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4a4 4 0 11-8 0 4 4 0 018 0zm6 4v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>
+    )
+  },
+  {
+    key: 'order-types',
+    label: 'Order Types',
+    icon: (
+      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-2a4 4 0 014-4h4a4 4 0 014 4v2M9 17H5a2 2 0 01-2-2v-5a2 2 0 012-2h4a2 2 0 012 2v5a2 2 0 01-2 2z" /></svg>
+    )
+  }
+];
+
 const Dashboard = () => {
   const { logout } = useAuth();
-  const [currentPage, setCurrentPage] = useState('orders'); // 'orders', 'writers', 'order-types'
+  const [currentPage, setCurrentPage] = useState('orders');
 
   const renderContent = () => {
     switch (currentPage) {
@@ -752,49 +681,38 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       {/* Header */}
-      <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Treasure Shop Admin</h1>
-        <Button onClick={logout} variant="destructive">Logout</Button>
+      <header className="bg-white shadow-sm py-4 px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <h1 className="text-2xl sm:text-3xl font-bold text-blue-900">Treasure Shop Admin</h1>
+        <Button onClick={logout} variant="destructive" className="w-full sm:w-auto">Logout</Button>
       </header>
-
       {/* Main Content Area */}
-      <div className="flex flex-1">
+      <div className="flex flex-1 flex-col sm:flex-row">
         {/* Sidebar Navigation */}
-        <aside className="w-64 bg-gray-800 text-white p-6">
-          <nav>
-            <ul>
-              <li className="mb-4">
-                <Button
-                  onClick={() => setCurrentPage('orders')}
-                  className={`w-full justify-start ${currentPage === 'orders' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
-                >
-                  Orders
-                </Button>
-              </li>
-              <li className="mb-4">
-                <Button
-                  onClick={() => setCurrentPage('writers')}
-                  className={`w-full justify-start ${currentPage === 'writers' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
-                >
-                  Writers
-                </Button>
-              </li>
-              <li className="mb-4">
-                <Button
-                  onClick={() => setCurrentPage('order-types')}
-                  className={`w-full justify-start ${currentPage === 'order-types' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
-                >
-                  Order Types
-                </Button>
-              </li>
+        <aside className="w-full sm:w-64 bg-blue-900 text-white p-4 sm:p-6 flex-shrink-0">
+          <nav aria-label="Main menu">
+            <ul className="flex flex-row sm:flex-col gap-2">
+              {menuItems.map((item) => (
+                <li key={item.key}>
+                  <Button
+                    onClick={() => setCurrentPage(item.key)}
+                    className={`w-full flex items-center gap-3 px-5 py-3 rounded-xl border border-blue-800 transition-all duration-200 text-left text-base font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900
+                      bg-blue-800/90 text-white hover:bg-blue-700/90 hover:shadow-lg hover:scale-[1.03] shadow-sm
+                      ${currentPage === item.key ? 'bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 text-white font-extrabold shadow-xl border-blue-400 scale-[1.04]' : ''}
+                    `}
+                    aria-current={currentPage === item.key ? 'page' : undefined}
+                  >
+                    <span className="mr-2 flex items-center">{React.cloneElement(item.icon, { className: 'w-6 h-6 mr-2' })}</span>
+                    <span>{item.label}</span>
+                  </Button>
+                </li>
+              ))}
             </ul>
           </nav>
         </aside>
-
         {/* Content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-2 sm:p-6">
           {renderContent()}
         </main>
       </div>
