@@ -40,8 +40,15 @@ const UserProfile = () => {
     )
       .then(res => res.json())
       .then(data => {
-        setOrders(data.orders || []);
-        setTotal(data.total || 0);
+        console.log('Orders API response:', data);
+        // Handle both array and object response
+        if (Array.isArray(data)) {
+          setOrders(data);
+          setTotal(data.length);
+        } else {
+          setOrders(data.orders || []);
+          setTotal(data.total || (data.orders ? data.orders.length : 0));
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -209,6 +216,72 @@ const UserProfile = () => {
                               Awaiting Approval
                             </button>
                           ) : null
+                        ) : user.roles.length === 1 && user.roles[0] === "user" ? (
+                          order.status === "awaiting_asign_acceptance" ? (
+                            <button
+                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-blue-400 to-blue-700 text-white font-semibold shadow cursor-not-allowed opacity-80"
+                              disabled
+                            >
+                              Awaiting Writer Assignment
+                            </button>
+                          ) : order.status === "assigned" ? (
+                            <button
+                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow cursor-not-allowed opacity-80"
+                              disabled
+                            >
+                              Order being worked on
+                            </button>
+                          ) : order.status === "submitted_for_review" ? (
+                            <div className="flex gap-2">
+                              <button
+                                className="px-3 py-1 rounded-lg bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow hover:from-green-600 hover:to-green-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-400"
+                                onClick={async () => {
+                                  const jwt = localStorage.getItem("jwt_token");
+                                  try {
+                                    const res = await fetch(`http://localhost:8080/api/orders/${order.id}/review/approve`, {
+                                      method: 'PUT',
+                                      headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': jwt ? `Bearer ${jwt}` : ''
+                                      }
+                                    });
+                                    if (!res.ok) throw new Error('Failed to approve order');
+                                    setLoading(true);
+                                    setCurrentPage(1);
+                                  } catch (err) {
+                                    alert(err.message || 'Failed to approve order');
+                                  }
+                                }}
+                              >
+                                Approve
+                              </button>
+                              <button
+                                className="px-3 py-1 rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-semibold shadow hover:from-yellow-500 hover:to-yellow-700 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                onClick={async () => {
+                                  const jwt = localStorage.getItem("jwt_token");
+                                  try {
+                                    const res = await fetch(`http://localhost:8080/api/orders/${order.id}/review/feedback`, {
+                                      method: 'PUT',
+                                      headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': jwt ? `Bearer ${jwt}` : ''
+                                      },
+                                      body: JSON.stringify({ feedback: "Please review this order." })
+                                    });
+                                    if (!res.ok) throw new Error('Failed to request review');
+                                    setLoading(true);
+                                    setCurrentPage(1);
+                                  } catch (err) {
+                                    alert(err.message || 'Failed to request review');
+                                  }
+                                }}
+                              >
+                                Request Review
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-blue-700 font-semibold">View</span>
+                          )
                         ) : null}
                       </TableCell>
                     </TableRow>
