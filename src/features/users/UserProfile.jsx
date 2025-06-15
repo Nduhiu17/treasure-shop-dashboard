@@ -100,8 +100,7 @@ const UserProfile = () => {
                     <TableHead>Status</TableHead>
                     <TableHead>Writer</TableHead>
                     <TableHead>Price</TableHead>
-                    {/* New Actions column */}
-                    {user.roles.includes("writer") && <TableHead>Actions</TableHead>}
+                    <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -111,61 +110,107 @@ const UserProfile = () => {
                       <TableCell className="text-xs xs:text-sm sm:text-base">{order.status}</TableCell>
                       <TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
                       <TableCell className="text-xs xs:text-sm sm:text-base">${order.price?.toFixed(2)}</TableCell>
-                      {/* Actions for writer */}
-                      {user.roles.includes("writer") && (
-                        <TableCell>
-                          <div className="flex gap-2">
+                      <TableCell>
+                        {/* Writer actions based on order status */}
+                        {user.roles.includes("writer") ? (
+                          order.status === "awaiting_asign_acceptance" ? (
+                            <div className="flex gap-2">
+                              <button
+                                className="px-3 py-1 rounded-lg bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow hover:from-green-600 hover:to-green-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-400"
+                                onClick={async () => {
+                                  const jwt = localStorage.getItem("jwt_token");
+                                  try {
+                                    const res = await fetch(`http://localhost:8080/api/writer/orders/${order.id}/assignment-response`, {
+                                      method: 'PUT',
+                                      headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': jwt ? `Bearer ${jwt}` : ''
+                                      },
+                                      body: JSON.stringify({ accept: true })
+                                    });
+                                    if (!res.ok) throw new Error('Failed to accept assignment');
+                                    setLoading(true);
+                                    setCurrentPage(1);
+                                  } catch (err) {
+                                    alert(err.message || 'Failed to accept assignment');
+                                  }
+                                }}
+                              >
+                                Accept
+                              </button>
+                              <button
+                                className="px-3 py-1 rounded-lg bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold shadow hover:from-red-600 hover:to-red-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
+                                onClick={async () => {
+                                  const jwt = localStorage.getItem("jwt_token");
+                                  try {
+                                    const res = await fetch(`http://localhost:8080/api/writer/orders/${order.id}/assignment-response`, {
+                                      method: 'PUT',
+                                      headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': jwt ? `Bearer ${jwt}` : ''
+                                      },
+                                      body: JSON.stringify({ accept: false })
+                                    });
+                                    if (!res.ok) throw new Error('Failed to decline assignment');
+                                    setLoading(true);
+                                    setCurrentPage(1);
+                                  } catch (err) {
+                                    alert(err.message || 'Failed to decline assignment');
+                                  }
+                                }}
+                              >
+                                Decline
+                              </button>
+                            </div>
+                          ) : order.status === "assigned" ? (
                             <button
-                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow hover:from-green-600 hover:to-green-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-400"
+                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400"
                               onClick={async () => {
                                 const jwt = localStorage.getItem("jwt_token");
                                 try {
-                                  const res = await fetch(`http://localhost:8080/api/writer/orders/${order.id}/assignment-response`, {
-                                    method: 'PUT',
+                                  const res = await fetch(`http://localhost:8080/api/writer/orders/${order.id}/submit`, {
+                                    method: 'POST',
                                     headers: {
                                       'Content-Type': 'application/json',
                                       'Authorization': jwt ? `Bearer ${jwt}` : ''
                                     },
-                                    body: JSON.stringify({ accept: true })
+                                    body: JSON.stringify({ content: "submission content" })
                                   });
-                                  if (!res.ok) throw new Error('Failed to accept assignment');
-                                  // Optionally refresh orders
+                                  if (!res.ok) throw new Error('Failed to submit order');
                                   setLoading(true);
                                   setCurrentPage(1);
                                 } catch (err) {
-                                  alert(err.message || 'Failed to accept assignment');
+                                  alert(err.message || 'Failed to submit order');
                                 }
                               }}
                             >
-                              Accept
+                              Submit
                             </button>
+                          ) : order.status === "feedback" ? (
                             <button
-                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold shadow hover:from-red-600 hover:to-red-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
-                              onClick={async () => {
-                                const jwt = localStorage.getItem("jwt_token");
-                                try {
-                                  const res = await fetch(`http://localhost:8080/api/writer/orders/${order.id}/assignment-response`, {
-                                    method: 'PUT',
-                                    headers: {
-                                      'Content-Type': 'application/json',
-                                      'Authorization': jwt ? `Bearer ${jwt}` : ''
-                                    },
-                                    body: JSON.stringify({ accept: false })
-                                  });
-                                  if (!res.ok) throw new Error('Failed to decline assignment');
-                                  // Optionally refresh orders
-                                  setLoading(true);
-                                  setCurrentPage(1);
-                                } catch (err) {
-                                  alert(err.message || 'Failed to decline assignment');
-                                }
-                              }}
+                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-semibold shadow cursor-not-allowed opacity-70"
+                              disabled
+                              onClick={() => alert('Order was resubmitted for rework.')}
                             >
-                              Decline
+                              Rework Required
                             </button>
-                          </div>
-                        </TableCell>
-                      )}
+                          ) : order.status === "approved" ? (
+                            <button
+                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-green-400 to-green-600 text-white font-semibold shadow cursor-not-allowed opacity-70"
+                              disabled
+                            >
+                              Completed
+                            </button>
+                          ) : order.status === "submitted_for_review" ? (
+                            <button
+                              className="px-3 py-1 rounded-lg bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow cursor-not-allowed opacity-80"
+                              disabled
+                            >
+                              Awaiting Approval
+                            </button>
+                          ) : null
+                        ) : null}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
