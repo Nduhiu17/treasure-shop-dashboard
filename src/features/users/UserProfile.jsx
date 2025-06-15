@@ -3,9 +3,11 @@ import { Card } from "../../components/ui/card";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "../../components/ui/table";
 import Loader from "../../components/ui/Loader";
 import { useAuth } from "../auth/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
-  const { user, logout } = useAuth(); // Add logout from context
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -62,21 +64,33 @@ const UserProfile = () => {
   const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
   const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   if (!user) {
     return <div className="flex justify-center items-center min-h-[40vh]"><Loader /></div>;
   }
 
   return (
     <div className="max-w-3xl mx-auto mt-8">
-      <Card className="p-6 mb-8 shadow-lg border-0 relative">
-        {/* Logout Button */}
+      {/* Top Navigation Bar */}
+      <nav className="w-full flex flex-col sm:flex-row items-center justify-between bg-gradient-to-r from-blue-700 to-blue-400 rounded-xl shadow-lg px-4 py-3 mb-8 sticky top-0 z-30">
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-between">
+          <span className="text-2xl font-extrabold text-white tracking-tight drop-shadow-lg">User Profile</span>
+          <span className="hidden sm:inline-block ml-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white bg-blue-900/40 shadow">
+            {user?.roles?.[0]?.replace('_', ' ') || 'User'}
+          </span>
+        </div>
         <button
-          onClick={logout}
-          className="absolute top-4 right-4 px-4 py-2 bg-gradient-to-r from-red-500 to-red-700 text-white rounded-lg font-semibold shadow hover:from-red-600 hover:to-red-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
+          onClick={handleLogout}
+          className="mt-3 sm:mt-0 px-5 py-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold rounded-lg shadow-lg text-xs sm:text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
         >
           Logout
         </button>
-        <h2 className="text-xl font-bold text-blue-900 mb-4">User Profile</h2>
+      </nav>
+      <Card className="p-6 mb-8 shadow-lg border-0">
         <div className="mb-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
             <span className="font-semibold text-blue-700 w-32">Username:</span>
