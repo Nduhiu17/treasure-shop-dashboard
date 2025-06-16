@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "./features/auth/AuthProvider";
 import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from "./features/auth/LoginPage";
 import MyOrders from "./features/users/MyOrders";
+import CreateOrder from "./features/orders/CreateOrder";
 
 // --- Dashboard Layout ---
 const menuItems = [
@@ -124,6 +125,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/create-order" element={<CreateOrder />} />
       <Route path="/*" element={<AppContent />} />
     </Routes>
   );

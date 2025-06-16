@@ -51,12 +51,107 @@ paths:
         '400':
           description: Bad request
     get:
+      summary: List orders (filterable by user_id, writer_id, status)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: user_id
+          schema:
+            type: string
+          description: Filter by user ID (optional)
+        - in: query
+          name: writer_id
+          schema:
+            type: string
+          description: Filter by writer ID (optional)
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: Filter by order status (optional)
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: Page number (default 1)
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          description: Page size (default 10, max 100)
+      responses:
+        '200':
+          description: List of orders (paginated and filterable)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+  /api/orders/me:
+    get:
       summary: Get current user's orders
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: List of orders
+          description: List of orders for current user
+  /api/orders/{writer_id}:
+    get:
+      summary: Get all orders assigned to a writer
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: writer_id
+          required: true
+          schema:
+            type: string
+          description: Writer's ObjectID (24-char hex string)
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: Page number (default 1)
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          description: Page size (default 10, max 100)
+      responses:
+        '200':
+          description: List of orders for writer (paginated)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
   /api/writers:
     post:
       summary: Create a writer (admin only)
@@ -288,6 +383,82 @@ paths:
                     type: integer
                   page_size:
                     type: integer
+  /api/order-levels:
+    get:
+      summary: List all order levels
+      responses:
+        '200':
+          description: List of order levels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderLevel'
+  /api/order-levels/{id}:
+    get:
+      summary: Get order level by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order level details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderLevel'
+  /api/admin/order-levels:
+    post:
+      summary: Create order level (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderLevel'
+      responses:
+        '201':
+          description: Order level created
+    
+  /api/admin/order-levels/{id}:
+    put:
+      summary: Update order level (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderLevel'
+      responses:
+        '200':
+          description: Order level updated
+    delete:
+      summary: Delete order level (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order level deleted
   /api/writer/orders/{id}/submit:
     post:
       summary: Submit order as writer
@@ -311,23 +482,9 @@ paths:
       responses:
         '200':
           description: Order submitted
-  /api/orders/{id}/review/approve:
+  /api/writer/orders/{id}/assignment-response:
     put:
-      summary: Approve order (user)
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Order approved
-  /api/orders/{id}/review/feedback:
-    put:
-      summary: Provide feedback for order (user)
+      summary: Writer assignment response (accept/decline)
       security:
         - bearerAuth: []
       parameters:
@@ -343,11 +500,161 @@ paths:
             schema:
               type: object
               properties:
-                feedback:
-                  type: string
+                accept:
+                  type: boolean
       responses:
         '200':
-          description: Feedback submitted
+          description: Assignment response recorded
+  /api/order-pages:
+    get:
+      summary: List all order pages
+      responses:
+        '200':
+          description: List of order pages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderPages'
+  /api/order-pages/{id}:
+    get:
+      summary: Get order pages by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order pages details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderPages'
+  /api/admin/order-pages:
+    post:
+      summary: Create order pages (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderPages'
+      responses:
+        '201':
+          description: Order pages created
+  /api/admin/order-pages/{id}:
+    put:
+      summary: Update order pages (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderPages'
+      responses:
+        '200':
+          description: Order pages updated
+    delete:
+      summary: Delete order pages (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order pages deleted
+  /api/order-urgency:
+    get:
+      summary: List all order urgencies
+      responses:
+        '200':
+          description: List of order urgencies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderUrgency'
+  /api/order-urgency/{id}:
+    get:
+      summary: Get order urgency by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order urgency details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderUrgency'
+  /api/admin/order-urgency:
+    post:
+      summary: Create order urgency (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderUrgency'
+      responses:
+        '201':
+          description: Order urgency created
+  /api/admin/order-urgency/{id}:
+    put:
+      summary: Update order urgency (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderUrgency'
+      responses:
+        '200':
+          description: Order urgency updated
+    delete:
+      summary: Delete order urgency (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order urgency deleted
 components:
   securitySchemes:
     bearerAuth:
@@ -370,6 +677,7 @@ components:
           type: string
         password:
           type: string
+          writeOnly: true
         roles:
           type: array
           items:
@@ -390,6 +698,30 @@ components:
           type: string
         order_type_id:
           type: string
+        order_level_id:
+          type: string
+          description: Foreign key to OrderLevel (required)
+        level_name:
+          type: string
+          description: Name of the order level (response only)
+        order_pages_id:
+          type: string
+          description: Foreign key to OrderPages (required)
+        order_pages_name:
+          type: string
+          description: Name of the order pages (response only)
+        order_urgency_id:
+          type: string
+          description: Foreign key to OrderUrgency (required)
+        order_urgency_name:
+          type: string
+          description: Name of the order urgency (response only)
+        order_style_id:
+          type: string
+          description: Foreign key to OrderStyle (required)
+        order_style_name:
+          type: string
+          description: Name of the order style (response only)
         title:
           type: string
         description:
@@ -400,11 +732,55 @@ components:
           type: string
         writer_id:
           type: string
+          description: Writer's ObjectID (nullable, only present if assigned)
+        writer_name:
+          type: string
+          description: Writer's full name (response only, present if assigned)
         submission_date:
           type: string
           format: date-time
         feedback:
           type: string
+        is_high_priority:
+          type: boolean
+          description: Whether the order is high priority (required)
+        order_language_id:
+          type: string
+          description: Foreign key to OrderLanguage (required)
+        order_language_name:
+          type: string
+          description: Name of the order language (response only)
+        no_of_sources:
+          type: integer
+          description: Number of sources for the order (default 0)
+        preferred_writer_number:
+          type: integer
+          nullable: true
+          description: Preferred writer number (optional)
+        top_writer:
+          type: boolean
+          description: Top writer (default false)
+        plagarism_report:
+          type: boolean
+          description: Plagarism report (default false)
+        one_page_summary:
+          type: boolean
+          description: One page summary (default false)
+        extra_quality_check:
+          type: boolean
+          description: Extra quality check (default false)
+        initial_draft:
+          type: boolean
+          description: Initial draft (default false)
+        sms_update:
+          type: boolean
+          description: SMS update (default false)
+        full_text_copy_sources:
+          type: boolean
+          description: Full text copy sources (default false)
+        same_paper_from_another_writer:
+          type: boolean
+          description: Same paper from another writer (default false)
     OrderType:
       type: object
       properties:
@@ -422,3 +798,64 @@ components:
         updated_at:
           type: string
           format: date-time
+    OrderLevel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    OrderPages:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    OrderUrgency:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    OrderStyle:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    OrderLanguage:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
