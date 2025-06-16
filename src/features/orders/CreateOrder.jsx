@@ -315,32 +315,44 @@ const CreateOrder = () => {
             ))}
           </div>
           {/* File upload section */}
-          <div>
-            <label className="block text-blue-900 font-semibold mb-1">Upload File</label>
-            <input
-              type="file"
-              onChange={handleFileChange}
-              className="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium"
-            />
+          <div className="mb-4 w-full">
+            <label className="block text-blue-900 font-semibold mb-1 flex items-center gap-2">
+              <span>Upload File</span>
+              <span className="text-xs text-blue-400 font-normal">(optional, .docx/.pdf/.txt)</span>
+            </label>
+            <div className="relative flex items-center gap-2">
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 transition-all duration-150"
+                accept=".doc,.docx,.pdf,.txt"
+              />
+              {fileUploadLoading && (
+                <Loader className="w-5 h-5 text-blue-600 animate-spin absolute right-2 top-1/2 -translate-y-1/2" />
+              )}
+            </div>
             {file && (
-              <div className="mt-2 text-sm text-blue-700">
-                <span>{file.name} ({Math.round(file.size / 1024)} KB)</span>
+              <div className="mt-2 text-sm text-blue-700 flex flex-col gap-1">
+                <span className="truncate">{file.name} <span className="text-xs text-blue-400">({Math.round(file.size / 1024)} KB)</span></span>
                 {fileUploadLoading && (
-                  <div className="mt-1">
-                    <div className="bg-blue-200 rounded-full h-2.5 w-full overflow-hidden">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-blue-200 rounded-full h-2.5 w-40 overflow-hidden">
                       <div
-                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                        className="bg-gradient-to-r from-blue-400 to-blue-600 h-2.5 rounded-full transition-all duration-300"
                         style={{ width: `${fileUploadProgress}%` }}
                       />
                     </div>
-                    <span className="text-xs text-blue-600 font-semibold mt-1 inline-block">Uploading... {fileUploadProgress}%</span>
+                    <span className="text-xs text-blue-600 font-semibold">{fileUploadProgress}%</span>
                   </div>
                 )}
                 {uploadedFileUrl && !fileUploadLoading && (
-                  <div className="mt-1 text-green-600 text-xs">File uploaded successfully!</div>
+                  <div className="text-green-600 text-xs flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    File uploaded successfully!
+                  </div>
                 )}
                 {fileUploadError && (
-                  <div className="mt-1 text-red-600 text-xs">{fileUploadError}</div>
+                  <div className="text-red-600 text-xs">{fileUploadError}</div>
                 )}
               </div>
             )}
