@@ -101,15 +101,18 @@ const CreateOrder = () => {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
     setFileUploadError("");
     setUploadedFileUrl("");
-    if (!selectedFile) return;
-    setFileUploadLoading(true);
     setFileUploadProgress(0);
-    try {
+  };
+
+  const uploadFile = async (selectedFile) => {
+    return new Promise((resolve, reject) => {
+      setFileUploadLoading(true);
+      setFileUploadProgress(0);
       const jwt = localStorage.getItem("jwt_token");
       const formData = new FormData();
       formData.append("file", selectedFile);
@@ -126,26 +129,35 @@ const CreateOrder = () => {
         if (xhr.status === 200) {
           const res = JSON.parse(xhr.responseText);
           setUploadedFileUrl(res.url);
+          resolve(res.url);
         } else {
           setFileUploadError("Failed to upload file");
+          reject("Failed to upload file");
         }
       };
       xhr.onerror = () => {
         setFileUploadLoading(false);
         setFileUploadError("Failed to upload file");
+        reject("Failed to upload file");
       };
       xhr.send(formData);
-    } catch (err) {
-      setFileUploadLoading(false);
-      setFileUploadError("Failed to upload file");
-    }
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    let fileUrl = uploadedFileUrl;
     if (file && !uploadedFileUrl) {
+      try {
+        fileUrl = await uploadFile(file);
+      } catch {
+        setError("File upload failed. Please try again.");
+        return;
+      }
+    }
+    if (file && !fileUrl) {
       setError("Please wait for the file to finish uploading.");
       return;
     }
@@ -161,7 +173,7 @@ const CreateOrder = () => {
         body: JSON.stringify({
           ...form,
           no_of_sources: Number(form.no_of_sources),
-          ...(uploadedFileUrl ? { original_order_file: uploadedFileUrl } : {})
+          ...(fileUrl ? { original_order_file: fileUrl } : {})
         })
       });
       if (!res.ok) throw new Error("Failed to create order");
