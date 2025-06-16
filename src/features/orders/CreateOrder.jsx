@@ -58,7 +58,7 @@ const CreateOrder = () => {
     (async () => {
       setLoading(true);
       try {
-        const [orderTypes, levels, pages, urgency, styles, languages] = await Promise.all([
+        const [orderTypesRaw, levels, pages, urgency, styles, languages] = await Promise.all([
           fetchOptions("/order-types/all"),
           fetchOptions("/order-levels"),
           fetchOptions("/order-pages"),
@@ -66,6 +66,8 @@ const CreateOrder = () => {
           fetchOptions("/order-styles"),
           fetchOptions("/order-languages")
         ]);
+        // orderTypesRaw may be an object with 'order_types' property
+        const orderTypes = Array.isArray(orderTypesRaw?.order_types) ? orderTypesRaw.order_types : (Array.isArray(orderTypesRaw) ? orderTypesRaw : []);
         setOptions({
           orderTypes,
           levels,
