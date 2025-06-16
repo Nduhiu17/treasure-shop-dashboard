@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "./features/auth/AuthProvider";
 import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from "./features/auth/LoginPage";
 import UserProfile from "./features/users/UserProfile";
+import MyOrders from "./features/users/MyOrders";
 
 // --- Dashboard Layout ---
 const menuItems = [
@@ -31,6 +32,13 @@ const menuItems = [
     icon: (
       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-2a4 4 0 014-4h4a4 4 0 014 4v2M9 17H5a2 2 0 01-2-2v-5a2 2 0 012-2h4a2 2 0 012 2v5a2 2 0 01-2 2z" /></svg>
     )
+  },
+  {
+    key: 'my-orders',
+    label: 'My Orders',
+    icon: (
+      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7V6a2 2 0 012-2h14a2 2 0 012 2v1M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7M3 7h18" /></svg>
+    )
   }
 ];
 
@@ -46,6 +54,8 @@ const Dashboard = () => {
         return <UsersManagement />;
       case 'order-types':
         return <OrderTypesManagement />;
+      case 'my-orders':
+        return <MyOrders />;
       default:
         return <OrdersManagement />;
     }
