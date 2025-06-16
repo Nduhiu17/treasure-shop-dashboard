@@ -7,7 +7,6 @@ import OrderTypesManagement from "./features/orderTypes/OrderTypesManagement";
 import { AuthProvider, useAuth } from "./features/auth/AuthProvider";
 import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from "./features/auth/LoginPage";
-import UserProfile from "./features/users/UserProfile";
 import MyOrders from "./features/users/MyOrders";
 
 // --- Dashboard Layout ---
@@ -125,7 +124,6 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/profile" element={<UserProfile />} />
       <Route path="/*" element={<AppContent />} />
     </Routes>
   );

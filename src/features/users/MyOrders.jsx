@@ -125,8 +125,22 @@ const MyOrders = () => {
 											<TableHeader>
 												<TableRow>
 													<TableHead>Title</TableHead>
+													<TableHead>Description</TableHead>
 													<TableHead>Status</TableHead>
 													<TableHead>Writer</TableHead>
+													<TableHead>Level</TableHead>
+													<TableHead>Pages</TableHead>
+													<TableHead>Urgency</TableHead>
+													<TableHead>Style</TableHead>
+													<TableHead>Language</TableHead>
+													<TableHead>Priority</TableHead>
+													<TableHead>Plagiarism</TableHead>
+													<TableHead>Summary</TableHead>
+													<TableHead>Quality</TableHead>
+													<TableHead>Draft</TableHead>
+													<TableHead>SMS</TableHead>
+													<TableHead>Sources</TableHead>
+													<TableHead>Top Writer</TableHead>
 													<TableHead>Price</TableHead>
 													<TableHead>Actions</TableHead>
 												</TableRow>
@@ -137,6 +151,9 @@ const MyOrders = () => {
 														<TableRow key={order.id} className="hover:bg-blue-50">
 															<TableCell className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base">
 																{order.title}
+															</TableCell>
+															<TableCell className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base">
+																{order.description}
 															</TableCell>
 															<TableCell>
 																<span
@@ -166,9 +183,46 @@ const MyOrders = () => {
 																</span>
 															</TableCell>
 															<TableCell className="text-xs xs:text-sm sm:text-base">
-																{order.writer_id
-																	? order.writer_id.slice(-6)
-																	: "Unassigned"}
+																{order.writer_name || (order.writer_id ? order.writer_id.slice(-6) : "Unassigned")}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.level_name}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.order_pages_name}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.order_urgency_name}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.order_style_name}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.order_language_name}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.is_high_priority ? "Yes" : "No"}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.plagarism_report ? "Yes" : "No"}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.one_page_summary ? "Yes" : "No"}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.extra_quality_check ? "Yes" : "No"}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.initial_draft ? "Yes" : "No"}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.sms_update ? "Yes" : "No"}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.full_text_copy_sources ? "Yes" : "No"}
+															</TableCell>
+															<TableCell className="text-xs xs:text-sm sm:text-base">
+																{order.top_writer ? "Yes" : "No"}
 															</TableCell>
 															<TableCell className="text-xs xs:text-sm sm:text-base">
 																${order.price?.toFixed(2)}
@@ -381,7 +435,7 @@ const MyOrders = () => {
 													))
 												) : (
 													<TableRow>
-														<TableCell colSpan={5} className="text-center text-xs xs:text-sm sm:text-base">
+														<TableCell colSpan={19} className="text-center text-xs xs:text-sm sm:text-base">
 															No orders found.
 														</TableCell>
 													</TableRow>

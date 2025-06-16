@@ -115,23 +115,51 @@ const OrdersManagement = () => {
 										<TableHeader>
 											<TableRow>
 												<TableHead>Title</TableHead>
-												<TableHead>User ID</TableHead>
+												<TableHead>Description</TableHead>
 												<TableHead>Status</TableHead>
-												<TableHead>Writer ID</TableHead>
+												<TableHead>User ID</TableHead>
+												<TableHead>Writer</TableHead>
+												<TableHead>Level</TableHead>
+												<TableHead>Pages</TableHead>
+												<TableHead>Urgency</TableHead>
+												<TableHead>Style</TableHead>
+												<TableHead>Language</TableHead>
+												<TableHead>Priority</TableHead>
+												<TableHead>Plagiarism</TableHead>
+												<TableHead>Summary</TableHead>
+												<TableHead>Quality</TableHead>
+												<TableHead>Draft</TableHead>
+												<TableHead>SMS</TableHead>
+												<TableHead>Sources</TableHead>
+												<TableHead>Top Writer</TableHead>
 												<TableHead>Price</TableHead>
 												<TableHead>Actions</TableHead>
 											</TableRow>
 										</TableHeader>
 										<TableBody>
 											{orders.length > 0 ? (
-												orders.map((order) => (
+												orders.map(order => (
 													<TableRow key={order.id} className="hover:bg-blue-50">
 														<TableCell className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base">{order.title}</TableCell>
-														<TableCell className="text-xs xs:text-sm sm:text-base">{order.user_id?.slice(-6)}</TableCell>
+														<TableCell className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base">{order.description}</TableCell>
 														<TableCell>
 															<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
 														</TableCell>
-														<TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_id ? order.writer_id.slice(-6) : 'Unassigned'}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.user_id ? order.user_id.slice(-6) : ''}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_name || (order.writer_id ? order.writer_id.slice(-6) : 'Unassigned')}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.level_name}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_pages_name}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_urgency_name}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_style_name}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_language_name}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.is_high_priority ? 'Yes' : 'No'}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.plagarism_report ? 'Yes' : 'No'}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.one_page_summary ? 'Yes' : 'No'}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.extra_quality_check ? 'Yes' : 'No'}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.initial_draft ? 'Yes' : 'No'}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.sms_update ? 'Yes' : 'No'}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.full_text_copy_sources ? 'Yes' : 'No'}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.top_writer ? 'Yes' : 'No'}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">${order.price?.toFixed(2)}</TableCell>
 														<TableCell>
 															<Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
@@ -142,7 +170,7 @@ const OrdersManagement = () => {
 												))
 											) : (
 												<TableRow>
-													<TableCell colSpan={6} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</TableCell>
+													<TableCell colSpan={20} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</TableCell>
 												</TableRow>
 											)}
 										</TableBody>
