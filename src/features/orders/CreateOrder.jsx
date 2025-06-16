@@ -53,6 +53,11 @@ const CreateOrder = () => {
   });
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [file, setFile] = useState(null);
+  const [fileUploadProgress, setFileUploadProgress] = useState(0);
+  const [fileUploadLoading, setFileUploadLoading] = useState(false);
+  const [fileUploadError, setFileUploadError] = useState("");
+  const [uploadedFileUrl, setUploadedFileUrl] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -96,11 +101,55 @@ const CreateOrder = () => {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setFileUploadError("");
+    setUploadedFileUrl("");
+    if (!selectedFile) return;
+    setFileUploadLoading(true);
+    setFileUploadProgress(0);
+    try {
+      const jwt = localStorage.getItem("jwt_token");
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${API_BASE}/upload`);
+      if (jwt) xhr.setRequestHeader("Authorization", `Bearer ${jwt}`);
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          setFileUploadProgress(Math.round((event.loaded / event.total) * 100));
+        }
+      };
+      xhr.onload = () => {
+        setFileUploadLoading(false);
+        if (xhr.status === 200) {
+          const res = JSON.parse(xhr.responseText);
+          setUploadedFileUrl(res.url);
+        } else {
+          setFileUploadError("Failed to upload file");
+        }
+      };
+      xhr.onerror = () => {
+        setFileUploadLoading(false);
+        setFileUploadError("Failed to upload file");
+      };
+      xhr.send(formData);
+    } catch (err) {
+      setFileUploadLoading(false);
+      setFileUploadError("Failed to upload file");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
     setSuccess("");
+    if (file && !uploadedFileUrl) {
+      setError("Please wait for the file to finish uploading.");
+      return;
+    }
+    setLoading(true);
     try {
       const jwt = localStorage.getItem("jwt_token");
       const res = await fetch(`${API_BASE}/orders`, {
@@ -111,12 +160,16 @@ const CreateOrder = () => {
         },
         body: JSON.stringify({
           ...form,
-          no_of_sources: Number(form.no_of_sources)
+          no_of_sources: Number(form.no_of_sources),
+          ...(uploadedFileUrl ? { original_order_file: uploadedFileUrl } : {})
         })
       });
       if (!res.ok) throw new Error("Failed to create order");
       setSuccess("Order created successfully!");
       setForm((f) => ({ ...f, title: "", description: "", preferred_writer_number: "" }));
+      setFile(null);
+      setUploadedFileUrl("");
+      setFileUploadProgress(0);
     } catch (e) {
       setError(e.message || "Failed to create order");
     } finally {
@@ -249,14 +302,90 @@ const CreateOrder = () => {
               </label>
             ))}
           </div>
-          <div className="flex items-center justify-between mt-6">
-            <span className="text-lg font-bold text-blue-700">Price: <span className="text-blue-900">${form.price.toFixed(2)}</span></span>
-            <Button type="submit" className="px-8 py-2 text-lg font-bold rounded-xl shadow bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 text-white transition-all duration-150">
-              {loading ? <Loader /> : "Create Order"}
+          {/* File upload section */}
+          <div>
+            <label className="block text-blue-900 font-semibold mb-1">Upload File</label>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium"
+            />
+            {file && (
+              <div className="mt-2 text-sm text-blue-700">
+                <span>{file.name} ({Math.round(file.size / 1024)} KB)</span>
+                {fileUploadLoading && (
+                  <div className="mt-1">
+                    <div className="bg-blue-200 rounded-full h-2.5 w-full overflow-hidden">
+                      <div
+                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                        style={{ width: `${fileUploadProgress}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-blue-600 font-semibold mt-1 inline-block">Uploading... {fileUploadProgress}%</span>
+                  </div>
+                )}
+                {uploadedFileUrl && !fileUploadLoading && (
+                  <div className="mt-1 text-green-600 text-xs">File uploaded successfully!</div>
+                )}
+                {fileUploadError && (
+                  <div className="mt-1 text-red-600 text-xs">{fileUploadError}</div>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="flex justify-between items-center mt-6">
+            <Button
+              type="button"
+              onClick={() => setForm({
+                title: "",
+                description: "",
+                price: 37.90,
+                order_type_id: "",
+                order_level_id: "",
+                order_pages_id: "",
+                order_urgency_id: "",
+                order_style_id: "",
+                order_language_id: "",
+                no_of_sources: 1,
+                preferred_writer_number: "",
+                is_high_priority: false,
+                top_writer: false,
+                plagarism_report: false,
+                one_page_summary: false,
+                extra_quality_check: false,
+                initial_draft: false,
+                sms_update: false,
+                full_text_copy_sources: false,
+                same_paper_from_another_writer: false
+              })}
+              className="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow-md hover:bg-blue-700 transition-all duration-150"
+            >
+              Reset
+            </Button>
+            <Button
+              type="submit"
+              className="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold shadow-md hover:bg-green-700 transition-all duration-150 flex items-center justify-center"
+            >
+              {loading ? (
+                <>
+                  <Loader className="w-5 h-5 mr-2" />
+                  Creating...
+                </>
+              ) : (
+                "Create Order"
+              )}
             </Button>
           </div>
-          {success && <div className="text-green-700 text-center font-semibold mt-4">{success}</div>}
-          {error && <div className="text-red-600 text-center font-semibold mt-4">{error}</div>}
+          {success && (
+            <div className="mt-4 text-green-600 text-center text-sm font-semibold">
+              {success}
+            </div>
+          )}
+          {error && (
+            <div className="mt-4 text-red-600 text-center text-sm font-semibold">
+              {error}
+            </div>
+          )}
         </form>
       </Card>
     </div>
