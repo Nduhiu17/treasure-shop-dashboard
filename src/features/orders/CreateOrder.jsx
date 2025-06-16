@@ -124,25 +124,37 @@ const CreateOrder = () => {
     }
   };
 
-  // Custom Select with checkmark
+  // Custom Select with enhanced design and focus/active state
   const CustomSelect = ({ label, name, value, options, onChange }) => (
     <div className="mb-4 w-full">
       <label className="block text-blue-900 font-semibold mb-1">{label}</label>
-      <div className="relative">
+      <div className="relative group">
         <select
           name={name}
           value={value}
           onChange={e => onChange(name, e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium appearance-none pr-10"
+          className={
+            `w-full px-4 py-2 rounded-xl border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium appearance-none pr-12 transition-all duration-150 shadow-sm
+            group-focus-within:border-blue-600 group-focus-within:ring-2 group-focus-within:ring-blue-300
+            ${value ? 'ring-2 ring-blue-400 border-blue-400' : ''}`
+          }
+          style={{ boxShadow: value ? '0 0 0 2px #3b82f6' : undefined }}
         >
           <option value="">Select {label}</option>
           {(Array.isArray(options) ? options : []).map(opt => (
             <option key={opt.id} value={opt.id}>{opt.name}</option>
           ))}
         </select>
+        {/* Animated chevron icon */}
+        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 group-focus-within:text-blue-600 transition-colors duration-150">
+          <svg className={`w-5 h-5 transition-transform duration-200 ${value ? 'rotate-180 text-blue-600' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+        {/* Checkmark for selected */}
         {value && (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-600">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-blue-600 animate-fade-in">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
           </span>
         )}
       </div>
@@ -198,6 +210,7 @@ const CreateOrder = () => {
             <CustomSelect label="Urgency" name="order_urgency_id" value={form.order_urgency_id} options={options.urgency} onChange={handleSelect} />
             <CustomSelect label="Style" name="order_style_id" value={form.order_style_id} options={options.styles} onChange={handleSelect} />
             <CustomSelect label="Language" name="order_language_id" value={form.order_language_id} options={options.languages} onChange={handleSelect} />
+            {/* Enhanced Number of Sources select */}
             <div className="mb-4 w-full">
               <label className="block text-blue-900 font-semibold mb-1">Number of Sources</label>
               <div className="relative">
@@ -205,13 +218,18 @@ const CreateOrder = () => {
                   name="no_of_sources"
                   value={form.no_of_sources}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium appearance-none pr-10"
+                  className="w-full px-4 py-2 rounded-xl border border-blue-200 bg-white text-blue-900 font-medium appearance-none pr-12 transition-all duration-150 shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-400 outline-none"
                 >
                   {[...Array(30)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>{i + 1}</option>
                   ))}
                 </select>
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-600">
+                {/* Custom dropdown arrow */}
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-blue-500">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </span>
+                {/* Checkmark if selected */}
+                <span className="absolute right-9 top-1/2 -translate-y-1/2 text-green-500">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                 </span>
               </div>
