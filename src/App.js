@@ -65,7 +65,7 @@ const Dashboard = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       {/* Header */}
       <header className="bg-white shadow-sm py-3 px-2 xs:px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-blue-900 text-center sm:text-left">Treasure Shop Admin</h1>
+        <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-blue-900 text-center sm:text-left">Academic Codebase Dashboard</h1>
         <Button onClick={logout} variant="destructive" className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">Logout</Button>
       </header>
       {/* Main Content Area */}
