@@ -92,19 +92,9 @@ const MyOrders = () => {
 	return (
 		<div className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 max-w-5xl mx-auto">
 			<Card className="p-1 xs:p-2 sm:p-6 shadow-lg border-0">
-				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-					<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">My Orders</h2>
-					<Button
-						className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150"
-						onClick={() => setShowCreateOrder(true)}
-					>
-						+ Create Order
-					</Button>
-				</div>
 				{showCreateOrder ? (
 					<div className="animate-fade-in">
-						<CreateOrder />
-						<div className="flex justify-end mt-4">
+						<div className="flex justify-end mb-4">
 							<Button
 								className="px-4 py-2 rounded-lg bg-gray-200 text-blue-900 font-semibold shadow hover:bg-gray-300 transition-all duration-150"
 								onClick={() => setShowCreateOrder(false)}
@@ -112,9 +102,19 @@ const MyOrders = () => {
 								Back to My Orders
 							</Button>
 						</div>
+						<CreateOrder />
 					</div>
 				) : (
 					<>
+						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+							<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">My Orders</h2>
+							<Button
+								className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150"
+								onClick={() => setShowCreateOrder(true)}
+							>
+								+ Create Order
+							</Button>
+						</div>
 						<Tabs
 							value={activeStatus}
 							onValueChange={setActiveStatus}
