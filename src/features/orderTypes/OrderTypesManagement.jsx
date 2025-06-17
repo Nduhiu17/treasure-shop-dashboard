@@ -42,8 +42,8 @@ const OrderTypesManagement = () => {
         <div className="text-center py-8 text-red-600">{error}</div>
       ) : (
         <>
-          <div className="overflow-x-auto rounded-lg">
-            <Table>
+          <Card className="overflow-x-auto rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px] p-2 sm:p-6">
+            <Table className="w-full min-w-[900px] text-xs xs:text-sm sm:text-base">
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
@@ -69,7 +69,7 @@ const OrderTypesManagement = () => {
                 )}
               </TableBody>
             </Table>
-          </div>
+          </Card>
           {/* Pagination */}
           <div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
             <nav
