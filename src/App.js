@@ -9,6 +9,11 @@ import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from "./features/auth/LoginPage";
 import MyOrders from "./features/users/MyOrders";
 import CreateOrder from "./features/orders/CreateOrder";
+import LandingPage from "./pages/LandingPage";
+import AboutPage from "./pages/AboutPage";
+import GuaranteesPage from "./pages/GuaranteesPage";
+import ReviewsPage from "./pages/ReviewsPage";
+import ServiceDetailPage from "./pages/ServiceDetailPage";
 
 // --- Dashboard Layout ---
 const menuItems = [
@@ -134,8 +139,15 @@ function AppContent() {
 }
 
 function AppRoutes() {
+  // Get user and logout from AuthProvider for landing/marketing pages
+  const { user, logout } = useAuth();
   return (
     <Routes>
+      <Route path="/" element={<LandingPage user={user} onLogout={logout} />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/guarantees" element={<GuaranteesPage />} />
+      <Route path="/reviews" element={<ReviewsPage />} />
+      <Route path="/services/:serviceSlug" element={<ServiceDetailPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/create-order" element={<CreateOrder />} />
       <Route path="/*" element={<AppContent />} />
