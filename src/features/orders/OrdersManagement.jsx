@@ -148,7 +148,7 @@ const OrdersManagement = () => {
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.user_id ? order.user_id.slice(-6) : ''}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_name || (order.writer_id ? order.writer_id.slice(-6) : 'Unassigned')}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.level_name}</TableCell>
-														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_pages_name}</TableCell>
+														<TableCell className="max-w-[60px] truncate whitespace-nowrap text-xs xs:text-sm sm:text-base">{order.order_pages_name}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_urgency_name}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_style_name}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_language_name}</TableCell>
