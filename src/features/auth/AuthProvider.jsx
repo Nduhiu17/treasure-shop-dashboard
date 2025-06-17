@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({ writer_id: writerId }),
     }),
     getUsersByRole: (role, page = 1, pageSize = 10) => authFetcher(`/api/admin/users?role=${role}&page=${page}&page_size=${pageSize}`),
-    getOrderTypes: (page = 1, pageSize = 10) => authFetcher(`/api/admin/order-types?page=${page}&page_size=${pageSize}`),
+    getOrderTypes: (page = 1, pageSize = 10) => authFetcher(`/api/order-types?page=${page}&page_size=${pageSize}`),
     getWriters: (page = 1, pageSize = 100) => authFetcher(`/api/writers?page=${page}&page_size=${pageSize}`),
   }), [authFetcher, login, logout]);
 

@@ -91,7 +91,7 @@ const MyOrders = () => {
 
 	return (
 		<div className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 max-w-5xl mx-auto">
-			<Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0">
+			<Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
 				{showCreateOrder ? (
 					<div className="animate-fade-in">
 						<div className="flex justify-end mb-4">
