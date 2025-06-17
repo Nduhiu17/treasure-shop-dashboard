@@ -43,8 +43,20 @@ const menuItems = [
 ];
 
 const Dashboard = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const [currentPage, setCurrentPage] = useState('orders');
+
+  // Determine menu items based on user roles
+  let filteredMenuItems = menuItems;
+  if (user && user.roles) {
+    const roles = user.roles;
+    const isAdmin = roles.includes('admin') || roles.includes('super_admin');
+    const isWriterOrUser = (roles.includes('writer') || roles.includes('user')) && !isAdmin;
+    if (isWriterOrUser) {
+      filteredMenuItems = menuItems.filter(item => item.key === 'my-orders');
+      if (currentPage !== 'my-orders') setCurrentPage('my-orders');
+    }
+  }
 
   const renderContent = () => {
     switch (currentPage) {
@@ -74,7 +86,7 @@ const Dashboard = () => {
         <aside className="w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0">
           <nav aria-label="Main menu">
             <ul className="flex flex-row sm:flex-col gap-1 xs:gap-2">
-              {menuItems.map((item) => (
+              {filteredMenuItems.map((item) => (
                 <li key={item.key}>
                   <Button
                     onClick={() => setCurrentPage(item.key)}
