@@ -83,8 +83,10 @@ const OrdersManagement = () => {
 
 	return (
 		<Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0">
-			{loading && <Loader />}
-			<h2 className="text-base xs:text-lg sm:text-xl font-semibold mb-2 xs:mb-4 text-blue-900">All Orders</h2>
+			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+				<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">All Orders</h2>
+				{/* No create button for admin, but keep structure for consistency */}
+			</div>
 			<Tabs value={activeStatus} onValueChange={handleTabChange} className="mb-4 xs:mb-6">
 				<TabsList className="flex w-full overflow-x-auto gap-1 xs:gap-2 bg-white/90 rounded-xl shadow border border-blue-100 p-1 xs:p-2">
 					{ORDER_STATUSES.map((status) => (
@@ -110,8 +112,8 @@ const OrdersManagement = () => {
 							<div className="text-center py-8 text-red-600">{error}</div>
 						) : (
 							<>
-								<div className="overflow-x-auto rounded-lg">
-									<Table>
+								<div className="overflow-x-auto rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]">
+									<Table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base">
 										<TableHeader>
 											<TableRow>
 												<TableHead>Title</TableHead>

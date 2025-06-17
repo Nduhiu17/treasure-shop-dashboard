@@ -91,7 +91,7 @@ const MyOrders = () => {
 
 	return (
 		<div className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 max-w-5xl mx-auto">
-			<Card className="p-1 xs:p-2 sm:p-6 shadow-lg border-0">
+			<Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0">
 				{showCreateOrder ? (
 					<div className="animate-fade-in">
 						<div className="flex justify-end mb-4">
@@ -125,7 +125,11 @@ const MyOrders = () => {
 									<TabsTrigger
 										key={status.key}
 										value={status.key}
-										className={`capitalize px-3 xs:px-6 py-1 xs:py-2 rounded-lg text-xs xs:text-base font-semibold transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-400 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=inactive]:bg-blue-50 data-[state=inactive]:text-blue-900 data-[state=inactive]:hover:bg-blue-100`}
+										className={`capitalize px-3 xs:px-6 py-1 xs:py-2 rounded-lg text-xs xs:text-base font-semibold transition-all duration-150
+											focus:outline-none focus:ring-2 focus:ring-blue-400
+											data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-400 data-[state=active]:text-white data-[state=active]:shadow-lg
+											data-[state=inactive]:bg-blue-50 data-[state=inactive]:text-blue-900 data-[state=inactive]:hover:bg-blue-100
+										`}
 										data-state={activeStatus === status.key ? "active" : "inactive"}
 									>
 										{status.label}
