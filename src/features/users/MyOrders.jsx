@@ -210,7 +210,7 @@ const MyOrders = () => {
 																	<TableCell className="text-xs xs:text-sm sm:text-base">
 																		{order.level_name}
 																	</TableCell>
-																	<TableCell className="text-xs xs:text-sm sm:text-base">
+																	<TableCell className="max-w-[80px] truncate whitespace-nowrap overflow-hidden text-xs xs:text-sm sm:text-base">
 																		{order.order_pages_name}
 																	</TableCell>
 																	<TableCell className="text-xs xs:text-sm sm:text-base">
@@ -253,11 +253,12 @@ const MyOrders = () => {
 																		{/* Writer actions based on order status */}
 																		{order.status === "pending_payment" ? (
 																			<button
-																				className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400"
+																				className="flex items-center gap-2 px-2 py-1 rounded bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 text-xs xs:text-sm sm:text-base h-7 min-h-0"
+																				style={{ minHeight: 0, height: '28px', paddingTop: '0.25rem', paddingBottom: '0.25rem' }}
 																				onClick={() => alert('Redirect to payment flow here.')}
 																			>
-																				<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-																				<span>Make Payment</span>
+																				<svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+																				<span>Pay</span>
 																			</button>
 																		) : user.roles.includes("writer") ? (
 																			order.status === "awaiting_asign_acceptance" ? (
