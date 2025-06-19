@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button";
 import { useAuth } from "../features/auth/AuthProvider";
 import LoginPage from "../features/auth/LoginPage";
 import { Dialog } from "../components/ui/dialog";
+import { WideDialog } from "../components/ui/wide-dialog";
 import CreateOrder from "../features/orders/CreateOrder";
 
 export default function LandingPage({ user, onLogout }) {
@@ -93,9 +94,9 @@ export default function LandingPage({ user, onLogout }) {
       <Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
         <LoginPage asModal onSuccess={handleLoginSuccess} />
       </Dialog>
-      <Dialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
+      <WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
         <CreateOrder />
-      </Dialog>
+      </WideDialog>
     </div>
   );
 }
