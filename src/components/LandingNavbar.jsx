@@ -346,8 +346,8 @@ export default function LandingNavbar({ user, onLogout }) {
 										<Button as={Link} to="/create-order" className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow px-4 py-2 rounded-lg mt-2" onClick={() => setMobileMenuOpen(false)}>
 											Order
 										</Button>
-										<Button as={Link} to="/profile" className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2" onClick={() => setMobileMenuOpen(false)}>
-											My Profile
+										<Button as={Link} to="/profile" className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2 min-w-0 max-w-full overflow-hidden truncate" onClick={() => setMobileMenuOpen(false)}>
+											<span className="block truncate">My Profile</span>
 										</Button>
 										<Button
 											className="bg-red-50 text-red-700 font-semibold px-4 py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2"
