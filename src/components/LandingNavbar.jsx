@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
+import LoginPage from "../features/auth/LoginPage";
+import { Dialog } from "./ui/dialog";
 
 const SERVICE_ITEMS = [
 	"Argumentative Essay",
@@ -38,6 +40,7 @@ export default function LandingNavbar({ user, onLogout }) {
 	const [profileOpen, setProfileOpen] = React.useState(false); // profile dropdown
 	const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false); // mobile menu
 	const [mobileMenuServicesOpen, setMobileMenuServicesOpen] = React.useState(false);
+	const [loginModalOpen, setLoginModalOpen] = React.useState(false);
 	const mobileMenuButtonRef = React.useRef();
 	const mobileMenuRef = React.useRef();
 	const profileButtonRef = React.useRef();
@@ -387,13 +390,19 @@ export default function LandingNavbar({ user, onLogout }) {
 					) : (
 						<Button
 							className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100"
-							onClick={() => navigate('/login')}
+							onClick={() => setLoginModalOpen(true)}
 						>
 							Login
 						</Button>
 					)}
 				</div>
 			</nav>
+			{/* Login Modal */}
+			{loginModalOpen && (
+				<Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
+					<LoginPage asModal onSuccess={() => setLoginModalOpen(false)} />
+				</Dialog>
+			)}
 		</header>
 	);
 }
