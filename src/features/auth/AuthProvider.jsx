@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(() => {
     setToken(null);
     localStorage.removeItem('jwt_token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('roles');
   }, []);
 
   // Updated login to use API
