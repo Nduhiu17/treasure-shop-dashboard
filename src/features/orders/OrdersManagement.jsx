@@ -108,28 +108,110 @@ const OrdersManagement = () => {
 					<div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
 						<div className="overflow-x-auto h-full">
 							<table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base h-full">
-								<thead className="sticky top-0 z-10 bg-white">
+								<thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
 									<tr>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Title</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Description</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Status</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Writer Username</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Level</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Pages</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Urgency</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Style</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Language</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Priority</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Plagiarism</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Summary</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Quality</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Draft</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">SMS</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Sources</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Top Writer</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Price</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Order File</th>
-										<th className="px-4 py-2 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Actions</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Title
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Description
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Status
+												<svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" /></svg>
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Writer Username
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Level
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Pages
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Urgency
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Style
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Language
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Priority
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Plagiarism
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Summary
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Quality
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Draft
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												SMS
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Sources
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Top Writer
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Price
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Order File
+												<svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" /></svg>
+											</span>
+										</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+											<span className="flex items-center gap-1">
+												Actions
+											</span>
+										</th>
 									</tr>
 								</thead>
 								<tbody>
