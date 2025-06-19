@@ -4,6 +4,7 @@ import { Button } from "../components/ui/button";
 import LoginPage from "../features/auth/LoginPage";
 import CreateOrder from "../features/orders/CreateOrder";
 import { Dialog } from "./ui/dialog";
+import { WideDialog } from "../components/ui/wide-dialog";
 
 const SERVICE_ITEMS = [
 	"Argumentative Essay",
@@ -429,9 +430,9 @@ export default function LandingNavbar({ user, onLogout }) {
 			)}
 			{/* Create Order Modal */}
 			{createOrderModalOpen && (
-				<Dialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
+				<WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
 					<CreateOrder />
-				</Dialog>
+				</WideDialog>
 			)}
 		</header>
 	);
