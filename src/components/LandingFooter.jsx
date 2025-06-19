@@ -6,7 +6,7 @@ export default function LandingFooter() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-2 mb-4 md:mb-0">
           <img src="/favicon.ico" alt="Treasure Shop" className="h-8 w-8" />
-          <span className="font-bold text-lg">Treasure Shop</span>
+          <span className="font-bold text-lg">Academic Codebase</span>
         </div>
         <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-sm text-blue-100">
           <a href="/about" className="hover:text-white transition-colors">About Us</a>
@@ -15,7 +15,7 @@ export default function LandingFooter() {
           <a href="/create-order" className="hover:text-white transition-colors">Order</a>
         </div>
         <div className="text-xs text-blue-200 text-center md:text-right">
-          <div>© {new Date().getFullYear()} Treasure Shop. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} Academic Codebase. All rights reserved.</div>
           <div className="mt-1">Made with <span className="text-red-400">♥</span> for students worldwide.</div>
         </div>
       </div>
