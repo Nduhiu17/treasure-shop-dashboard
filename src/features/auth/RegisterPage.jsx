@@ -103,7 +103,7 @@ export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }
         </form>
         <div className="text-center text-blue-700 font-medium">
           Already have an account?{' '}
-          <button type="button" className="underline hover:text-blue-900 font-bold" onClick={() => { if (onSwitchToLogin) onSwitchToLogin(); if (onClose) onClose(); }}>
+          <button type="button" className="underline hover:text-blue-900 font-bold" onClick={onSwitchToLogin}>
             Log in
           </button>
         </div>
