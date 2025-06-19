@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dialog } from "../../components/ui/dialog";
 import { Button } from "../../components/ui/button";
+import { useToast } from "../../components/ui/toast";
 
 export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }) {
   const [form, setForm] = useState({
@@ -13,6 +14,7 @@ export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const { showToast } = useToast();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -31,9 +33,11 @@ export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
+        showToast({ message: data.message || "Registration failed", type: "error" });
         throw new Error(data.message || "Registration failed");
       }
       setSuccess(true);
+      showToast({ message: "Registration successful!", type: "success" });
       setTimeout(() => {
         if (onSwitchToLogin) onSwitchToLogin();
         if (onClose) onClose();

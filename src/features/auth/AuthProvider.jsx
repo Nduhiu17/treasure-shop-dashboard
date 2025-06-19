@@ -1,4 +1,5 @@
 import React, { useState, createContext, useContext, useCallback } from 'react';
+import { useToast } from '../../components/ui/toast';
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -6,6 +7,7 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('jwt_token'));
+  const { showToast } = useToast();
 
   const logout = useCallback(() => {
     setToken(null);
@@ -15,19 +17,26 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Updated login to use API
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     const response = await fetch('http://localhost:8080/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
     if (!response.ok) {
-      if (response.status === 401) throw new Error('Invalid email or password');
+      if (response.status === 401) {
+        showToast({ message: 'Invalid email or password', type: 'error' });
+        throw new Error('Invalid email or password');
+      }
+      showToast({ message: 'Login failed', type: 'error' });
       throw new Error('Login failed');
     }
     const data = await response.json();
     const jwt = data.token || data.access_token || data.jwt || data.JWT || data.accessToken;
-    if (!jwt) throw new Error('No token returned from API');
+    if (!jwt) {
+      showToast({ message: 'No token returned from API', type: 'error' });
+      throw new Error('No token returned from API');
+    }
     setToken(jwt);
     localStorage.setItem('jwt_token', jwt);
     // Save user details and roles to localStorage
@@ -37,7 +46,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('roles', JSON.stringify(data.user.roles));
       }
     }
-  };
+    showToast({ message: 'Login successful!', type: 'success' });
+  }, [showToast]);
 
   const authFetcher = useCallback(async (url, options = {}) => {
     const response = await fetch(`${API_BASE_URL}${url}`, {
