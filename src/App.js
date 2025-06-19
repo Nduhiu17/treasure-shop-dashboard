@@ -91,7 +91,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       {/* Header */}
-      <header className="bg-white shadow-sm py-3 px-2 xs:px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <header className="bg-white shadow-sm py-3 px-2 xs:px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2 sticky top-0 z-40">
         <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-blue-900 text-center sm:text-left">Academic Codebase Dashboard</h1>
         <div className="flex items-center gap-2">
           <a
@@ -109,9 +109,9 @@ const Dashboard = () => {
         </div>
       </header>
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col sm:flex-row">
+      <div className="flex flex-1 flex-col sm:flex-row h-[calc(100vh-64px)]">
         {/* Sidebar Navigation */}
-        <aside className="w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0">
+        <aside className="w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0 sticky top-[64px] h-[calc(100vh-64px)] z-30">
           <nav aria-label="Main menu">
             <ul className="flex flex-row sm:flex-col gap-1 xs:gap-2">
               {filteredMenuItems.map((item) => (
@@ -133,7 +133,7 @@ const Dashboard = () => {
           </nav>
         </aside>
         {/* Content */}
-        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0">
+        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0 overflow-y-auto">
           {renderContent()}
         </main>
       </div>

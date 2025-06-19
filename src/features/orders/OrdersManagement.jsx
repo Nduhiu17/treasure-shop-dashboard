@@ -88,7 +88,7 @@ const OrdersManagement = () => {
 				{/* No create button for admin, but keep structure for consistency */}
 			</div>
 			<Tabs value={activeStatus} onValueChange={handleTabChange} className="mb-4 xs:mb-6">
-				<TabsList className="flex w-full overflow-x-auto gap-1 xs:gap-2 bg-white/90 rounded-xl shadow border border-blue-100 p-1 xs:p-2">
+				<TabsList className="flex w-full overflow-x-auto gap-1 xs:gap-2 bg-white/90 rounded-xl shadow border border-blue-100 p-1 xs:p-2 sticky top-0 z-20">
 					{ORDER_STATUSES.map((status) => (
 						<TabsTrigger
 							key={status.key}
