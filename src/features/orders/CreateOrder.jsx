@@ -440,10 +440,10 @@ const CreateOrder = () => {
                     <CustomSelect label="Style" name="order_style_id" value={form.order_style_id} options={options.styles} onChange={handleSelect} />
                     <CustomSelect label="Language" name="order_language_id" value={form.order_language_id} options={options.languages} onChange={handleSelect} />
                   </div>
-                  {/* Boolean fields on their own full-width row */}
-                  <div className="w-full flex flex-row flex-wrap gap-2 mt-4 justify-center bg-blue-100/60 rounded-xl p-2">
+                  {/* Boolean fields on their own full-width row, highly responsive */}
+                  <div className="w-full flex flex-wrap gap-2 mt-4 justify-center bg-blue-100/60 rounded-xl p-2">
                     {booleanFields.map(field => (
-                      <label key={field.key} className="flex-1 min-w-[120px] max-w-xs flex items-center gap-2 bg-white/80 rounded-lg px-2 py-1 shadow border border-blue-100 cursor-pointer text-xs justify-center m-1">
+                      <label key={field.key} className="flex-1 min-w-[120px] max-w-xs flex items-center gap-2 bg-white/80 rounded-lg px-2 py-1 shadow border border-blue-100 cursor-pointer text-xs justify-center m-1 transition-all duration-200 sm:min-w-[140px] md:min-w-[120px] lg:min-w-[110px] xl:min-w-[100px]">
                         <input
                           type="checkbox"
                           name={field.key}
@@ -458,7 +458,7 @@ const CreateOrder = () => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between items-center mt-6 gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
               <Button
                 type="button"
                 onClick={() => setForm({
