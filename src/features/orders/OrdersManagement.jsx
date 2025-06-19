@@ -166,9 +166,10 @@ const OrdersManagement = () => {
 															{order.original_order_file ? (
 																<a
 																	href={order.original_order_file}
-																	download
+																	target="_blank"
+																	rel="noopener noreferrer"
 																	className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 border border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-																	title="Download file"
+																	title="Open file in new tab"
 																>
 																	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
 																		<path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
