@@ -106,86 +106,92 @@ const OrdersManagement = () => {
 			) : (
 				<>
 					<div className="overflow-x-auto rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]">
-						<Table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base">
-							<TableHeader>
-								<TableRow>
-									<TableHead>Title</TableHead>
-									<TableHead>Description</TableHead>
-									<TableHead>Status</TableHead>
-									<TableHead>Writer Username</TableHead>
-									<TableHead>Level</TableHead>
-									<TableHead>Pages</TableHead>
-									<TableHead>Urgency</TableHead>
-									<TableHead>Style</TableHead>
-									<TableHead>Language</TableHead>
-									<TableHead>Priority</TableHead>
-									<TableHead>Plagiarism</TableHead>
-									<TableHead>Summary</TableHead>
-									<TableHead>Quality</TableHead>
-									<TableHead>Draft</TableHead>
-									<TableHead>SMS</TableHead>
-									<TableHead>Sources</TableHead>
-									<TableHead>Top Writer</TableHead>
-									<TableHead>Price</TableHead>
-									<TableHead>Order File</TableHead>
-									<TableHead>Actions</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{orders.length > 0 ? (
-									orders.map(order => (
-										<TableRow key={order.id} className="hover:bg-blue-50">
-											<TableCell className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base">{order.title}</TableCell>
-											<TableCell className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base">{order.description}</TableCell>
-											<TableCell>
-												<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
-											</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_username || '-'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.level_name}</TableCell>
-											<TableCell className="max-w-[60px] truncate whitespace-nowrap text-xs xs:text-sm sm:text-base">{order.order_pages_name}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_urgency_name}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_style_name}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_language_name}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.is_high_priority ? 'Yes' : 'No'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.plagarism_report ? 'Yes' : 'No'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.one_page_summary ? 'Yes' : 'No'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.extra_quality_check ? 'Yes' : 'No'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.initial_draft ? 'Yes' : 'No'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.sms_update ? 'Yes' : 'No'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.full_text_copy_sources ? 'Yes' : 'No'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">{order.top_writer ? 'Yes' : 'No'}</TableCell>
-											<TableCell className="text-xs xs:text-sm sm:text-base">${order.price?.toFixed(2)}</TableCell>
-											<TableCell>
-												{order.original_order_file ? (
-													<a
-														href={order.original_order_file}
-														target="_blank"
-														rel="noopener noreferrer"
-														className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 border border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-														title="Open file in new tab"
-													>
-														<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-															<path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
-														</svg>
-													</a>
-												) : (
-													<span className="text-gray-400 italic">No file</span>
-												)}
-											</TableCell>
-											<TableCell>
-												<Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
-													Assign Writer
-												</Button>
-											</TableCell>
-										</TableRow>
-									))
-								) : (
+						<div className="relative w-full">
+							<Table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base">
+								<TableHeader className="sticky top-0 z-10 bg-white">
 									<TableRow>
-										<TableCell colSpan={20} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</TableCell>
+										<TableHead>Title</TableHead>
+										<TableHead>Description</TableHead>
+										<TableHead>Status</TableHead>
+										<TableHead>Writer Username</TableHead>
+										<TableHead>Level</TableHead>
+										<TableHead>Pages</TableHead>
+										<TableHead>Urgency</TableHead>
+										<TableHead>Style</TableHead>
+										<TableHead>Language</TableHead>
+										<TableHead>Priority</TableHead>
+										<TableHead>Plagiarism</TableHead>
+										<TableHead>Summary</TableHead>
+										<TableHead>Quality</TableHead>
+										<TableHead>Draft</TableHead>
+										<TableHead>SMS</TableHead>
+										<TableHead>Sources</TableHead>
+										<TableHead>Top Writer</TableHead>
+										<TableHead>Price</TableHead>
+										<TableHead>Order File</TableHead>
+										<TableHead>Actions</TableHead>
 									</TableRow>
-								)}
-							</TableBody>
-						</Table>
+								</TableHeader>
+							</Table>
+							<div className="max-h-[60vh] overflow-y-auto overflow-x-auto w-full">
+								<Table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base">
+									<TableBody>
+										{orders.length > 0 ? (
+											orders.map(order => (
+												<TableRow key={order.id} className="hover:bg-blue-50">
+													<TableCell className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base">{order.title}</TableCell>
+													<TableCell className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base">{order.description}</TableCell>
+													<TableCell>
+														<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
+													</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_username || '-'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.level_name}</TableCell>
+													<TableCell className="max-w-[60px] truncate whitespace-nowrap text-xs xs:text-sm sm:text-base">{order.order_pages_name}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_urgency_name}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_style_name}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_language_name}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.is_high_priority ? 'Yes' : 'No'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.plagarism_report ? 'Yes' : 'No'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.one_page_summary ? 'Yes' : 'No'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.extra_quality_check ? 'Yes' : 'No'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.initial_draft ? 'Yes' : 'No'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.sms_update ? 'Yes' : 'No'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.full_text_copy_sources ? 'Yes' : 'No'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">{order.top_writer ? 'Yes' : 'No'}</TableCell>
+													<TableCell className="text-xs xs:text-sm sm:text-base">${order.price?.toFixed(2)}</TableCell>
+													<TableCell>
+														{order.original_order_file ? (
+															<a
+																href={order.original_order_file}
+																target="_blank"
+																rel="noopener noreferrer"
+																className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 border border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+																title="Open file in new tab"
+															>
+																<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+																	<path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+																</svg>
+															</a>
+														) : (
+															<span className="text-gray-400 italic">No file</span>
+														)}
+													</TableCell>
+													<TableCell>
+														<Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
+															Assign Writer
+														</Button>
+													</TableCell>
+												</TableRow>
+											))
+										) : (
+											<TableRow>
+												<TableCell colSpan={20} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</TableCell>
+											</TableRow>
+										)}
+									</TableBody>
+								</Table>
+							</div>
+						</div>
 					</div>
 					{/* Pagination */}
 					<div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
