@@ -152,10 +152,10 @@ export default function LandingNavbar({ user, onLogout }) {
 				>
 					<img
 						src="/favicon.ico"
-						alt="Treasure Shop"
+						alt="Academic Codebase Logo"
 						className="h-10 w-10 rounded-xl shadow-md border border-blue-200 bg-white/80"
 					/>
-					<span className="bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-400 bg-clip-text text-transparent">Treasure Shop</span>
+					<span className="bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-400 bg-clip-text text-transparent">Academic Codebase</span>
 				</Link>
 				{/* Desktop Nav Items */}
 				<ul className="hidden md:flex items-center gap-4 lg:gap-8">

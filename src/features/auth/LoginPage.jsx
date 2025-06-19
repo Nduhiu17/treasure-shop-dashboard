@@ -11,7 +11,8 @@ const LoginPage = ({ asModal = false, onSuccess, open, onClose }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [modalType, setModalType] = useState((asModal || open) ? 'login' : null);
+  // Only track modalType if not asModal (standalone page/modal switching)
+  const [modalType, setModalType] = useState(!asModal && (open) ? 'login' : null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -33,7 +34,7 @@ const LoginPage = ({ asModal = false, onSuccess, open, onClose }) => {
   const handleOpenLogin = () => setModalType('login');
   const handleCloseModal = () => setModalType(null);
 
-  // Main login form styled to match register modal
+  // Main login form styled to match register modal, no Card
   const loginForm = (
     <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-8 flex flex-col gap-6 border border-blue-100">
       <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 text-center mb-2">Sign in to your account</h2>
@@ -46,7 +47,7 @@ const LoginPage = ({ asModal = false, onSuccess, open, onClose }) => {
           onChange={(e) => setEmail(e.target.value)}
           className="px-4 py-3 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 outline-none text-base bg-blue-50 placeholder:text-blue-400"
           required
-          autoFocus={asModal || modalType === 'login'}
+          autoFocus={asModal || (!asModal && modalType === 'login')}
         />
         <Input
           id="password"
@@ -64,17 +65,35 @@ const LoginPage = ({ asModal = false, onSuccess, open, onClose }) => {
       </form>
       <div className="text-center text-blue-700 font-medium">
         Don't have an account?{' '}
-        <button type="button" className="underline hover:text-blue-900 font-bold" onClick={handleOpenRegister}>
+        <button type="button" className="underline hover:text-blue-900 font-bold" onClick={asModal ? () => setModalType('register') : handleOpenRegister}>
           Register
         </button>
       </div>
     </div>
   );
 
+  // If asModal, only render the login form and handle register modal locally
+  if (asModal) {
+    return (
+      <>
+        {loginForm}
+        {/* Register modal overlay (local to login modal) */}
+        {modalType === 'register' && (
+          <RegisterPage
+            open={true}
+            onClose={() => setModalType(null)}
+            onSwitchToLogin={() => setModalType(null)}
+          />
+        )}
+      </>
+    );
+  }
+
+  // Standalone page/modal switching logic
   return (
     <>
       {/* Show login form only if no modal is open */}
-      {!asModal && !modalType && (
+      {!modalType && (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-2 sm:p-4">
           {loginForm}
         </div>

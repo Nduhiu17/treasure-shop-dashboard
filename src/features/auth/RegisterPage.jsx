@@ -45,7 +45,7 @@ export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }
     }
   };
 
-  // Responsive, world-class design
+  // Responsive, world-class design (no Card)
   return (
     <Dialog isOpen={open} onClose={onClose}>
       <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-8 flex flex-col gap-6 border border-blue-100">
