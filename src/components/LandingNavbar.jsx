@@ -35,11 +35,13 @@ function chunkArray(array, chunkCount) {
 
 export default function LandingNavbar({ user, onLogout }) {
 	const [servicesDropdownOpen, setServicesDropdownOpen] = React.useState(false); // desktop dropdown
-	const [profileOpen, setProfileOpen] = React.useState(false);
+	const [profileOpen, setProfileOpen] = React.useState(false); // profile dropdown
 	const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false); // mobile menu
 	const [mobileMenuServicesOpen, setMobileMenuServicesOpen] = React.useState(false);
 	const mobileMenuButtonRef = React.useRef();
 	const mobileMenuRef = React.useRef();
+	const profileButtonRef = React.useRef();
+	const profileDropdownRef = React.useRef();
 	const navigate = useNavigate();
 
 	// Improved: Close mobile menu on route change or resize
@@ -92,6 +94,26 @@ export default function LandingNavbar({ user, onLogout }) {
 		document.addEventListener('mousedown', handleClick);
 		return () => document.removeEventListener('mousedown', handleClick);
 	}, []);
+
+	// Close profile dropdown on outside click
+	React.useEffect(() => {
+		function handleClick(e) {
+			if (profileOpen && profileDropdownRef.current && !profileDropdownRef.current.contains(e.target) && !profileButtonRef.current.contains(e.target)) {
+				setProfileOpen(false);
+			}
+		}
+		document.addEventListener('mousedown', handleClick);
+		return () => document.removeEventListener('mousedown', handleClick);
+	}, [profileOpen]);
+
+	// Close profile dropdown on Escape
+	React.useEffect(() => {
+		function handleKeyDown(e) {
+			if (e.key === 'Escape') setProfileOpen(false);
+		}
+		if (profileOpen) document.addEventListener('keydown', handleKeyDown);
+		return () => document.removeEventListener('keydown', handleKeyDown);
+	}, [profileOpen]);
 
 	return (
 		<header className="sticky top-0 z-50 w-full bg-white md:bg-white/95 md:backdrop-blur-md shadow-xl border-b border-blue-100">
@@ -299,7 +321,14 @@ export default function LandingNavbar({ user, onLogout }) {
 										<Button as={Link} to="/profile" className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2" onClick={() => setMobileMenuOpen(false)}>
 											My Profile
 										</Button>
-										<Button className="bg-red-50 text-red-700 font-semibold px-4 py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2" onClick={() => { setMobileMenuOpen(false); onLogout && onLogout(); }}>
+										<Button
+											className="bg-red-50 text-red-700 font-semibold px-4 py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2"
+											onClick={() => {
+												setMobileMenuOpen(false);
+												if (onLogout) onLogout();
+												navigate('/');
+											}}
+										>
 											Logout
 										</Button>
 									</>
@@ -328,63 +357,37 @@ export default function LandingNavbar({ user, onLogout }) {
 						Order
 					</Button>
 					{user ? (
-						<div className="relative navbar-dropdown">
+						<div className="relative">
 							<Button
-								className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100"
+								ref={profileButtonRef}
+								className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 flex items-center gap-2"
 								onClick={() => setProfileOpen((v) => !v)}
+								aria-haspopup="true"
+								aria-expanded={profileOpen}
 							>
+								<svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
 								My Profile
-								<svg
-									className="w-4 h-4 ml-1"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M19 9l-7 7-7-7"
-									/>
-								</svg>
+								<svg className={`w-4 h-4 ml-1 transition-transform ${profileOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
 							</Button>
 							{profileOpen && (
-								<div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-blue-100 py-2 z-50 animate-fade-in navbar-dropdown">
-									<div className="px-4 py-2 border-b border-blue-50">
-										<div className="font-bold text-blue-900">
-											{user.name || user.username}
-										</div>
-										<div className="text-xs text-gray-500">
-											{user.email}
+								<div ref={profileDropdownRef} className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-blue-100 py-4 px-6 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl">
+									<div className="mb-2 flex items-center gap-3">
+										<svg className="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M6 20v-2a4 4 0 014-4h0a4 4 0 014 4v2" /></svg>
+										<div>
+											<div className="font-bold text-blue-900 text-lg">{user.first_name || user.username || user.email}</div>
+											<div className="text-blue-700 text-sm">{user.email}</div>
 										</div>
 									</div>
-									<Link
-										to="/dashboard/my-orders"
-										className="block px-4 py-2 text-blue-900 hover:bg-blue-50 hover:text-blue-700 transition-colors text-sm font-medium"
-									>
-										All My Orders
-									</Link>
-									<button
-										className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors text-sm font-medium"
-										onClick={() => {
-											setProfileOpen(false);
-											if (onLogout) onLogout();
-										}}
-									>
-										Logout
-									</button>
+									<Button className="w-full bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2" onClick={() => { setProfileOpen(false); window.location.href = 'http://localhost:3000/profile'; }}>My Orders</Button>
+									<hr className="my-2 border-blue-100" />
+									<Button className="w-full bg-red-50 text-red-700 font-semibold px-4 py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2" onClick={() => { setProfileOpen(false); if (onLogout) onLogout(); navigate('/'); }}>Logout</Button>
 								</div>
 							)}
 						</div>
 					) : (
 						<Button
-							as={Link}
-							to="/login"
 							className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100"
-							onClick={() => {
-								setMobileMenuOpen(false);
-								navigate('/login');
-							}}
+							onClick={() => navigate('/login')}
 						>
 							Login
 						</Button>

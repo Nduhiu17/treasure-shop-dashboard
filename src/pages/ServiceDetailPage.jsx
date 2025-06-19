@@ -2,6 +2,7 @@ import React from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../features/auth/AuthProvider";
 
 const SERVICE_DETAILS = {
   "argumentative-essay": {
@@ -196,6 +197,7 @@ const SERVICE_DETAILS = {
 };
 
 export default function ServiceDetailPage() {
+  const { user, logout } = useAuth();
   const { serviceSlug } = useParams();
   const service = SERVICE_DETAILS[serviceSlug] || {
     title: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
@@ -206,7 +208,7 @@ export default function ServiceDetailPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
-      <LandingNavbar />
+      <LandingNavbar user={user} onLogout={logout} />
       <main className="flex-1 px-4 py-12 max-w-3xl mx-auto animate-fade-in">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-4">{service.title}</h1>
         <p className="text-blue-900 mb-6 text-lg">{service.description}</p>

@@ -1,11 +1,13 @@
 import React from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
+import { useAuth } from "../features/auth/AuthProvider";
 
 export default function AboutPage() {
+  const { user, logout } = useAuth();
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
-      <LandingNavbar />
+      <LandingNavbar user={user} onLogout={logout} />
       <main className="flex-1 px-4 py-12 max-w-5xl mx-auto animate-fade-in">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-6">About Us</h1>
         <section className="mb-10">

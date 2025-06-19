@@ -2,6 +2,7 @@ import React from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { Button } from "../components/ui/button";
+import { useAuth } from "../features/auth/AuthProvider";
 
 const REVIEWS = [
 	{
@@ -192,6 +193,7 @@ const TYPES = [
 ];
 
 export default function ReviewsPage() {
+	const { user, logout } = useAuth();
 	const [selectedType, setSelectedType] = React.useState("");
 	const [selectedRating, setSelectedRating] = React.useState(0);
 
@@ -203,7 +205,7 @@ export default function ReviewsPage() {
 
 	return (
 		<div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
-			<LandingNavbar />
+			<LandingNavbar user={user} onLogout={logout} />
 			<main className="flex-1 px-4 py-12 max-w-6xl mx-auto animate-fade-in">
 				<h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-6">
 					Reviews & Testimonials
