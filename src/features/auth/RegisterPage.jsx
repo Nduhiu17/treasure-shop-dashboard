@@ -51,9 +51,9 @@ export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }
       <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-8 flex flex-col gap-6 border border-blue-100">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 text-center mb-2">Create your account</h2>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full">
             <input
-              className="flex-1 px-4 py-3 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 outline-none text-base bg-blue-50 placeholder:text-blue-400"
+              className="w-full sm:w-1/2 px-4 py-3 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 outline-none text-base bg-blue-50 placeholder:text-blue-400"
               name="first_name"
               placeholder="First Name"
               value={form.first_name}
@@ -61,7 +61,7 @@ export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }
               required
             />
             <input
-              className="flex-1 px-4 py-3 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 outline-none text-base bg-blue-50 placeholder:text-blue-400"
+              className="w-full sm:w-1/2 px-4 py-3 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 outline-none text-base bg-blue-50 placeholder:text-blue-400"
               name="last_name"
               placeholder="Last Name"
               value={form.last_name}
