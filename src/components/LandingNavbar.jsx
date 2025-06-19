@@ -93,36 +93,35 @@ export default function LandingNavbar({ user, onLogout }) {
 	}, []);
 
 	return (
-		<header className="sticky top-0 z-40 w-full bg-white/90 shadow-sm border-b border-blue-100">
-			<nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2">
+		<header className="sticky top-0 z-50 w-full bg-white md:bg-white/95 md:backdrop-blur-md shadow-xl border-b border-blue-100">
+			<nav className="max-w-7xl mx-auto flex items-center justify-between px-2 xs:px-4 py-2 xs:py-3 rounded-b-2xl bg-white md:bg-gradient-to-r md:from-blue-50/95 md:via-white/95 md:to-blue-100/95 shadow-lg">
 				{/* Logo */}
 				<Link
 					to="/"
-					className="flex items-center gap-2 text-blue-700 font-bold text-xl"
+					className="flex items-center gap-2 text-blue-700 font-extrabold text-2xl tracking-tight drop-shadow-sm hover:scale-105 transition-transform duration-200"
+					style={{ letterSpacing: '0.01em' }}
 				>
 					<img
 						src="/favicon.ico"
 						alt="Treasure Shop"
-						className="h-8 w-8"
+						className="h-10 w-10 rounded-xl shadow-md border border-blue-200 bg-white/80"
 					/>
-					Treasure Shop
+					<span className="bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-400 bg-clip-text text-transparent">Treasure Shop</span>
 				</Link>
-				{/* Nav Items */}
+				{/* Desktop Nav Items */}
 				<ul className="hidden md:flex items-center gap-4 lg:gap-8">
 					<li className="relative navbar-dropdown">
 						<button
-							className="flex items-center gap-1 font-semibold text-blue-900 hover:text-blue-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-50 to-blue-100 shadow-sm"
+							className="flex items-center gap-2 font-semibold text-blue-900 hover:text-blue-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-100/80 to-blue-200/80 shadow-md border border-blue-100 hover:shadow-xl hover:from-blue-200 hover:to-blue-300"
 							onMouseEnter={() => setServicesDropdownOpen(true)}
 							onMouseLeave={() => setServicesDropdownOpen(false)}
 							onClick={() => setServicesDropdownOpen((v) => !v)}
 							aria-haspopup="true"
 							aria-expanded={servicesDropdownOpen}
 						>
-							<span className="flex items-center gap-2">
-								Services
-							</span>
+							Services
 							<svg
-								className="w-4 h-4 ml-1"
+								className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:rotate-180"
 								fill="none"
 								stroke="currentColor"
 								strokeWidth="2"
@@ -137,22 +136,18 @@ export default function LandingNavbar({ user, onLogout }) {
 						</button>
 						{servicesDropdownOpen && (
 							<div
-								className="absolute left-0 mt-2 w-[95vw] max-w-2xl sm:max-w-3xl bg-white rounded-2xl shadow-2xl border border-blue-100 py-6 px-4 z-50 animate-fade-in navbar-dropdown"
+								className="absolute left-0 mt-2 w-[95vw] max-w-2xl sm:max-w-3xl bg-white/95 rounded-2xl shadow-2xl border border-blue-100 py-6 px-4 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl"
 								onMouseEnter={() => setServicesDropdownOpen(true)}
 								onMouseLeave={() => setServicesDropdownOpen(false)}
 							>
-								<h4 className="text-lg font-bold text-blue-900 mb-4 px-2">
-									Our Services
-								</h4>
+								<h4 className="text-lg font-bold text-blue-900 mb-4 px-2">Our Services</h4>
 								<div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
 									{chunkArray(SERVICE_ITEMS, 3).map((col, colIdx) => (
 										<div key={colIdx} className="flex flex-col gap-1">
 											{col.map((item) => (
 												<Link
 													key={item}
-													to={`/services/${encodeURIComponent(
-														item.toLowerCase().replace(/\s+/g, "-")
-													)}`}
+													to={`/services/${encodeURIComponent(item.toLowerCase().replace(/\s+/g, "-"))}`}
 													className="flex items-center gap-2 px-4 py-2 rounded-lg text-blue-900 hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-200 hover:text-blue-700 transition-colors text-sm font-medium shadow-sm group"
 												>
 													<span className="inline-block w-2 h-2 rounded-full bg-blue-400 group-hover:bg-blue-600 transition-colors"></span>
@@ -181,7 +176,7 @@ export default function LandingNavbar({ user, onLogout }) {
 					<li>
 						<Link
 							to="/about"
-							className="font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+							className="font-semibold text-blue-900 hover:text-blue-600 transition-colors px-3 py-2 rounded-xl hover:bg-blue-50/80"
 						>
 							About Us
 						</Link>
@@ -189,7 +184,7 @@ export default function LandingNavbar({ user, onLogout }) {
 					<li>
 						<Link
 							to="/guarantees"
-							className="font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+							className="font-semibold text-blue-900 hover:text-blue-600 transition-colors px-3 py-2 rounded-xl hover:bg-blue-50/80"
 						>
 							Guarantees
 						</Link>
@@ -197,7 +192,7 @@ export default function LandingNavbar({ user, onLogout }) {
 					<li>
 						<Link
 							to="/reviews"
-							className="font-semibold text-blue-900 hover:text-blue-600 transition-colors"
+							className="font-semibold text-blue-900 hover:text-blue-600 transition-colors px-3 py-2 rounded-xl hover:bg-blue-50/80"
 						>
 							Reviews
 						</Link>
@@ -205,7 +200,7 @@ export default function LandingNavbar({ user, onLogout }) {
 					<li>
 						<a
 							href="tel:+1234567890"
-							className="font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-1"
+							className="font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-1 px-3 py-2 rounded-xl hover:bg-blue-50/80"
 						>
 							<svg
 								className="w-4 h-4"
@@ -224,28 +219,30 @@ export default function LandingNavbar({ user, onLogout }) {
 						</a>
 					</li>
 				</ul>
-				{/* Mobile menu button */}
+				{/* Mobile menu button - improved for small screens */}
 				<div className="md:hidden flex items-center">
 					<button
 						ref={mobileMenuButtonRef}
-						className="p-2 rounded-lg text-blue-700 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+						className="p-3 rounded-2xl text-blue-700 bg-white/80 shadow-lg border border-blue-200 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 active:scale-95"
 						aria-label="Open menu"
 						onClick={() => setMobileMenuOpen(true)}
+						style={{ boxShadow: '0 4px 24px 0 rgba(30, 64, 175, 0.10)' }}
 					>
-						<svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+						<svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
 					</button>
 				</div>
-				{/* Mobile dropdown menu (full menu, not just services) */}
+				{/* Mobile menu (side drawer) - improved animation and style */}
 				{mobileMenuOpen && (
 					<div className="fixed inset-0 z-50 bg-black/40 flex md:hidden navbar-mobile-menu" onClick={() => setMobileMenuOpen(false)}>
 						<div
 							ref={mobileMenuRef}
-							className="relative bg-white w-11/12 max-w-xs h-full shadow-2xl p-6 flex flex-col gap-6 animate-fade-in-left"
+							className="relative bg-white/95 w-11/12 max-w-xs h-full shadow-2xl p-6 flex flex-col gap-6 animate-slide-in-left rounded-r-3xl border-l-4 border-blue-100"
 							onClick={e => e.stopPropagation()}
 							tabIndex={-1}
+							style={{ minWidth: '260px', maxWidth: '90vw', boxShadow: '0 8px 32px 0 rgba(30, 64, 175, 0.18)' }}
 						>
 							<button
-								className="absolute top-4 right-4 text-blue-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
+								className="absolute top-4 right-4 text-blue-400 hover:text-blue-700 text-2xl font-bold focus:outline-none transition-colors"
 								onClick={() => setMobileMenuOpen(false)}
 								aria-label="Close menu"
 							>
@@ -386,3 +383,13 @@ export default function LandingNavbar({ user, onLogout }) {
 		</header>
 	);
 }
+
+/* Add this to your global CSS or Tailwind config for the animation:
+@keyframes slide-in-left {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.35s cubic-bezier(0.4,0,0.2,1) both;
+}
+*/
