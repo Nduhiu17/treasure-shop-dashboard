@@ -430,28 +430,31 @@ const CreateOrder = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <CustomSelect label="Order Type" name="order_type_id" value={form.order_type_id} options={options.orderTypes} onChange={handleSelect} />
-                  <CustomSelect label="Level" name="order_level_id" value={form.order_level_id} options={options.levels} onChange={handleSelect} />
-                  <CustomSelect label="Pages" name="order_pages_id" value={form.order_pages_id} options={options.pages} onChange={handleSelect} />
-                  <CustomSelect label="Urgency" name="order_urgency_id" value={form.order_urgency_id} options={options.urgency} onChange={handleSelect} />
-                  <CustomSelect label="Style" name="order_style_id" value={form.order_style_id} options={options.styles} onChange={handleSelect} />
-                  <CustomSelect label="Language" name="order_language_id" value={form.order_language_id} options={options.languages} onChange={handleSelect} />
-                </div>
-                {/* Boolean fields on their own full-width row */}
-                <div className="w-full flex flex-row flex-wrap gap-2 mt-2 justify-between">
-                  {booleanFields.map(field => (
-                    <label key={field.key} className="flex-1 min-w-[140px] flex items-center gap-2 bg-blue-50 rounded-lg px-3 py-2 shadow-sm border border-blue-100 cursor-pointer text-xs justify-center">
-                      <input
-                        type="checkbox"
-                        name={field.key}
-                        checked={form[field.key]}
-                        onChange={handleChange}
-                        className="accent-blue-600 w-5 h-5"
-                      />
-                      <span className="text-blue-900 font-medium text-xs">{field.label}</span>
-                    </label>
-                  ))}
+                <div className="bg-blue-50/60 border border-blue-100 rounded-2xl p-4 shadow-sm">
+                  <h3 className="text-blue-800 font-semibold text-base mb-2">Order Details</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <CustomSelect label="Order Type" name="order_type_id" value={form.order_type_id} options={options.orderTypes} onChange={handleSelect} />
+                    <CustomSelect label="Level" name="order_level_id" value={form.order_level_id} options={options.levels} onChange={handleSelect} />
+                    <CustomSelect label="Pages" name="order_pages_id" value={form.order_pages_id} options={options.pages} onChange={handleSelect} />
+                    <CustomSelect label="Urgency" name="order_urgency_id" value={form.order_urgency_id} options={options.urgency} onChange={handleSelect} />
+                    <CustomSelect label="Style" name="order_style_id" value={form.order_style_id} options={options.styles} onChange={handleSelect} />
+                    <CustomSelect label="Language" name="order_language_id" value={form.order_language_id} options={options.languages} onChange={handleSelect} />
+                  </div>
+                  {/* Boolean fields on their own full-width row */}
+                  <div className="w-full flex flex-row flex-wrap gap-2 mt-4 justify-center bg-blue-100/60 rounded-xl p-2">
+                    {booleanFields.map(field => (
+                      <label key={field.key} className="flex-1 min-w-[120px] max-w-xs flex items-center gap-2 bg-white/80 rounded-lg px-2 py-1 shadow border border-blue-100 cursor-pointer text-xs justify-center m-1">
+                        <input
+                          type="checkbox"
+                          name={field.key}
+                          checked={form[field.key]}
+                          onChange={handleChange}
+                          className="accent-blue-600 w-5 h-5"
+                        />
+                        <span className="text-blue-900 font-medium text-xs">{field.label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
