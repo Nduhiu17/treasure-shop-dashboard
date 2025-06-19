@@ -30,7 +30,7 @@ const LoginPage = ({ asModal = false, onSuccess }) => {
   return (
     <div className={`w-full ${asModal ? '' : 'min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-2 sm:p-4'}`}>
       <Card className={`w-full max-w-md mx-auto ${asModal ? 'p-0 shadow-none border-none bg-transparent' : 'p-2 xs:p-3 sm:p-4 md:p-8 shadow-xl border-0'}`} style={asModal ? {background: 'none', boxShadow: 'none'} : {}}>
-        <h2 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-center mb-3 xs:mb-4 sm:mb-6 text-blue-900">Admin Login</h2>
+        <h2 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-center mb-3 xs:mb-4 sm:mb-6 text-blue-900">Login</h2>
         <form onSubmit={handleSubmit} className="space-y-2 xs:space-y-3 sm:space-y-4">
           <div>
             <label className="block text-gray-700 text-xs xs:text-sm sm:text-base font-bold mb-1 xs:mb-2" htmlFor="email">
@@ -63,7 +63,7 @@ const LoginPage = ({ asModal = false, onSuccess }) => {
           </div>
           {error && <div className="text-red-600 text-xs xs:text-sm text-center">{error}</div>}
           <Button type="submit" className="w-full py-2 text-xs xs:text-sm sm:text-base bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow-lg hover:from-blue-600 hover:to-blue-800 rounded-xl" disabled={loading}>
-            {loading ? "Logging in..." : "Enter Dashboard"}
+            {loading ? "Logging in..." : "Login"}
           </Button>
         </form>
       </Card>

@@ -50,6 +50,7 @@ const menuItems = [
 const Dashboard = () => {
   const { logout, user } = useAuth();
   const [currentPage, setCurrentPage] = useState('orders');
+  const navigate = useNavigate();
 
   // Determine menu items based on user roles
   let filteredMenuItems = menuItems;
@@ -78,12 +79,34 @@ const Dashboard = () => {
     }
   };
 
+  const handleDashboardLogout = () => {
+    // Clear all relevant localStorage
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('roles');
+    logout();
+    navigate('/');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       {/* Header */}
       <header className="bg-white shadow-sm py-3 px-2 xs:px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
         <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-blue-900 text-center sm:text-left">Academic Codebase Dashboard</h1>
-        <Button onClick={logout} variant="destructive" className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">Logout</Button>
+        <div className="flex items-center gap-2">
+          <a
+            href="/"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-bold shadow-lg hover:from-blue-700 hover:to-cyan-600 hover:to-green-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base md:text-lg"
+            style={{ letterSpacing: '0.01em', boxShadow: '0 4px 24px 0 rgba(30, 64, 175, 0.10)' }}
+            aria-label="Go to Home"
+          >
+            <svg className="w-6 h-6 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m4-8v8m-4 0h4" />
+            </svg>
+            Home
+          </a>
+          <Button onClick={handleDashboardLogout} variant="destructive" className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">Logout</Button>
+        </div>
       </header>
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col sm:flex-row">
@@ -124,10 +147,14 @@ function AppContent() {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect to /login if not authenticated
+  // Redirect to / (home) if not authenticated and not on home/marketing pages
   useEffect(() => {
     if (!token) {
-      navigate('/login', { replace: true });
+      // If the current path is not "/" (home), redirect to home
+      if (window.location.pathname !== "/") {
+        navigate('/', { replace: true });
+      }
+      // Otherwise, stay on the landing page
     }
   }, [token, navigate]);
 
