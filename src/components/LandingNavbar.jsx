@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 
 const SERVICE_ITEMS = [
@@ -40,6 +40,7 @@ export default function LandingNavbar({ user, onLogout }) {
 	const [mobileMenuServicesOpen, setMobileMenuServicesOpen] = React.useState(false);
 	const mobileMenuButtonRef = React.useRef();
 	const mobileMenuRef = React.useRef();
+	const navigate = useNavigate();
 
 	// Improved: Close mobile menu on route change or resize
 	React.useEffect(() => {
@@ -303,7 +304,13 @@ export default function LandingNavbar({ user, onLogout }) {
 										</Button>
 									</>
 								) : (
-									<Button as={Link} to="/login" className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2" onClick={() => setMobileMenuOpen(false)}>
+									<Button
+										className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2"
+										onClick={() => {
+											setMobileMenuOpen(false);
+											navigate('/login');
+										}}
+									>
 										Login
 									</Button>
 								)}
@@ -374,6 +381,10 @@ export default function LandingNavbar({ user, onLogout }) {
 							as={Link}
 							to="/login"
 							className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100"
+							onClick={() => {
+								setMobileMenuOpen(false);
+								navigate('/login');
+							}}
 						>
 							Login
 						</Button>
