@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import LoginPage from "../features/auth/LoginPage";
+import CreateOrder from "../features/orders/CreateOrder";
 import { Dialog } from "./ui/dialog";
 
 const SERVICE_ITEMS = [
@@ -42,6 +43,7 @@ export default function LandingNavbar({ user, onLogout }) {
 	const [mobileMenuServicesOpen, setMobileMenuServicesOpen] = React.useState(false);
 	const [loginModalOpen, setLoginModalOpen] = React.useState(false);
 	const [pendingOrder, setPendingOrder] = React.useState(false);
+	const [createOrderModalOpen, setCreateOrderModalOpen] = React.useState(false);
 	const mobileMenuButtonRef = React.useRef();
 	const mobileMenuRef = React.useRef();
 	const profileButtonRef = React.useRef();
@@ -123,7 +125,7 @@ export default function LandingNavbar({ user, onLogout }) {
 	const handleOrderClick = (e) => {
 		e?.preventDefault?.();
 		if (user) {
-			navigate("/create-order");
+			setCreateOrderModalOpen(true);
 		} else {
 			setPendingOrder(true);
 			setLoginModalOpen(true);
@@ -135,7 +137,7 @@ export default function LandingNavbar({ user, onLogout }) {
 		setLoginModalOpen(false);
 		if (pendingOrder) {
 			setPendingOrder(false);
-			navigate("/create-order");
+			setCreateOrderModalOpen(true);
 		}
 	};
 
@@ -421,6 +423,12 @@ export default function LandingNavbar({ user, onLogout }) {
 			{loginModalOpen && (
 				<Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
 					<LoginPage asModal onSuccess={handleLoginSuccess} />
+				</Dialog>
+			)}
+			{/* Create Order Modal */}
+			{createOrderModalOpen && (
+				<Dialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
+					<CreateOrder />
 				</Dialog>
 			)}
 		</header>
