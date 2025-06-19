@@ -41,6 +41,7 @@ export default function LandingNavbar({ user, onLogout }) {
 	const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false); // mobile menu
 	const [mobileMenuServicesOpen, setMobileMenuServicesOpen] = React.useState(false);
 	const [loginModalOpen, setLoginModalOpen] = React.useState(false);
+	const [pendingOrder, setPendingOrder] = React.useState(false);
 	const mobileMenuButtonRef = React.useRef();
 	const mobileMenuRef = React.useRef();
 	const profileButtonRef = React.useRef();
@@ -117,6 +118,26 @@ export default function LandingNavbar({ user, onLogout }) {
 		if (profileOpen) document.addEventListener('keydown', handleKeyDown);
 		return () => document.removeEventListener('keydown', handleKeyDown);
 	}, [profileOpen]);
+
+	// Handler for all "Order" buttons in navbar
+	const handleOrderClick = (e) => {
+		e?.preventDefault?.();
+		if (user) {
+			navigate("/create-order");
+		} else {
+			setPendingOrder(true);
+			setLoginModalOpen(true);
+		}
+	};
+
+	// After successful login
+	const handleLoginSuccess = () => {
+		setLoginModalOpen(false);
+		if (pendingOrder) {
+			setPendingOrder(false);
+			navigate("/create-order");
+		}
+	};
 
 	return (
 		<header className="sticky top-0 z-50 w-full bg-white md:bg-white/95 md:backdrop-blur-md shadow-xl border-b border-blue-100">
@@ -353,8 +374,7 @@ export default function LandingNavbar({ user, onLogout }) {
 				{/* Order/Login/Profile Buttons */}
 				<div className="flex items-center gap-2">
 					<Button
-						as={Link}
-						to="/create-order"
+						onClick={handleOrderClick}
 						className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 px-4 py-2 rounded-lg"
 					>
 						Order
@@ -400,7 +420,7 @@ export default function LandingNavbar({ user, onLogout }) {
 			{/* Login Modal */}
 			{loginModalOpen && (
 				<Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
-					<LoginPage asModal onSuccess={() => setLoginModalOpen(false)} />
+					<LoginPage asModal onSuccess={handleLoginSuccess} />
 				</Dialog>
 			)}
 		</header>

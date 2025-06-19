@@ -1,13 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { Button } from "../components/ui/button";
-import { Link } from "react-router-dom";
+import { useAuth } from "../features/auth/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import LoginPage from "../features/auth/LoginPage";
+import { Dialog } from "../components/ui/dialog";
 
 export default function LandingPage({ user, onLogout }) {
+  const { user: authUser } = useAuth();
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [pendingOrder, setPendingOrder] = useState(false);
+  const navigate = useNavigate();
+
+  // Handler for all "Order" buttons
+  const handleOrderClick = (e) => {
+    e?.preventDefault?.();
+    if (authUser) {
+      navigate("/create-order");
+    } else {
+      setPendingOrder(true);
+      setLoginModalOpen(true);
+    }
+  };
+
+  // After successful login
+  const handleLoginSuccess = () => {
+    setLoginModalOpen(false);
+    if (pendingOrder) {
+      setPendingOrder(false);
+      navigate("/create-order");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
-      <LandingNavbar user={user} onLogout={onLogout} />
+      <LandingNavbar user={authUser} onLogout={onLogout} />
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
         <section className="max-w-3xl text-center mb-12 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-900 mb-4 leading-tight">
@@ -16,7 +44,10 @@ export default function LandingPage({ user, onLogout }) {
           <p className="text-lg sm:text-xl text-blue-800 mb-8">
             Get top-quality academic writing, editing, and research help from expert writers. Fast, confidential, and always on time.
           </p>
-          <Button as={Link} to="/create-order" className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-8 py-3 text-lg rounded-xl">
+          <Button
+            onClick={handleOrderClick}
+            className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-8 py-3 text-lg rounded-xl"
+          >
             Order Now
           </Button>
         </section>
@@ -59,6 +90,9 @@ export default function LandingPage({ user, onLogout }) {
         </section>
       </main>
       <LandingFooter />
+      <Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
+        <LoginPage asModal onSuccess={handleLoginSuccess} />
+      </Dialog>
     </div>
   );
 }
