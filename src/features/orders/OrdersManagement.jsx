@@ -119,8 +119,7 @@ const OrdersManagement = () => {
 												<TableHead>Title</TableHead>
 												<TableHead>Description</TableHead>
 												<TableHead>Status</TableHead>
-												<TableHead>User ID</TableHead>
-												<TableHead>Writer</TableHead>
+												<TableHead>Writer Username</TableHead>
 												<TableHead>Level</TableHead>
 												<TableHead>Pages</TableHead>
 												<TableHead>Urgency</TableHead>
@@ -135,6 +134,7 @@ const OrdersManagement = () => {
 												<TableHead>Sources</TableHead>
 												<TableHead>Top Writer</TableHead>
 												<TableHead>Price</TableHead>
+												<TableHead>Order File</TableHead>
 												<TableHead>Actions</TableHead>
 											</TableRow>
 										</TableHeader>
@@ -147,8 +147,7 @@ const OrdersManagement = () => {
 														<TableCell>
 															<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
 														</TableCell>
-														<TableCell className="text-xs xs:text-sm sm:text-base">{order.user_id ? order.user_id.slice(-6) : ''}</TableCell>
-														<TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_name || (order.writer_id ? order.writer_id.slice(-6) : 'Unassigned')}</TableCell>
+														<TableCell className="text-xs xs:text-sm sm:text-base">{order.writer_username || '-'}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.level_name}</TableCell>
 														<TableCell className="max-w-[60px] truncate whitespace-nowrap text-xs xs:text-sm sm:text-base">{order.order_pages_name}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.order_urgency_name}</TableCell>
@@ -163,6 +162,22 @@ const OrdersManagement = () => {
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.full_text_copy_sources ? 'Yes' : 'No'}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">{order.top_writer ? 'Yes' : 'No'}</TableCell>
 														<TableCell className="text-xs xs:text-sm sm:text-base">${order.price?.toFixed(2)}</TableCell>
+														<TableCell>
+															{order.original_order_file ? (
+																<a
+																	href={order.original_order_file}
+																	download
+																	className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 border border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+																	title="Download file"
+																>
+																	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+																		<path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+																	</svg>
+																</a>
+															) : (
+																<span className="text-gray-400 italic">No file</span>
+															)}
+														</TableCell>
 														<TableCell>
 															<Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
 																Assign Writer
