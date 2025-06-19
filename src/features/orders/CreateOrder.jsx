@@ -430,15 +430,18 @@ const CreateOrder = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                <CustomSelect label="Order Type" name="order_type_id" value={form.order_type_id} options={options.orderTypes} onChange={handleSelect} />
-                <CustomSelect label="Level" name="order_level_id" value={form.order_level_id} options={options.levels} onChange={handleSelect} />
-                <CustomSelect label="Pages" name="order_pages_id" value={form.order_pages_id} options={options.pages} onChange={handleSelect} />
-                <CustomSelect label="Urgency" name="order_urgency_id" value={form.order_urgency_id} options={options.urgency} onChange={handleSelect} />
-                <CustomSelect label="Style" name="order_style_id" value={form.order_style_id} options={options.styles} onChange={handleSelect} />
-                <CustomSelect label="Language" name="order_language_id" value={form.order_language_id} options={options.languages} onChange={handleSelect} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <CustomSelect label="Order Type" name="order_type_id" value={form.order_type_id} options={options.orderTypes} onChange={handleSelect} />
+                  <CustomSelect label="Level" name="order_level_id" value={form.order_level_id} options={options.levels} onChange={handleSelect} />
+                  <CustomSelect label="Pages" name="order_pages_id" value={form.order_pages_id} options={options.pages} onChange={handleSelect} />
+                  <CustomSelect label="Urgency" name="order_urgency_id" value={form.order_urgency_id} options={options.urgency} onChange={handleSelect} />
+                  <CustomSelect label="Style" name="order_style_id" value={form.order_style_id} options={options.styles} onChange={handleSelect} />
+                  <CustomSelect label="Language" name="order_language_id" value={form.order_language_id} options={options.languages} onChange={handleSelect} />
+                </div>
+                {/* Boolean fields on their own full-width row */}
+                <div className="w-full flex flex-row flex-wrap gap-2 mt-2 justify-between">
                   {booleanFields.map(field => (
-                    <label key={field.key} className="flex items-center gap-2 bg-blue-50 rounded-lg px-3 py-2 shadow-sm border border-blue-100 cursor-pointer">
+                    <label key={field.key} className="flex-1 min-w-[140px] flex items-center gap-2 bg-blue-50 rounded-lg px-3 py-2 shadow-sm border border-blue-100 cursor-pointer text-xs justify-center">
                       <input
                         type="checkbox"
                         name={field.key}
@@ -446,7 +449,7 @@ const CreateOrder = () => {
                         onChange={handleChange}
                         className="accent-blue-600 w-5 h-5"
                       />
-                      <span className="text-blue-900 font-medium text-sm">{field.label}</span>
+                      <span className="text-blue-900 font-medium text-xs">{field.label}</span>
                     </label>
                   ))}
                 </div>
