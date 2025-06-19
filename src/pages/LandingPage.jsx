@@ -3,21 +3,21 @@ import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { Button } from "../components/ui/button";
 import { useAuth } from "../features/auth/AuthProvider";
-import { useNavigate } from "react-router-dom";
 import LoginPage from "../features/auth/LoginPage";
 import { Dialog } from "../components/ui/dialog";
+import CreateOrder from "../features/orders/CreateOrder";
 
 export default function LandingPage({ user, onLogout }) {
   const { user: authUser } = useAuth();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [pendingOrder, setPendingOrder] = useState(false);
-  const navigate = useNavigate();
+  const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
 
   // Handler for all "Order" buttons
   const handleOrderClick = (e) => {
     e?.preventDefault?.();
     if (authUser) {
-      navigate("/create-order");
+      setCreateOrderModalOpen(true);
     } else {
       setPendingOrder(true);
       setLoginModalOpen(true);
@@ -29,7 +29,7 @@ export default function LandingPage({ user, onLogout }) {
     setLoginModalOpen(false);
     if (pendingOrder) {
       setPendingOrder(false);
-      navigate("/create-order");
+      setCreateOrderModalOpen(true);
     }
   };
 
@@ -92,6 +92,9 @@ export default function LandingPage({ user, onLogout }) {
       <LandingFooter />
       <Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
         <LoginPage asModal onSuccess={handleLoginSuccess} />
+      </Dialog>
+      <Dialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
+        <CreateOrder />
       </Dialog>
     </div>
   );
