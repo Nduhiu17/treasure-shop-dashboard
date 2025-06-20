@@ -14,6 +14,7 @@ import GuaranteesPage from "./pages/GuaranteesPage";
 import ReviewsPage from "./pages/ReviewsPage";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
 import OrderTypes from "./features/orderConfigurations/OrderTypes";
+import OrderStyles from "./features/orderConfigurations/OrderStyles";
 
 // --- Dashboard Layout ---
 const menuItems = [
@@ -43,6 +44,13 @@ const menuItems = [
         label: 'Order Types',
         icon: (
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-2a4 4 0 014-4h4a4 4 0 014 4v2M9 17H5a2 2 0 01-2-2v-5a2 2 0 012-2h4a2 2 0 012 2v5a2 2 0 01-2 2z" /></svg>
+        )
+      },
+      {
+        key: 'order-styles',
+        label: 'Order Styles',
+        icon: (
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 19.5A2.5 2.5 0 006.5 22h11a2.5 2.5 0 002.5-2.5V6a2 2 0 00-2-2H6a2 2 0 00-2 2v13.5z" /></svg>
         )
       }
     ]
@@ -82,6 +90,8 @@ const Dashboard = () => {
         return <UsersManagement />;
       case 'order-types':
         return <OrderTypes />;
+      case 'order-styles':
+        return <OrderStyles />;
       case 'my-orders':
         return <MyOrders />;
       default:
