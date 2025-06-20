@@ -81,7 +81,13 @@ export const AuthProvider = ({ children }) => {
       method: 'PUT',
       body: JSON.stringify({ writer_id: writerId }),
     }),
-    getUsersByRole: (role, page = 1, pageSize = 10) => authFetcher(`/api/admin/users?role=${role}&page=${page}&page_size=${pageSize}`),
+    getUsersByRole: (role, page = 1, pageSize = 10) => {
+      let url = `/api/admin/users?page=${page}&page_size=${pageSize}`;
+      if (role && role !== 'all') {
+        url += `&role=${role}`;
+      }
+      return authFetcher(url);
+    },
     getOrderTypes: (page = 1, pageSize = 10) => authFetcher(`/api/order-types?page=${page}&page_size=${pageSize}`),
     getWriters: (page = 1, pageSize = 100) => authFetcher(`/api/writers?page=${page}&page_size=${pageSize}`),
   }), [authFetcher, login, logout]);

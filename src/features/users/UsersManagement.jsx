@@ -56,11 +56,9 @@ const UsersManagement = ({ currentSubPage }) => {
 			});
 			if (!res.ok) throw new Error("Failed to assign role");
 			showToast({ message: `Role '${role.name}' assigned successfully`, type: "success" });
-			// Optionally refresh users
-			setLoading(true);
-			const userRes = await api.getUsersByRole(activeRole, currentPage, PAGE_SIZE);
-			setUsers(userRes.users || []);
-			setTotal(userRes.total || 0);
+			// After assigning, show writers
+			setActiveRole("writer");
+			setCurrentPage(1);
 		} catch (err) {
 			showToast({ message: err.message || "Failed to assign role", type: "error" });
 		}
