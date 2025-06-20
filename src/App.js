@@ -145,28 +145,30 @@ const Dashboard = () => {
                   {/* Dropdown submenu on hover */}
                   {item.children && (
                     <div
-                      className={`w-full transition-all duration-200 ${hoveredMenu === item.key ? 'max-h-[500px] opacity-100 mt-1' : 'max-h-0 opacity-0 overflow-hidden'} flex flex-col gap-1`}
+                      className={`w-full flex transition-all duration-200 ${hoveredMenu === item.key ? 'max-h-[500px] opacity-100 mt-1' : 'max-h-0 opacity-0 overflow-hidden'} gap-1`}
                       onMouseEnter={() => setHoveredMenu(item.key)}
                       onMouseLeave={() => setHoveredMenu(null)}
                       style={{ zIndex: 50 }}
                     >
-                      <ul className="w-full bg-white text-blue-900 rounded-2xl shadow-2xl border border-blue-100 py-2 px-0 animate-fade-in-down">
-                        {item.children.map((child) => (
-                          <li key={child.key}>
-                            <Button
-                              onClick={() => setCurrentPage(child.key)}
-                              className={`w-full flex items-center gap-2 px-4 py-2 rounded-xl border border-transparent transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-white
-                                bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 hover:shadow-md
-                                ${currentPage === child.key ? 'ring-2 ring-blue-400 font-bold shadow-md bg-blue-50' : ''}
-                              `}
-                              aria-current={currentPage === child.key ? 'page' : undefined}
-                            >
-                              <span className="mr-1 flex items-center">{React.cloneElement(child.icon, { className: 'w-4 h-4 mr-1' })}</span>
-                              <span>{child.label}</span>
-                            </Button>
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="ml-auto min-w-[140px] max-w-[180px] w-[60%]">
+                        <ul className="bg-white text-blue-900 rounded-2xl shadow-2xl border border-blue-100 py-1 px-0 animate-fade-in-down">
+                          {item.children.map((child) => (
+                            <li key={child.key}>
+                              <Button
+                                onClick={() => setCurrentPage(child.key)}
+                                className={`w-full flex items-center gap-2 px-4 py-1 rounded-xl border border-transparent transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-white
+                                  bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 hover:shadow-md
+                                  ${currentPage === child.key ? 'ring-2 ring-blue-400 font-bold shadow-md bg-blue-50' : ''}
+                                `}
+                                aria-current={currentPage === child.key ? 'page' : undefined}
+                              >
+                                <span className="mr-1 flex items-center">{React.cloneElement(child.icon, { className: 'w-4 h-4 mr-1' })}</span>
+                                <span>{child.label}</span>
+                              </Button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   )}
                 </li>
