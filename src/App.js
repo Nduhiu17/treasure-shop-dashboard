@@ -187,7 +187,17 @@ const Dashboard = () => {
             </svg>
             Home
           </a>
-          <Button onClick={handleDashboardLogout} variant="destructive" className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">Logout</Button>
+          <Button
+            onClick={handleDashboardLogout}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-red-500 via-pink-500 to-yellow-400 text-white font-bold shadow-lg hover:from-red-600 hover:to-pink-600 hover:to-yellow-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-red-400 text-base md:text-lg"
+            style={{ letterSpacing: '0.01em', boxShadow: '0 4px 24px 0 rgba(220, 38, 38, 0.10)' }}
+            aria-label="Logout"
+          >
+            <svg className="w-6 h-6 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
+            </svg>
+            Logout
+          </Button>
         </div>
       </header>
       {/* Main Content Area */}
