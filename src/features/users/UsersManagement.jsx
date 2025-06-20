@@ -56,8 +56,8 @@ const UsersManagement = ({ currentSubPage }) => {
 			});
 			if (!res.ok) throw new Error("Failed to assign role");
 			showToast({ message: `Role '${role.name}' assigned successfully`, type: "success" });
-			// After assigning, show writers
-			setActiveRole("writer");
+			// After assigning, show users of the assigned role
+			setActiveRole(role.name);
 			setCurrentPage(1);
 		} catch (err) {
 			showToast({ message: err.message || "Failed to assign role", type: "error" });
