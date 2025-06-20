@@ -18,6 +18,7 @@ import OrderStyles from "./features/orderConfigurations/OrderStyles";
 import OrderPages from "./features/orderConfigurations/OrderPages";
 import OrderLevels from "./features/orderConfigurations/OrderLevels";
 import OrderLanguages from "./features/orderConfigurations/OrderLanguages";
+import OrderUrgency from "./features/orderConfigurations/OrderUrgency";
 
 // --- Dashboard Layout ---
 const menuItems = [
@@ -76,6 +77,13 @@ const menuItems = [
         icon: (
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" /></svg>
         )
+      },
+      {
+        key: 'order-urgency',
+        label: 'Order Urgency',
+        icon: (
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+        )
       }
     ]
   },
@@ -122,6 +130,8 @@ const Dashboard = () => {
         return <OrderLevels />;
       case 'order-languages':
         return <OrderLanguages />;
+      case 'order-urgency':
+        return <OrderUrgency />;
       case 'my-orders':
         return <MyOrders />;
       default:
