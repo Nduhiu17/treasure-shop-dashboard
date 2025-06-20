@@ -93,73 +93,46 @@ const OrderTypesManagement = () => {
       ) : error ? (
         <div className="text-center py-8 text-red-600">{error}</div>
       ) : (
-        <>
-          <div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
-            <div className="overflow-x-auto h-full">
-              <table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base h-full">
-                <thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
-                  <tr>
-                    <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Name</th>
-                    <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Description</th>
-                    <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Actions</th>
-                  </tr>
-                </thead>
+        <div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
+          <div className="overflow-x-auto h-full">
+            <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
+              <thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
+                <tr>
+                  <th className="px-4 py-3 w-1/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Name</th>
+                  <th className="px-4 py-3 w-2/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Description</th>
+                  <th className="px-4 py-3 w-1/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Actions</th>
+                </tr>
+              </thead>
+            </table>
+            <div className="overflow-y-auto" style={{ maxHeight: 'calc(60vh - 56px)' }}>
+              <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
                 <tbody>
                   {orderTypes.length > 0 ? orderTypes.map((type) => (
-                    <tr key={type.id} className="hover:bg-blue-50">
-                      <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-2">{type.name}</td>
-                      <td className="text-xs xs:text-sm sm:text-base px-4 py-2">{type.description}</td>
-                      <td className="px-4 py-2">
-                        <Button variant="destructive" disabled className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
+                    <tr key={type.id} className="hover:bg-blue-50 h-10">
+                      <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/4">{type.name}</td>
+                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-2/4">{type.description}</td>
+                      <td className="px-4 py-1 align-middle w-1/4">
+                        <Button
+                          variant="destructive"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+                          title="Delete or Deactivate"
+                          onClick={() => {/* TODO: implement delete/deactivate logic */ showToast({ message: 'Delete/Deactivate not implemented', type: 'info' }); }}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                           Delete
                         </Button>
                       </td>
                     </tr>
                   )) : (
                     <tr>
-                      <td colSpan={3} className="text-center text-xs xs:text-sm sm:text-base">No order types found.</td>
+                      <td colSpan={3} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order types found.</td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
           </div>
-          {/* Pagination */}
-          <div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
-            <nav
-              className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-2 xs:px-3 py-1 xs:py-2 gap-1"
-              aria-label="Pagination"
-            >
-              <Button
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-                className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
-                aria-label="Previous page"
-              >
-                &lt;
-              </Button>
-              {Array.from({ length: totalPages }, (_, i) => (
-                <Button
-                  key={i + 1}
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`rounded-full px-3 py-1 text-xs xs:text-sm sm:text-base font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 ${currentPage === i + 1 ? 'bg-blue-600 text-white shadow-md' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
-                  aria-label={`Page ${i + 1}`}
-                >
-                  {i + 1}
-                </Button>
-              ))}
-              <Button
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-                className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
-                aria-label="Next page"
-              >
-                &gt;
-              </Button>
-            </nav>
-            <span className="text-xs xs:text-sm sm:text-base text-gray-600">Page {currentPage} of {totalPages}</span>
-          </div>
-        </>
+        </div>
       )}
       <Dialog isOpen={dialogOpen} onClose={() => setDialogOpen(false)} title="Create Order Type">
         <form onSubmit={handleCreateOrderType} className="flex flex-col gap-4 p-2 sm:p-4 w-full max-w-md mx-auto">
