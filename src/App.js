@@ -202,13 +202,13 @@ const Dashboard = () => {
                     >
                       <div className="ml-auto min-w-[140px] max-w-[180px] w-[60%]">
                         <ul className="bg-white text-blue-900 rounded-2xl shadow-2xl border border-blue-100 py-1 px-0 animate-fade-in-down">
-                          {item.children.map((child) => (
-                            <li key={child.key}>
+                          {item.children.map((child, idx) => (
+                            <li key={child.key} className={idx !== item.children.length - 1 ? 'mb-1' : ''}>
                               <Button
                                 onClick={() => setCurrentPage(child.key)}
                                 className={`w-full flex items-center gap-2 px-4 py-1 rounded-xl border border-transparent transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-white
-                                  bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 hover:shadow-md
-                                  ${currentPage === child.key ? 'ring-2 ring-blue-400 font-bold shadow-md bg-blue-50' : ''}
+                                  bg-transparent text-blue-900 hover:bg-blue-100 hover:text-blue-900 hover:shadow-md
+                                  ${currentPage === child.key ? 'ring-2 ring-blue-400 font-bold shadow-md bg-blue-100' : ''}
                                 `}
                                 aria-current={currentPage === child.key ? 'page' : undefined}
                               >
