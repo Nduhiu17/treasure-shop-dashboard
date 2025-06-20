@@ -121,7 +121,41 @@ const MyOrders = () => {
 				<div className="text-center py-8 text-red-600">{error}</div>
 			) : (
 				<>
-					<div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
+					{/* Mobile Card View */}
+					<div className="block md:hidden space-y-4">
+						{orders.length > 0 ? orders.map(order => (
+							<div key={order.id} className="rounded-xl border border-blue-100 bg-white/90 shadow p-4 flex flex-col gap-2">
+								<div className="flex justify-between items-center mb-1">
+									<span className="font-bold text-blue-900 text-base truncate">{order.title}</span>
+									<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
+								</div>
+								<div className="text-xs text-blue-800 truncate mb-1">{order.description}</div>
+								<div className="flex flex-wrap gap-2 text-xs">
+									<span><b>Writer:</b> {order.writer_username || '-'}</span>
+									<span><b>Level:</b> {order.level_name}</span>
+									<span><b>Pages:</b> {order.order_pages_name}</span>
+									<span><b>Urgency:</b> {order.order_urgency_name}</span>
+									<span><b>Style:</b> {order.order_style_name}</span>
+									<span><b>Language:</b> {order.order_language_name}</span>
+									<span><b>Price:</b> ${order.price?.toFixed(2)}</span>
+								</div>
+								<div className="flex gap-2 mt-2">
+									{order.original_order_file ? (
+										<a href={order.original_order_file} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 border border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400" title="Open file in new tab">
+											<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+												<path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+											</svg>
+										</a>
+									) : (
+										<span className="text-gray-400 italic">No file</span>
+									)}
+									<span className="text-blue-700 font-semibold">View</span>
+								</div>
+							</div>
+						)) : <div className="text-center text-xs xs:text-sm sm:text-base">No orders found.</div>}
+					</div>
+					{/* Desktop Table View */}
+					<div className="hidden md:block rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
 						<div className="overflow-x-auto h-full">
 							<div style={{ maxHeight: 'calc(60vh - 56px)', overflowY: 'auto' }}>
 								<table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base">

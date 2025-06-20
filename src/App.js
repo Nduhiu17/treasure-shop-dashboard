@@ -117,6 +117,7 @@ const Dashboard = () => {
   const { logout, user } = useAuth();
   const [currentPage, setCurrentPage] = useState('orders');
   const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   // Determine menu items based on user roles
@@ -173,39 +174,92 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       {/* Header */}
-      <header className="bg-white shadow-sm py-3 px-2 xs:px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-2 sticky top-0 z-40">
-        <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-blue-900 text-center sm:text-left">Academic Codebase Dashboard</h1>
-        <div className="flex items-center gap-2">
+      <header className="bg-white shadow-sm py-2 px-2 xs:px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50 w-full">
+        <div className="flex items-center gap-2 w-full">
+          {/* Mobile menu button */}
+          <button
+            className="sm:hidden flex items-center justify-center p-2 rounded-lg text-blue-900 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400 mr-2"
+            onClick={() => setMobileMenuOpen(v => !v)}
+            aria-label="Open menu"
+          >
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+          <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-blue-900 truncate">Academic Codebase Dashboard</h1>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
           <a
             href="/"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-bold shadow-lg hover:from-blue-700 hover:to-cyan-600 hover:to-green-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base md:text-lg"
+            className="hidden xs:flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-bold shadow-lg hover:from-blue-700 hover:to-cyan-600 hover:to-green-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm xs:text-base md:text-lg"
             style={{ letterSpacing: '0.01em', boxShadow: '0 4px 24px 0 rgba(30, 64, 175, 0.10)' }}
             aria-label="Go to Home"
           >
-            <svg className="w-6 h-6 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 xs:w-6 xs:h-6 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m4-8v8m-4 0h4" />
             </svg>
             Home
           </a>
           <Button
             onClick={handleDashboardLogout}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-red-500 via-pink-500 to-yellow-400 text-white font-bold shadow-lg hover:from-red-600 hover:to-pink-600 hover:to-yellow-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-red-400 text-base md:text-lg"
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-red-500 via-pink-500 to-yellow-400 text-white font-bold shadow-lg hover:from-red-600 hover:to-pink-600 hover:to-yellow-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm xs:text-base md:text-lg"
             style={{ letterSpacing: '0.01em', boxShadow: '0 4px 24px 0 rgba(220, 38, 38, 0.10)' }}
             aria-label="Logout"
           >
-            <svg className="w-6 h-6 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 xs:w-6 xs:h-6 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
             </svg>
             Logout
           </Button>
         </div>
       </header>
+      {/* Mobile Sidebar Drawer */}
+      <div className={`fixed inset-0 z-40 bg-black/30 transition-opacity duration-200 ${mobileMenuOpen ? 'block sm:hidden' : 'hidden'}`} onClick={() => setMobileMenuOpen(false)} />
+      <aside className={`fixed top-0 left-0 z-50 h-full w-64 bg-blue-900 text-white p-4 shadow-2xl transform transition-transform duration-200 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} sm:hidden`}> 
+        <nav aria-label="Mobile menu">
+          <ul className="flex flex-col gap-2">
+            {filteredMenuItems.map((item) => (
+              <li key={item.key} className="relative group">
+                <Button
+                  onClick={() => { setCurrentPage(item.key); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-blue-100 transition-all duration-200 text-left text-base font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900
+                    bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 shadow-sm
+                    ${currentPage === item.key ? 'ring-2 ring-blue-400 font-bold shadow-md' : ''}
+                  `}
+                  aria-current={currentPage === item.key ? 'page' : undefined}
+                >
+                  <span className="mr-1 flex items-center">{React.cloneElement(item.icon, { className: 'w-5 h-5 mr-1' })}</span>
+                  <span>{item.label}</span>
+                </Button>
+                {/* Dropdown submenu for mobile */}
+                {item.children && (
+                  <ul className="ml-4 mt-1 bg-white text-blue-900 rounded-xl shadow-lg border border-blue-100 py-1 px-0 animate-fade-in-down">
+                    {item.children.map((child) => (
+                      <li key={child.key}>
+                        <Button
+                          onClick={() => { setCurrentPage(child.key); setMobileMenuOpen(false); }}
+                          className={`w-full flex items-center gap-2 px-4 py-1 rounded-xl border border-transparent transition-all duration-200 text-left text-base font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-white
+                            bg-transparent text-blue-900 hover:bg-blue-100 hover:text-blue-900 hover:shadow-md
+                            ${currentPage === child.key ? 'ring-2 ring-blue-400 font-bold shadow-md bg-blue-100' : ''}
+                          `}
+                          aria-current={currentPage === child.key ? 'page' : undefined}
+                        >
+                          <span className="mr-1 flex items-center">{React.cloneElement(child.icon, { className: 'w-5 h-5 mr-1' })}</span>
+                          <span>{child.label}</span>
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col sm:flex-row h-[calc(100vh-64px)]">
-        {/* Sidebar Navigation */}
-        <aside className="w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0 sticky top-[64px] h-[calc(100vh-64px)] z-30">
+      <div className="flex flex-1 flex-col sm:flex-row h-[calc(100vh-64px)] w-full overflow-x-auto">
+        {/* Desktop Sidebar Navigation */}
+        <aside className="hidden sm:block w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0 sticky top-[64px] h-[calc(100vh-64px)] z-30">
           <nav aria-label="Main menu">
-            <ul className="flex flex-row sm:flex-col gap-1 xs:gap-2">
+            <ul className="flex flex-row sm:flex-col gap-1 xs:gap-2 w-full">
               {filteredMenuItems.map((item) => (
                 <li key={item.key} className="relative group">
                   <Button
@@ -259,7 +313,7 @@ const Dashboard = () => {
           </nav>
         </aside>
         {/* Content */}
-        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0 overflow-y-auto">
+        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0 w-full overflow-x-auto">
           {renderContent()}
         </main>
       </div>
