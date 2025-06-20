@@ -16,6 +16,8 @@ import ServiceDetailPage from "./pages/ServiceDetailPage";
 import OrderTypes from "./features/orderConfigurations/OrderTypes";
 import OrderStyles from "./features/orderConfigurations/OrderStyles";
 import OrderPages from "./features/orderConfigurations/OrderPages";
+import OrderLevels from "./features/orderConfigurations/OrderLevels";
+import OrderLanguages from "./features/orderConfigurations/OrderLanguages";
 
 // --- Dashboard Layout ---
 const menuItems = [
@@ -60,6 +62,20 @@ const menuItems = [
         icon: (
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8a2 2 0 002-2V6a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
         )
+      },
+      {
+        key: 'order-levels',
+        label: 'Order Levels',
+        icon: (
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6m0 0H6m6 0h6" /></svg>
+        )
+      },
+      {
+        key: 'order-languages',
+        label: 'Order Languages',
+        icon: (
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" /></svg>
+        )
       }
     ]
   },
@@ -102,6 +118,10 @@ const Dashboard = () => {
         return <OrderStyles />;
       case 'order-pages':
         return <OrderPages />;
+      case 'order-levels':
+        return <OrderLevels />;
+      case 'order-languages':
+        return <OrderLanguages />;
       case 'my-orders':
         return <MyOrders />;
       default:
