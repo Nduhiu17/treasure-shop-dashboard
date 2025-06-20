@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Button } from "./components/ui/button";
 import OrdersManagement from "./features/orders/OrdersManagement";
 import UsersManagement from "./features/users/UsersManagement";
-import OrderTypesManagement from "./features/orderTypes/OrderTypesManagement";
 import { AuthProvider, useAuth } from "./features/auth/AuthProvider";
 import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from "./features/auth/LoginPage";
@@ -14,6 +13,7 @@ import AboutPage from "./pages/AboutPage";
 import GuaranteesPage from "./pages/GuaranteesPage";
 import ReviewsPage from "./pages/ReviewsPage";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
+import OrderTypes from "./features/orderConfigurations/OrderTypes";
 
 // --- Dashboard Layout ---
 const menuItems = [
@@ -32,11 +32,20 @@ const menuItems = [
     )
   },
   {
-    key: 'order-types',
-    label: 'Order Types',
+    key: 'order-configurations',
+    label: 'Order Configurations',
     icon: (
       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-2a4 4 0 014-4h4a4 4 0 014 4v2M9 17H5a2 2 0 01-2-2v-5a2 2 0 012-2h4a2 2 0 012 2v5a2 2 0 01-2 2z" /></svg>
-    )
+    ),
+    children: [
+      {
+        key: 'order-types',
+        label: 'Order Types',
+        icon: (
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-2a4 4 0 014-4h4a4 4 0 014 4v2M9 17H5a2 2 0 01-2-2v-5a2 2 0 012-2h4a2 2 0 012 2v5a2 2 0 01-2 2z" /></svg>
+        )
+      }
+    ]
   },
   {
     key: 'my-orders',
@@ -50,6 +59,7 @@ const menuItems = [
 const Dashboard = () => {
   const { logout, user } = useAuth();
   const [currentPage, setCurrentPage] = useState('orders');
+  const [hoveredMenu, setHoveredMenu] = useState(null);
   const navigate = useNavigate();
 
   // Determine menu items based on user roles
@@ -71,7 +81,7 @@ const Dashboard = () => {
       case 'users':
         return <UsersManagement />;
       case 'order-types':
-        return <OrderTypesManagement />;
+        return <OrderTypes />;
       case 'my-orders':
         return <MyOrders />;
       default:
@@ -115,9 +125,11 @@ const Dashboard = () => {
           <nav aria-label="Main menu">
             <ul className="flex flex-row sm:flex-col gap-1 xs:gap-2">
               {filteredMenuItems.map((item) => (
-                <li key={item.key}>
+                <li key={item.key} className="relative group">
                   <Button
                     onClick={() => setCurrentPage(item.key)}
+                    onMouseEnter={() => setHoveredMenu(item.key)}
+                    onMouseLeave={() => setHoveredMenu(null)}
                     className={`w-full flex items-center gap-2 px-2 xs:px-3 py-2 rounded-lg border border-blue-100 transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900
                       bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 shadow-sm
                       ${currentPage === item.key ? 'ring-2 ring-blue-400 font-bold shadow-md' : ''}
@@ -126,7 +138,37 @@ const Dashboard = () => {
                   >
                     <span className="mr-1 flex items-center">{React.cloneElement(item.icon, { className: 'w-4 h-4 xs:w-5 xs:h-5 mr-1' })}</span>
                     <span>{item.label}</span>
+                    {item.children && (
+                      <svg className="w-3 h-3 ml-auto text-blue-400 group-hover:text-blue-700 transition" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                    )}
                   </Button>
+                  {/* Dropdown submenu on hover */}
+                  {item.children && (
+                    <div
+                      className={`w-full transition-all duration-200 ${hoveredMenu === item.key ? 'max-h-[500px] opacity-100 mt-1' : 'max-h-0 opacity-0 overflow-hidden'} flex flex-col gap-1`}
+                      onMouseEnter={() => setHoveredMenu(item.key)}
+                      onMouseLeave={() => setHoveredMenu(null)}
+                      style={{ zIndex: 50 }}
+                    >
+                      <ul className="w-full bg-white text-blue-900 rounded-2xl shadow-2xl border border-blue-100 py-2 px-0 animate-fade-in-down">
+                        {item.children.map((child) => (
+                          <li key={child.key}>
+                            <Button
+                              onClick={() => setCurrentPage(child.key)}
+                              className={`w-full flex items-center gap-2 px-4 py-2 rounded-xl border border-transparent transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-white
+                                bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 hover:shadow-md
+                                ${currentPage === child.key ? 'ring-2 ring-blue-400 font-bold shadow-md bg-blue-50' : ''}
+                              `}
+                              aria-current={currentPage === child.key ? 'page' : undefined}
+                            >
+                              <span className="mr-1 flex items-center">{React.cloneElement(child.icon, { className: 'w-4 h-4 mr-1' })}</span>
+                              <span>{child.label}</span>
+                            </Button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
