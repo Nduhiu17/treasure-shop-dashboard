@@ -19,6 +19,7 @@ import OrderPages from "./features/orderConfigurations/OrderPages";
 import OrderLevels from "./features/orderConfigurations/OrderLevels";
 import OrderLanguages from "./features/orderConfigurations/OrderLanguages";
 import OrderUrgency from "./features/orderConfigurations/OrderUrgency";
+import RolesManagement from "./features/users/RolesManagement";
 
 // --- Dashboard Layout ---
 const menuItems = [
@@ -41,6 +42,13 @@ const menuItems = [
         label: 'Users',
         icon: (
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4a4 4 0 11-8 0 4 4 0 018 0zm6 4v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>
+        )
+      },
+      {
+        key: 'roles',
+        label: 'Roles',
+        icon: (
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M8 12h8M12 8v8" /></svg>
         )
       }
     ]
@@ -129,6 +137,8 @@ const Dashboard = () => {
         return <OrdersManagement />;
       case 'users':
         return <UsersManagement currentSubPage="users" />;
+      case 'roles':
+        return <RolesManagement />;
       case 'users-management':
         // Default to users subpage
         return <UsersManagement currentSubPage="users" />;
