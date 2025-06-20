@@ -4,6 +4,8 @@ import { Button } from "../../components/ui/button";
 import { Select } from "../../components/ui/select";
 import { useAuth } from "../auth/AuthProvider";
 import Loader from '../../components/ui/Loader';
+import RoleDropdown from '../../components/ui/role-dropdown';
+import { useToast } from '../../components/ui/toast';
 
 const ROLES = [
 	{ key: "user", label: "User" },
@@ -16,6 +18,7 @@ const PAGE_SIZE = 10;
 
 const UsersList = () => {
 	const { api } = useAuth();
+	const { showToast } = useToast();
 	const [activeRole, setActiveRole] = useState("user");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [users, setUsers] = useState([]);
@@ -39,6 +42,28 @@ const UsersList = () => {
 
 	const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
 	const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
+
+	const handleAssignRole = async (userId, role) => {
+		try {
+			const res = await fetch("http://localhost:8080/api/admin/user-roles/assign", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: localStorage.getItem("jwt_token") ? `Bearer ${localStorage.getItem("jwt_token")}` : ""
+				},
+				body: JSON.stringify({ user_id: userId, role_id: role.id })
+			});
+			if (!res.ok) throw new Error("Failed to assign role");
+			showToast({ message: `Role '${role.name}' assigned successfully`, type: "success" });
+			// Optionally refresh users
+			setLoading(true);
+			const userRes = await api.getUsersByRole(activeRole, currentPage, PAGE_SIZE);
+			setUsers(userRes.users || []);
+			setTotal(userRes.total || 0);
+		} catch (err) {
+			showToast({ message: err.message || "Failed to assign role", type: "error" });
+		}
+	};
 
 	return (
 		<Card className="w-full p-4">
@@ -64,14 +89,20 @@ const UsersList = () => {
 								<th className="px-4 py-2 text-left text-xs font-semibold text-blue-700">Name</th>
 								<th className="px-4 py-2 text-left text-xs font-semibold text-blue-700">Email</th>
 								<th className="px-4 py-2 text-left text-xs font-semibold text-blue-700">Role</th>
+								<th className="px-4 py-2 text-left text-xs font-semibold text-blue-700">Actions</th>
 							</tr>
 						</thead>
-						<tbody className="bg-white divide-y divide-blue-100 max-h-80 overflow-y-auto block">
+						<tbody className="bg-white divide-y divide-blue-100">
 							{users.map((user) => (
 								<tr key={user.id} className="hover:bg-blue-50 transition">
 									<td className="px-4 py-2 whitespace-nowrap">{user.name}</td>
 									<td className="px-4 py-2 whitespace-nowrap">{user.email}</td>
-									<td className="px-4 py-2 whitespace-nowrap capitalize">{user.role}</td>
+									<td className="px-4 py-2 whitespace-nowrap capitalize">{Array.isArray(user.roles) ? user.roles.join(', ') : user.role}</td>
+									<td className="px-4 py-2 whitespace-nowrap">
+										<div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+											<RoleDropdown userId={user.id} onAssign={role => handleAssignRole(user.id, role)} />
+										</div>
+									</td>
 								</tr>
 							))}
 						</tbody>

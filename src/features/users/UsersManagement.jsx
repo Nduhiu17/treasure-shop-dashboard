@@ -5,6 +5,8 @@ import { Select } from "../../components/ui/select";
 import { useAuth } from "../auth/AuthProvider";
 import Loader from '../../components/ui/Loader';
 import UsersList from "./UsersList";
+import RoleDropdown from '../../components/ui/role-dropdown';
+import { useToast } from '../../components/ui/toast';
 
 const ROLES = [
 	{ key: "user", label: "User" },
@@ -17,6 +19,7 @@ const PAGE_SIZE = 10;
 
 const UsersManagement = ({ currentSubPage }) => {
 	const { api } = useAuth();
+	const { showToast } = useToast();
 	const [activeRole, setActiveRole] = useState("user");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [users, setUsers] = useState([]);
@@ -40,6 +43,28 @@ const UsersManagement = ({ currentSubPage }) => {
 
 	const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
 	const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
+
+	const handleAssignRole = async (userId, role) => {
+		try {
+			const res = await fetch("http://localhost:8080/api/admin/user-roles/assign", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: localStorage.getItem("jwt_token") ? `Bearer ${localStorage.getItem("jwt_token")}` : ""
+				},
+				body: JSON.stringify({ user_id: userId, role_id: role.id })
+			});
+			if (!res.ok) throw new Error("Failed to assign role");
+			showToast({ message: `Role '${role.name}' assigned successfully`, type: "success" });
+			// Optionally refresh users
+			setLoading(true);
+			const userRes = await api.getUsersByRole(activeRole, currentPage, PAGE_SIZE);
+			setUsers(userRes.users || []);
+			setTotal(userRes.total || 0);
+		} catch (err) {
+			showToast({ message: err.message || "Failed to assign role", type: "error" });
+		}
+	};
 
 	// Add more subpages as needed in the future
 	switch (currentSubPage) {
@@ -96,13 +121,9 @@ const UsersManagement = ({ currentSubPage }) => {
 															</span>
 														</td>
 														<td className="px-4 py-2">
-															<Button
-																variant="destructive"
-																disabled
-																className="w-full sm:w-auto text-xs xs:text-sm sm:text-base"
-															>
-																Delete (Disabled)
-															</Button>
+															<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+																<RoleDropdown userId={user.id} onAssign={role => handleAssignRole(user.id, role)} />
+															</div>
 														</td>
 													</tr>
 												))
