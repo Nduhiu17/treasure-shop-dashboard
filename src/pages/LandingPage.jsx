@@ -7,12 +7,16 @@ import LoginPage from "../features/auth/LoginPage";
 import { Dialog } from "../components/ui/dialog";
 import { WideDialog } from "../components/ui/wide-dialog";
 import CreateOrder from "../features/orders/CreateOrder";
+import PayPalModal from "../features/orders/PayPalModal";
 
 export default function LandingPage({ user, onLogout }) {
   const { user: authUser } = useAuth();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [pendingOrder, setPendingOrder] = useState(false);
   const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
+  const [payPalModalOpen, setPayPalModalOpen] = useState(false);
+  const [payPalOrderId, setPayPalOrderId] = useState(null);
+  const [payPalAmount, setPayPalAmount] = useState(null);
 
   // Handler for all "Order" buttons
   const handleOrderClick = (e) => {
@@ -32,6 +36,15 @@ export default function LandingPage({ user, onLogout }) {
       setPendingOrder(false);
       setCreateOrderModalOpen(true);
     }
+  };
+
+  const handleOrderCreated = (orderId, amount) => {
+    setCreateOrderModalOpen(false);
+    setTimeout(() => {
+      setPayPalOrderId(orderId);
+      setPayPalAmount(amount);
+      setPayPalModalOpen(true);
+    }, 300);
   };
 
   return (
@@ -95,8 +108,15 @@ export default function LandingPage({ user, onLogout }) {
         <LoginPage asModal onSuccess={handleLoginSuccess} />
       </Dialog>
       <WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
-        <CreateOrder />
+        <CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
       </WideDialog>
+      <PayPalModal
+        isOpen={payPalModalOpen}
+        onClose={() => setPayPalModalOpen(false)}
+        orderId={payPalOrderId}
+        amount={payPalAmount}
+        onSuccess={() => { setPayPalModalOpen(false); window.location.href = "http://localhost:3000/profile"; }}
+      />
     </div>
   );
 }

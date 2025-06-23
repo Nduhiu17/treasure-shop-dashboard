@@ -89,7 +89,7 @@ export default function PayPalModal({ isOpen, onClose, orderId, amount, onSucces
   return (
     <Dialog isOpen={isOpen} onClose={onClose} title="Pay for Your Order">
       <div className="flex flex-col items-center gap-4 py-2">
-        <div className="text-lg text-blue-800 mb-2">Amount: <span className="font-bold">${amount.toFixed(2)}</span> USD</div>
+        <div className="text-lg text-blue-800 mb-2">Amount: <span className="font-bold">${(amount ? Number(amount).toFixed(2) : "0.00")}</span> USD</div>
         <div ref={paypalRef} className="w-56 min-h-[48px] flex items-center justify-center" />
         {paying && <div className="mt-2 text-blue-600 flex items-center gap-2"><Loader className="w-5 h-5" /> Processing payment...</div>}
         {error && <div className="mt-2 text-red-600 text-sm">{error}</div>}
