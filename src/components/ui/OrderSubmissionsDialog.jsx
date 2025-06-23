@@ -1,56 +1,191 @@
 import React, { useState } from "react";
-import { FaFileAlt, FaUser, FaRegClock } from "react-icons/fa";
+import { FaFileAlt, FaRegClock, FaCheckCircle, FaCommentDots, FaAward, FaCloudDownloadAlt, FaFilePdf, FaFileWord, FaFile } from "react-icons/fa";
+import FeedbackDialog from "./FeedbackDialog";
+import { useToast } from "./toast";
+import { useAuth } from "../../features/auth/AuthProvider";
+import { WideDialog } from "./wide-dialog";
 
-export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissions = [] }) {
-  const [loading] = useState(false);
-  const [error] = useState("");
+// Helper for avatar
+function getInitials(name) {
+  if (!name) return "W";
+  const parts = name.split(" ");
+  return parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
+}
+
+// Helper for file icon
+function getFileIcon(fileUrl) {
+  if (!fileUrl) return <FaFile className="text-gray-400 text-2xl" />;
+  if (fileUrl.endsWith(".pdf")) return <FaFilePdf className="text-red-500 text-2xl" />;
+  if (fileUrl.endsWith(".doc") || fileUrl.endsWith(".docx")) return <FaFileWord className="text-blue-600 text-2xl" />;
+  return <FaFile className="text-green-500 text-2xl" />;
+}
+
+// Helper for status chip
+function StatusChip({ status }) {
+  let color = "bg-blue-100 text-blue-700";
+  let label = status;
+  if (status === "approved") {
+    color = "bg-green-100 text-green-700";
+    label = "Approved";
+  } else if (status === "change_requested") {
+    color = "bg-yellow-100 text-yellow-700";
+    label = "Change Requested";
+  } else if (status === "pending_review") {
+    color = "bg-blue-100 text-blue-700";
+    label = "Pending Review";
+  }
+  return <span className={`px-3 py-1 rounded-full text-xs font-bold ${color}`}>{label}</span>;
+}
+
+export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissions = [], onAction }) {
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [loadingId, setLoadingId] = useState(null);
+  const { showToast } = useToast();
+  const { user } = useAuth();
+  const isWriter = user?.roles?.includes("writer");
+
+  // Approve handler
+  const handleApprove = async (sub) => {
+    setLoadingId(sub.id);
+    try {
+      const jwt = localStorage.getItem("jwt_token");
+      const res = await fetch(`http://localhost:8080/api/orders/${sub.order_id}/review/approve`, {
+        method: "PUT",
+        headers: {
+          Authorization: jwt ? `Bearer ${jwt}` : "",
+        },
+      });
+      if (!res.ok) throw new Error("Failed to approve submission");
+      showToast({ type: "success", message: "Submission approved successfully!" });
+      onClose && onClose();
+      onAction && onAction();
+    } catch (err) {
+      showToast({ type: "error", message: "Failed to approve submission." });
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  // Request change handler
+  const handleRequestChange = (sub) => {
+    setSelectedSubmission(sub);
+    setFeedbackOpen(true);
+  };
+
+  // Feedback submit
+  const handleFeedbackSubmit = async (feedback) => {
+    if (!selectedSubmission) return;
+    setLoadingId(selectedSubmission.id);
+    try {
+      const jwt = localStorage.getItem("jwt_token");
+      const res = await fetch(`http://localhost:8080/api/orders/${selectedSubmission.order_id}/review/feedback`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: jwt ? `Bearer ${jwt}` : "",
+        },
+        body: JSON.stringify({ feedback }),
+      });
+      if (!res.ok) throw new Error("Failed to send feedback");
+      showToast({ type: "success", message: "Feedback sent successfully!" });
+      setFeedbackOpen(false);
+      setSelectedSubmission(null);
+      onClose && onClose();
+      onAction && onAction();
+    } catch (err) {
+      showToast({ type: "error", message: "Failed to send feedback." });
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  // Find latest submission
+  const latestIdx = writerSubmissions.length > 0 ? writerSubmissions.reduce((maxIdx, sub, idx, arr) => {
+    return new Date(sub.submission_date) > new Date(arr[maxIdx].submission_date) ? idx : maxIdx;
+  }, 0) : -1;
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center min-h-screen bg-black bg-opacity-50 px-2 sm:px-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-4 sm:p-8 relative flex flex-col animate-fade-in-up">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl sm:text-2xl font-bold text-blue-900 flex items-center gap-2">
-            <FaFileAlt className="text-blue-500" /> Writer Submissions
-          </h2>
-          <button
-            className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
-            onClick={onClose}
-            aria-label="Close"
-          >
-            ×
-          </button>
-        </div>
-        {loading ? (
-          <div className="text-center py-8 text-blue-700">Loading submissions...</div>
-        ) : error ? (
-          <div className="text-center py-8 text-red-600">{error}</div>
-        ) : !writerSubmissions || writerSubmissions.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">No submissions found for this order.</div>
-        ) : (
-          <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-            {writerSubmissions.map((sub, idx) => (
-              <div key={sub.id || idx} className="border border-blue-100 rounded-xl p-4 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="flex flex-col gap-1">
-                  <span className="font-semibold text-blue-900 flex items-center gap-2"><FaUser className="text-blue-400" /> {sub.writer_name || sub.writer_id || "Writer"}</span>
-                  <span className="text-xs text-blue-700 flex items-center gap-2"><FaRegClock className="text-blue-300" /> {new Date(sub.submission_date).toLocaleString()}</span>
-                  <span className="text-sm text-blue-800 mt-1">{sub.description}</span>
-                </div>
-                <div className="flex flex-col gap-2 items-end">
-                  <a
-                    href={sub.submission_file}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150"
-                  >
-                    <FaFileAlt className="text-white" /> View File
-                  </a>
-                </div>
-              </div>
-            ))}
+    <>
+      <WideDialog isOpen={isOpen} onClose={onClose} title={
+        <div className="flex flex-col items-center w-full">
+          <div className="w-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-t-2xl flex flex-col items-center py-6 mb-6 animate-fade-in-up">
+            <FaAward className="text-yellow-400 text-5xl mb-2 animate-bounce" />
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight drop-shadow-lg">Writer Submissions</h2>
+            <span className="text-blue-100 text-lg mt-2">All submissions for your order are shown below</span>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      }>
+        <div className="w-full flex flex-col gap-10 px-2 md:px-6">
+          {(!writerSubmissions || writerSubmissions.length === 0) ? (
+            <div className="text-center py-20 text-2xl text-gray-400 font-semibold flex flex-col items-center gap-4 animate-fade-in-up">
+              <FaCloudDownloadAlt className="text-6xl text-blue-200 animate-pulse" />
+              No submissions found for this order.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 animate-fade-in-up">
+              {writerSubmissions.map((sub, idx) => (
+                <div key={sub.id || idx} className={`relative border-2 border-blue-200 rounded-2xl p-8 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-xl flex flex-col gap-5 hover:shadow-2xl transition-all duration-200 animate-fade-in-up ${idx === latestIdx ? 'ring-2 ring-yellow-400' : ''}`} style={{ minHeight: 320 }}>
+                  {/* Badge for latest */}
+                  {idx === latestIdx && (
+                    <span className="absolute top-4 right-4 bg-yellow-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow animate-bounce">Latest</span>
+                  )}
+                  {/* Avatar */}
+                  <div className="flex items-center gap-4 mb-2">
+                    <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center text-2xl font-bold text-blue-700 shadow-lg">
+                      {getInitials(sub.writer_name || sub.writer_id || "Writer")}
+                    </div>
+                    <span className="font-bold text-xl text-blue-900 tracking-wide drop-shadow">{sub.writer_name || sub.writer_id || "Writer"}</span>
+                  </div>
+                  {/* Status chip */}
+                  <StatusChip status={sub.status || "pending_review"} />
+                  {/* Date */}
+                  <span className="text-xs text-blue-700 flex items-center gap-2"><FaRegClock className="text-blue-300" /> {new Date(sub.submission_date).toLocaleString()}</span>
+                  {/* Description */}
+                  <span className="text-base text-blue-800 mt-1 italic">{sub.description}</span>
+                  {/* File preview */}
+                  <div className="flex items-center gap-3 mt-2">
+                    {getFileIcon(sub.submission_file)}
+                    <a
+                      href={sub.submission_file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150 text-lg"
+                    >
+                      <FaFileAlt className="text-white text-xl" /> View File
+                    </a>
+                  </div>
+                  {/* Actions */}
+                  <div className="flex gap-3 mt-4">
+                    <button
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-60 text-base shadow"
+                      onClick={() => handleApprove(sub)}
+                      disabled={isWriter || loadingId === sub.id}
+                      aria-label="Approve Submission"
+                    >
+                      <FaCheckCircle /> {loadingId === sub.id ? "Approving..." : "Approve"}
+                    </button>
+                    <button
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-500 text-white font-semibold hover:bg-yellow-600 transition text-base shadow"
+                      onClick={() => handleRequestChange(sub)}
+                      disabled={isWriter}
+                      aria-label="Request Change"
+                    >
+                      <FaCommentDots /> Request Change
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </WideDialog>
+      <FeedbackDialog
+        isOpen={feedbackOpen}
+        onClose={() => { setFeedbackOpen(false); setSelectedSubmission(null); }}
+        onSubmit={handleFeedbackSubmit}
+      />
+    </>
   );
 }

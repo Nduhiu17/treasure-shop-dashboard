@@ -405,6 +405,44 @@ const MyOrders = () => {
 						isOpen={submissionsDialogOpen}
 						onClose={() => setSubmissionsDialogOpen(false)}
 						writerSubmissions={orders.find(o => o.id === submissionsOrderId)?.writer_submissions || []}
+						onAction={() => {
+							// refetch orders after approve or feedback
+							const jwt = localStorage.getItem("jwt_token");
+							const roles = user.roles || [];
+							let url = `http://localhost:8080/api/admin/orders?page=${currentPage}&page_size=${PAGE_SIZE}`;
+							if (roles.includes("super_admin") || roles.includes("admin")) {
+								if (activeStatus) {
+									url += `&status=${activeStatus}`;
+								}
+							} else if (roles.includes("writer")) {
+								url = `http://localhost:8080/api/writer/orders/${user.id}?page=${currentPage}&page_size=${PAGE_SIZE}`;
+								if (activeStatus) {
+									url += `&status=${activeStatus}`;
+								}
+							} else if (roles.length === 1 && roles[0] === "user") {
+								url = `http://localhost:8080/api/orders/me?page=${currentPage}&page_size=${PAGE_SIZE}`;
+								if (activeStatus) {
+									url += `&status=${activeStatus}`;
+								}
+							}
+							fetch(url, {
+								credentials: "include",
+								headers: {
+									"Content-Type": "application/json",
+									Authorization: jwt ? `Bearer ${jwt}` : "",
+								},
+							})
+								.then((res) => res.json())
+								.then((data) => {
+									if (Array.isArray(data)) {
+										setOrders(data);
+										setTotal(data.length);
+									} else {
+										setOrders(data.orders || []);
+										setTotal(data.total || (data.orders ? data.orders.length : 0));
+									}
+								});
+						}}
 					/>
 				</>
 			)}
