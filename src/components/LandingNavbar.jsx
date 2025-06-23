@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import LoginPage from "../features/auth/LoginPage";
 import CreateOrder from "../features/orders/CreateOrder";
+import PayPalModal from "../features/orders/PayPalModal";
 import { Dialog } from "./ui/dialog";
 import { WideDialog } from "../components/ui/wide-dialog";
 
@@ -45,6 +46,9 @@ export default function LandingNavbar({ user, onLogout }) {
 	const [loginModalOpen, setLoginModalOpen] = React.useState(false);
 	const [pendingOrder, setPendingOrder] = React.useState(false);
 	const [createOrderModalOpen, setCreateOrderModalOpen] = React.useState(false);
+	const [payPalModalOpen, setPayPalModalOpen] = React.useState(false);
+	const [payPalOrderId, setPayPalOrderId] = React.useState(null);
+	const [payPalAmount, setPayPalAmount] = React.useState(null);
 	const mobileMenuButtonRef = React.useRef();
 	const mobileMenuRef = React.useRef();
 	const profileButtonRef = React.useRef();
@@ -123,7 +127,7 @@ export default function LandingNavbar({ user, onLogout }) {
 	}, [profileOpen]);
 
 	// Handler for all "Order" buttons in navbar
-	const handleOrderClick = (e) => {
+	const handleOrderButton = (e) => {
 		e?.preventDefault?.();
 		if (user) {
 			setCreateOrderModalOpen(true);
@@ -140,6 +144,15 @@ export default function LandingNavbar({ user, onLogout }) {
 			setPendingOrder(false);
 			setCreateOrderModalOpen(true);
 		}
+	};
+
+	const handleOrderCreated = (orderId, amount) => {
+		setCreateOrderModalOpen(false);
+		setTimeout(() => {
+			setPayPalOrderId(orderId);
+			setPayPalAmount(amount);
+			setPayPalModalOpen(true);
+		}, 300);
 	};
 
 	return (
@@ -379,10 +392,10 @@ export default function LandingNavbar({ user, onLogout }) {
 				{/* Order/Login/Profile Buttons */}
 				<div className="flex items-center gap-2">
 					<Button
-						onClick={handleOrderClick}
-						className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 px-4 py-2 rounded-lg"
+						onClick={handleOrderButton}
+						className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-8 py-3 text-lg rounded-xl"
 					>
-						Order
+						Order Now
 					</Button>
 					{user ? (
 						<div className="relative">
@@ -431,9 +444,16 @@ export default function LandingNavbar({ user, onLogout }) {
 			{/* Create Order Modal */}
 			{createOrderModalOpen && (
 				<WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
-					<CreateOrder />
+					<CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
 				</WideDialog>
 			)}
+			<PayPalModal
+				isOpen={payPalModalOpen}
+				onClose={() => setPayPalModalOpen(false)}
+				orderId={payPalOrderId}
+				amount={payPalAmount}
+				onSuccess={() => { setPayPalModalOpen(false); window.location.href = "http://localhost:3000/profile"; }}
+			/>
 		</header>
 	);
 }

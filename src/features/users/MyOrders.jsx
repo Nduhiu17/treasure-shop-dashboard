@@ -6,6 +6,7 @@ import { Button } from "../../components/ui/button";
 import { Select } from "../../components/ui/select";
 import CreateOrder from "../orders/CreateOrder";
 import { Dialog } from "../../components/ui/dialog";
+import PayPalModal from "../orders/PayPalModal";
 
 const ORDER_STATUSES = [
 	{ key: "pending_payment", label: "Pending Payment" },
@@ -28,6 +29,9 @@ const MyOrders = () => {
 	const [total, setTotal] = useState(0);
 	const [activeStatus, setActiveStatus] = useState("pending_payment");
 	const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
+	const [payPalModalOpen, setPayPalModalOpen] = useState(false);
+	const [payPalOrderId, setPayPalOrderId] = useState(null);
+	const [payPalAmount, setPayPalAmount] = useState(null);
 	const PAGE_SIZE = 10;
 
 	useEffect(() => {
@@ -81,6 +85,20 @@ const MyOrders = () => {
 	const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
 	const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
 
+	const handleOrderButton = (e) => {
+		e?.preventDefault?.();
+		setCreateOrderModalOpen(true);
+	};
+
+	const handleOrderCreated = (orderId, amount) => {
+		setCreateOrderModalOpen(false);
+		setTimeout(() => {
+			setPayPalOrderId(orderId);
+			setPayPalAmount(amount);
+			setPayPalModalOpen(true);
+		}, 300);
+	};
+
 	if (!user) {
 		return (
 			<div className="flex justify-center items-center min-h-[40vh]">
@@ -95,7 +113,7 @@ const MyOrders = () => {
 				<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">My Orders</h2>
 				<Button
 					className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150"
-					onClick={() => setCreateOrderModalOpen(true)}
+					onClick={handleOrderButton}
 				>
 					+ Create Order
 				</Button>
@@ -316,6 +334,16 @@ const MyOrders = () => {
 							</Button>
 						</nav>
 					</div>
+					<Dialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
+						<CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
+					</Dialog>
+					<PayPalModal
+						isOpen={payPalModalOpen}
+						onClose={() => setPayPalModalOpen(false)}
+						orderId={payPalOrderId}
+						amount={payPalAmount}
+						onSuccess={() => { setPayPalModalOpen(false); window.location.href = "http://localhost:3000/profile"; }}
+					/>
 				</>
 			)}
 		</Card>
