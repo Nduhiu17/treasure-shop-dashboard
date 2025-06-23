@@ -257,7 +257,7 @@ const Dashboard = () => {
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col sm:flex-row h-[calc(100vh-64px)] w-full overflow-x-auto">
         {/* Desktop Sidebar Navigation */}
-        <aside className="hidden sm:block w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0 sticky top-[64px] h-[calc(100vh-64px)] z-30">
+        <aside className="hidden sm:block w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0 sticky top-0 h-[calc(100vh-64px)] z-30">
           <nav aria-label="Main menu">
             <ul className="flex flex-row sm:flex-col gap-1 xs:gap-2 w-full">
               {filteredMenuItems.map((item) => (
