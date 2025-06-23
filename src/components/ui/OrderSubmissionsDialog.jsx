@@ -47,21 +47,31 @@ export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissi
 
   // Approve handler
   const handleApprove = async (sub) => {
+    if (!sub.order_id) {
+      showToast({ type: "error", message: "Order ID missing for this submission." });
+      return;
+    }
     setLoadingId(sub.id);
     try {
       const jwt = localStorage.getItem("jwt_token");
       const res = await fetch(`http://localhost:8080/api/orders/${sub.order_id}/review/approve`, {
         method: "PUT",
         headers: {
+          "Content-Type": "application/json",
           Authorization: jwt ? `Bearer ${jwt}` : "",
         },
       });
-      if (!res.ok) throw new Error("Failed to approve submission");
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("Approve error:", errText);
+        throw new Error("Failed to approve submission");
+      }
       showToast({ type: "success", message: "Submission approved successfully!" });
       onClose && onClose();
       onAction && onAction();
     } catch (err) {
       showToast({ type: "error", message: "Failed to approve submission." });
+      console.error(err);
     } finally {
       setLoadingId(null);
     }
@@ -75,7 +85,10 @@ export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissi
 
   // Feedback submit
   const handleFeedbackSubmit = async (feedback) => {
-    if (!selectedSubmission) return;
+    if (!selectedSubmission || !selectedSubmission.order_id) {
+      showToast({ type: "error", message: "Order ID missing for this submission." });
+      return;
+    }
     setLoadingId(selectedSubmission.id);
     try {
       const jwt = localStorage.getItem("jwt_token");
@@ -87,7 +100,11 @@ export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissi
         },
         body: JSON.stringify({ feedback }),
       });
-      if (!res.ok) throw new Error("Failed to send feedback");
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("Feedback error:", errText);
+        throw new Error("Failed to send feedback");
+      }
       showToast({ type: "success", message: "Feedback sent successfully!" });
       setFeedbackOpen(false);
       setSelectedSubmission(null);
@@ -95,6 +112,7 @@ export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissi
       onAction && onAction();
     } catch (err) {
       showToast({ type: "error", message: "Failed to send feedback." });
+      console.error(err);
     } finally {
       setLoadingId(null);
     }
