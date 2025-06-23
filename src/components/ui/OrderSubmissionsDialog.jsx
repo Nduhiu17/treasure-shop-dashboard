@@ -124,60 +124,106 @@ export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissi
               No submissions found for this order.
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 animate-fade-in-up">
-              {writerSubmissions.map((sub, idx) => (
-                <div key={sub.id || idx} className={`relative border-2 border-blue-200 rounded-2xl p-8 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-xl flex flex-col gap-5 hover:shadow-2xl transition-all duration-200 animate-fade-in-up ${idx === latestIdx ? 'ring-2 ring-yellow-400' : ''}`} style={{ minHeight: 320 }}>
-                  {/* Badge for latest */}
-                  {idx === latestIdx && (
-                    <span className="absolute top-4 right-4 bg-yellow-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow animate-bounce">Latest</span>
-                  )}
-                  {/* Avatar */}
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center text-2xl font-bold text-blue-700 shadow-lg">
-                      {getInitials(sub.writer_name || sub.writer_id || "Writer")}
+            writerSubmissions.length === 1 ? (
+              <div className="flex justify-center animate-fade-in-up">
+                {/* Single submission card, same as grid card but centered */}
+                {(() => {
+                  const sub = writerSubmissions[0];
+                  return (
+                    <div className={`relative border-2 border-blue-200 rounded-2xl p-8 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-xl flex flex-col gap-5 hover:shadow-2xl transition-all duration-200 animate-fade-in-up ring-2 ring-yellow-400`} style={{ minWidth: 340, minHeight: 320 }}>
+                      <span className="absolute top-4 right-4 bg-yellow-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow animate-bounce">Latest</span>
+                      <div className="flex items-center gap-4 mb-2">
+                        <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center text-2xl font-bold text-blue-700 shadow-lg">
+                          {getInitials(sub.writer_name || sub.writer_id || "Writer")}
+                        </div>
+                        <span className="font-bold text-xl text-blue-900 tracking-wide drop-shadow">{sub.writer_name || sub.writer_id || "Writer"}</span>
+                      </div>
+                      <StatusChip status={sub.status || "pending_review"} />
+                      <span className="text-xs text-blue-700 flex items-center gap-2"><FaRegClock className="text-blue-300" /> {new Date(sub.submission_date).toLocaleString()}</span>
+                      <span className="text-base text-blue-800 mt-1 italic">{sub.description}</span>
+                      <div className="flex items-center gap-3 mt-2">
+                        {getFileIcon(sub.submission_file)}
+                        <a
+                          href={sub.submission_file}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150 text-lg"
+                        >
+                          <FaFileAlt className="text-white text-xl" /> View File
+                        </a>
+                      </div>
+                      <div className="flex gap-3 mt-4">
+                        <button
+                          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-60 text-base shadow"
+                          onClick={() => handleApprove(sub)}
+                          disabled={isWriter || loadingId === sub.id}
+                          aria-label="Approve Submission"
+                        >
+                          <FaCheckCircle /> {loadingId === sub.id ? "Approving..." : "Approve"}
+                        </button>
+                        <button
+                          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-500 text-white font-semibold hover:bg-yellow-600 transition text-base shadow"
+                          onClick={() => handleRequestChange(sub)}
+                          disabled={isWriter}
+                          aria-label="Request Change"
+                        >
+                          <FaCommentDots /> Request Change
+                        </button>
+                      </div>
                     </div>
-                    <span className="font-bold text-xl text-blue-900 tracking-wide drop-shadow">{sub.writer_name || sub.writer_id || "Writer"}</span>
+                  );
+                })()}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 animate-fade-in-up">
+                {writerSubmissions.map((sub, idx) => (
+                  <div key={sub.id || idx} className={`relative border-2 border-blue-200 rounded-2xl p-8 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-xl flex flex-col gap-5 hover:shadow-2xl transition-all duration-200 animate-fade-in-up ${idx === latestIdx ? 'ring-2 ring-yellow-400' : ''}`} style={{ minHeight: 320 }}>
+                    {/* Badge for latest */}
+                    {idx === latestIdx && (
+                      <span className="absolute top-4 right-4 bg-yellow-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow animate-bounce">Latest</span>
+                    )}
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center text-2xl font-bold text-blue-700 shadow-lg">
+                        {getInitials(sub.writer_name || sub.writer_id || "Writer")}
+                      </div>
+                      <span className="font-bold text-xl text-blue-900 tracking-wide drop-shadow">{sub.writer_name || sub.writer_id || "Writer"}</span>
+                    </div>
+                    <StatusChip status={sub.status || "pending_review"} />
+                    <span className="text-xs text-blue-700 flex items-center gap-2"><FaRegClock className="text-blue-300" /> {new Date(sub.submission_date).toLocaleString()}</span>
+                    <span className="text-base text-blue-800 mt-1 italic">{sub.description}</span>
+                    <div className="flex items-center gap-3 mt-2">
+                      {getFileIcon(sub.submission_file)}
+                      <a
+                        href={sub.submission_file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150 text-lg"
+                      >
+                        <FaFileAlt className="text-white text-xl" /> View File
+                      </a>
+                    </div>
+                    <div className="flex gap-3 mt-4">
+                      <button
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-60 text-base shadow"
+                        onClick={() => handleApprove(sub)}
+                        disabled={isWriter || loadingId === sub.id}
+                        aria-label="Approve Submission"
+                      >
+                        <FaCheckCircle /> {loadingId === sub.id ? "Approving..." : "Approve"}
+                      </button>
+                      <button
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-500 text-white font-semibold hover:bg-yellow-600 transition text-base shadow"
+                        onClick={() => handleRequestChange(sub)}
+                        disabled={isWriter}
+                        aria-label="Request Change"
+                      >
+                        <FaCommentDots /> Request Change
+                      </button>
+                    </div>
                   </div>
-                  {/* Status chip */}
-                  <StatusChip status={sub.status || "pending_review"} />
-                  {/* Date */}
-                  <span className="text-xs text-blue-700 flex items-center gap-2"><FaRegClock className="text-blue-300" /> {new Date(sub.submission_date).toLocaleString()}</span>
-                  {/* Description */}
-                  <span className="text-base text-blue-800 mt-1 italic">{sub.description}</span>
-                  {/* File preview */}
-                  <div className="flex items-center gap-3 mt-2">
-                    {getFileIcon(sub.submission_file)}
-                    <a
-                      href={sub.submission_file}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150 text-lg"
-                    >
-                      <FaFileAlt className="text-white text-xl" /> View File
-                    </a>
-                  </div>
-                  {/* Actions */}
-                  <div className="flex gap-3 mt-4">
-                    <button
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-60 text-base shadow"
-                      onClick={() => handleApprove(sub)}
-                      disabled={isWriter || loadingId === sub.id}
-                      aria-label="Approve Submission"
-                    >
-                      <FaCheckCircle /> {loadingId === sub.id ? "Approving..." : "Approve"}
-                    </button>
-                    <button
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-500 text-white font-semibold hover:bg-yellow-600 transition text-base shadow"
-                      onClick={() => handleRequestChange(sub)}
-                      disabled={isWriter}
-                      aria-label="Request Change"
-                    >
-                      <FaCommentDots /> Request Change
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )
           )}
         </div>
       </WideDialog>
