@@ -7,6 +7,9 @@ import { Select } from "../../components/ui/select";
 import CreateOrder from "../orders/CreateOrder";
 import { WideDialog } from "../../components/ui/wide-dialog";
 import PayPalModal from "../orders/PayPalModal";
+import AssignmentResponseButtons from "../../components/ui/AssignmentResponseButtons";
+import { useToast } from "../../components/ui/toast";
+import OrderSubmitDialog from "../../components/ui/OrderSubmitDialog";
 
 const ORDER_STATUSES = [
 	{ key: "pending_payment", label: "Pending Payment" },
@@ -22,6 +25,7 @@ const ORDER_STATUSES = [
 
 const MyOrders = () => {
 	const { user } = useAuth();
+	const { showToast } = useToast();
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -32,6 +36,8 @@ const MyOrders = () => {
 	const [payPalModalOpen, setPayPalModalOpen] = useState(false);
 	const [payPalOrderId, setPayPalOrderId] = useState(null);
 	const [payPalAmount, setPayPalAmount] = useState(null);
+	const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
+	const [submitOrderId, setSubmitOrderId] = useState(null);
 	const PAGE_SIZE = 10;
 
 	useEffect(() => {
@@ -97,6 +103,26 @@ const MyOrders = () => {
 			setPayPalAmount(amount);
 			setPayPalModalOpen(true);
 		}, 300);
+	};
+
+	const handleAssignmentResponse = async (orderId, accept) => {
+		const jwt = localStorage.getItem("jwt_token");
+		try {
+			const res = await fetch(`http://localhost:8080/api/writer/orders/${orderId}/assignment-response`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: jwt ? `Bearer ${jwt}` : "",
+				},
+				body: JSON.stringify({ accept }),
+				credentials: "include",
+			});
+			if (!res.ok) throw new Error("Failed to submit response");
+			setOrders((prev) => prev.map(o => o.id === orderId ? { ...o, status: accept ? "assigned" : "awaiting_assignment_rejected" } : o));
+			showToast({ type: "success", message: accept ? "Assignment accepted!" : "Assignment rejected!" });
+		} catch (err) {
+			showToast({ type: "error", message: "Failed to submit response" });
+		}
 	};
 
 	if (!user) {
@@ -285,8 +311,20 @@ const MyOrders = () => {
 														)}
 													</td>
 													<td className="px-4 py-2">
-														{/* Actions: You can add user-specific actions here if needed */}
-														<span className="text-blue-700 font-semibold">View</span>
+														<AssignmentResponseButtons order={order} user={user} onRespond={handleAssignmentResponse} />
+														{order.status === "assigned" && user.roles?.includes("writer") ? (
+															<Button
+																className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+																onClick={() => { setSubmitOrderId(order.id); setSubmitDialogOpen(true); }}
+																title="Submit Order"
+															>
+																<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+																Submit
+															</Button>
+														) : null}
+														{!(order.status === "awaiting_asign_acceptance" && user.roles?.includes("writer")) && order.status !== "assigned" && (
+															<span className="text-blue-700 font-semibold">View</span>
+														)}
 													</td>
 												</tr>
 											))
@@ -343,6 +381,12 @@ const MyOrders = () => {
 						orderId={payPalOrderId}
 						amount={payPalAmount}
 						onSuccess={() => { setPayPalModalOpen(false); window.location.href = "http://localhost:3000/profile"; }}
+					/>
+					<OrderSubmitDialog
+						isOpen={submitDialogOpen}
+						onClose={() => setSubmitDialogOpen(false)}
+						orderId={submitOrderId}
+						onSubmitted={() => setSubmitDialogOpen(false)}
 					/>
 				</>
 			)}

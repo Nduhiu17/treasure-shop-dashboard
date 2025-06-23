@@ -5,6 +5,9 @@ import { Button } from "../../components/ui/button";
 import { Select } from "../../components/ui/select";
 import { useAuth } from "../auth/AuthProvider";
 import Loader from '../../components/ui/Loader';
+import AssignmentResponseButtons from "../../components/ui/AssignmentResponseButtons";
+import { useToast } from "../../components/ui/toast";
+import OrderSubmitDialog from "../../components/ui/OrderSubmitDialog";
 
 const ORDER_STATUSES = [
 	{ key: "pending_payment", label: "Pending Payment" },
@@ -21,7 +24,8 @@ const ORDER_STATUSES = [
 const PAGE_SIZE = 10;
 
 const OrdersManagement = () => {
-	const { api } = useAuth();
+	const { api, user } = useAuth();
+	const { showToast } = useToast();
 	const [activeStatus, setActiveStatus] = useState("pending_payment");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [orders, setOrders] = useState([]);
@@ -33,6 +37,8 @@ const OrdersManagement = () => {
 	const [writers, setWriters] = useState([]);
 	const [writersLoading, setWritersLoading] = useState(false);
 	const [writersError, setWritersError] = useState("");
+	const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
+	const [submitOrderId, setSubmitOrderId] = useState(null);
 
 	useEffect(() => {
 		setLoading(true);
@@ -79,6 +85,26 @@ const OrdersManagement = () => {
 				setWritersError("Failed to fetch writers");
 				setWritersLoading(false);
 			});
+	};
+
+	const handleAssignmentResponse = async (orderId, accept) => {
+		const jwt = localStorage.getItem("jwt_token");
+		try {
+			const res = await fetch(`http://localhost:8080/api/writer/orders/${orderId}/assignment-response`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: jwt ? `Bearer ${jwt}` : "",
+				},
+				body: JSON.stringify({ accept }),
+				credentials: "include",
+			});
+			if (!res.ok) throw new Error("Failed to submit response");
+			setOrders((prev) => prev.map(o => o.id === orderId ? { ...o, status: accept ? "assigned" : "awaiting_assignment_rejected" } : o));
+			showToast({ type: "success", message: accept ? "Assignment accepted!" : "Assignment rejected!" });
+		} catch (err) {
+			showToast({ type: "error", message: "Failed to submit response" });
+		}
 	};
 
 	return (
@@ -196,7 +222,7 @@ const OrdersManagement = () => {
 												Top Writer
 											</span>
 										</th>
-										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
 											<span className="flex items-center gap-1">
 												Price
 											</span>
@@ -256,9 +282,22 @@ const OrdersManagement = () => {
 													)}
 												</td>
 												<td className="px-4 py-2">
-													<Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
-														Assign Writer
-													</Button>
+													<AssignmentResponseButtons order={order} user={user} onRespond={handleAssignmentResponse} />
+													{order.status === "assigned" && user.roles?.includes("writer") ? (
+														<Button
+															className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+															onClick={() => { setSubmitOrderId(order.id); setSubmitDialogOpen(true); }}
+															title="Submit Order"
+														>
+															<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+															Submit
+														</Button>
+													) : null}
+													{!(order.status === "awaiting_asign_acceptance" && user.roles?.includes("writer")) && order.status !== "assigned" && (
+														<Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
+															Assign Writer
+														</Button>
+													)}
 												</td>
 											</tr>
 										))
@@ -398,6 +437,14 @@ const OrdersManagement = () => {
 					</div>
 				</div>
 			)}
+
+			{/* Submit Order Dialog */}
+			<OrderSubmitDialog
+				isOpen={submitDialogOpen}
+				onClose={() => setSubmitDialogOpen(false)}
+				orderId={submitOrderId}
+				onSubmitted={() => setSubmitDialogOpen(false)}
+			/>
 		</Card>
 	);
 };
