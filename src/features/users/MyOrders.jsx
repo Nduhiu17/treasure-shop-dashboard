@@ -10,6 +10,7 @@ import PayPalModal from "../orders/PayPalModal";
 import AssignmentResponseButtons from "../../components/ui/AssignmentResponseButtons";
 import { useToast } from "../../components/ui/toast";
 import OrderSubmitDialog from "../../components/ui/OrderSubmitDialog";
+import OrderSubmissionsDialog from "../../components/ui/OrderSubmissionsDialog";
 
 const ORDER_STATUSES = [
 	{ key: "pending_payment", label: "Pending Payment" },
@@ -38,6 +39,8 @@ const MyOrders = () => {
 	const [payPalAmount, setPayPalAmount] = useState(null);
 	const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
 	const [submitOrderId, setSubmitOrderId] = useState(null);
+	const [submissionsDialogOpen, setSubmissionsDialogOpen] = useState(false);
+	const [submissionsOrderId, setSubmissionsOrderId] = useState(null);
 	const PAGE_SIZE = 10;
 
 	useEffect(() => {
@@ -322,7 +325,17 @@ const MyOrders = () => {
 																Submit
 															</Button>
 														) : null}
-														{!(order.status === "awaiting_asign_acceptance" && user.roles?.includes("writer")) && order.status !== "assigned" && (
+														{order.status === "submitted_for_review" && user.roles?.includes("user") ? (
+															<Button
+																className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold shadow hover:from-cyan-600 hover:to-blue-700 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+																onClick={() => { setSubmissionsOrderId(order.id); setSubmissionsDialogOpen(true); }}
+																title="View Submissions"
+															>
+																<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+																View Submissions
+															</Button>
+														) : null}
+														{!(order.status === "awaiting_asign_acceptance" && user.roles?.includes("writer")) && order.status !== "assigned" && order.status !== "submitted_for_review" && (
 															<span className="text-blue-700 font-semibold">View</span>
 														)}
 													</td>
@@ -387,6 +400,11 @@ const MyOrders = () => {
 						onClose={() => setSubmitDialogOpen(false)}
 						orderId={submitOrderId}
 						onSubmitted={() => setSubmitDialogOpen(false)}
+					/>
+					<OrderSubmissionsDialog
+						isOpen={submissionsDialogOpen}
+						onClose={() => setSubmissionsDialogOpen(false)}
+						writerSubmissions={orders.find(o => o.id === submissionsOrderId)?.writer_submissions || []}
 					/>
 				</>
 			)}
