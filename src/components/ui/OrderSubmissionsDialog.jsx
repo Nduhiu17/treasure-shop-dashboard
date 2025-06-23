@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "./button";
 import { FaFileAlt, FaUser, FaRegClock } from "react-icons/fa";
 
 export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissions = [] }) {
-  const [submissions] = useState(writerSubmissions || []);
   const [loading] = useState(false);
   const [error] = useState("");
 
@@ -27,11 +25,11 @@ export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissi
           <div className="text-center py-8 text-blue-700">Loading submissions...</div>
         ) : error ? (
           <div className="text-center py-8 text-red-600">{error}</div>
-        ) : !submissions || submissions.length === 0 ? (
+        ) : !writerSubmissions || writerSubmissions.length === 0 ? (
           <div className="text-center py-8 text-gray-500">No submissions found for this order.</div>
         ) : (
           <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-            {submissions.map((sub, idx) => (
+            {writerSubmissions.map((sub, idx) => (
               <div key={sub.id || idx} className="border border-blue-100 rounded-xl p-4 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="flex flex-col gap-1">
                   <span className="font-semibold text-blue-900 flex items-center gap-2"><FaUser className="text-blue-400" /> {sub.writer_name || sub.writer_id || "Writer"}</span>

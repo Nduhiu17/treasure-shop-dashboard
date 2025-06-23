@@ -801,6 +801,30 @@ components:
           type: string
           format: date-time
           description: Last update timestamp
+        writer_submissions:
+          type: array
+          description: List of submissions made by the writer for this order
+          items:
+            $ref: '#/components/schemas/OrderSubmission'
+        submission_trials:
+          type: integer
+          description: Number of times the order has been submitted
+    OrderSubmission:
+      type: object
+      properties:
+        id:
+          type: string
+        order_id:
+          type: string
+        submission_date:
+          type: string
+          format: date-time
+        description:
+          type: string
+        submission_file:
+          type: string
+        submission_trial:
+          type: integer
     OrderType:
       type: object
       properties:
