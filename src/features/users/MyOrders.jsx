@@ -5,7 +5,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { Button } from "../../components/ui/button";
 import { Select } from "../../components/ui/select";
 import CreateOrder from "../orders/CreateOrder";
-import { Dialog } from "../../components/ui/dialog";
+import { WideDialog } from "../../components/ui/wide-dialog";
 import PayPalModal from "../orders/PayPalModal";
 
 const ORDER_STATUSES = [
@@ -334,9 +334,9 @@ const MyOrders = () => {
 							</Button>
 						</nav>
 					</div>
-					<Dialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
+					<WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
 						<CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
-					</Dialog>
+					</WideDialog>
 					<PayPalModal
 						isOpen={payPalModalOpen}
 						onClose={() => setPayPalModalOpen(false)}
