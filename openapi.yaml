@@ -655,6 +655,39 @@ paths:
       responses:
         '200':
           description: Order urgency deleted
+  /api/orders/pay:
+    post:
+      summary: Pay for an order (PayPal or Mastercard)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '200':
+          description: Payment successful or PayPal order/capture response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  paypal_order_id:
+                    type: string
+                  status:
+                    type: string
+                  error:
+                    type: string
+                  details:
+                    type: string
+        '400':
+          description: Bad request
+        '500':
+          description: Payment failed
 components:
   securitySchemes:
     bearerAuth:
@@ -846,3 +879,20 @@ components:
           type: string
         description:
           type: string
+    PaymentRequest:
+      type: object
+      properties:
+        order_id:
+          type: string
+          description: The order to pay for
+        method:
+          type: string
+          enum: [paypal, paypal_capture, mastercard]
+          description: Payment method
+        payment_info:
+          type: object
+          description: Payment gateway-specific info (card details, PayPal token, etc)
+      required:
+        - order_id
+        - method
+        - payment_info

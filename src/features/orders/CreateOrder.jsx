@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import Loader from "../../components/ui/Loader";
+import PayPalModal from "./PayPalModal";
 
 const API_BASE = "http://localhost:8080/api";
-const PAY_API = "http://localhost:8080/orders/pay";
 
 const fetchOptions = async (endpoint) => {
   const jwt = localStorage.getItem("jwt_token");
@@ -26,99 +26,6 @@ const booleanFields = [
   { key: "full_text_copy_sources", label: "Full Text Copy Sources" },
   { key: "same_paper_from_another_writer", label: "Same Paper from Another Writer" }
 ];
-
-function PaySection({ orderId, amount, onSuccess }) {
-  const [paying, setPaying] = useState(false);
-  const [error, setError] = useState("");
-  const paypalRef = useRef();
-
-  useEffect(() => {
-    let script;
-    const paypalNode = paypalRef.current;
-    function renderPayPal() {
-      if (!paypalNode) return;
-      paypalNode.innerHTML = "";
-      if (window.paypal) {
-        window.paypal.Buttons({
-          createOrder: (data, actions) => actions.order.create({
-            purchase_units: [{ amount: { value: amount.toFixed(2) } }],
-          }),
-          onApprove: async (data, actions) => {
-            setPaying(true);
-            try {
-              await actions.order.capture();
-              await fetch(PAY_API, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ orderId, method: "paypal", status: "success" })
-              });
-              onSuccess();
-            } catch (e) {
-              setError("Payment failed. Please try again.");
-            } finally {
-              setPaying(false);
-            }
-          },
-          onError: () => setError("PayPal payment failed. Try again."),
-        }).render(paypalNode);
-      }
-    }
-    if (!window.paypal) {
-      script = document.createElement("script");
-      script.src = "https://www.paypal.com/sdk/js?client-id=sb&currency=USD";
-      script.async = true;
-      script.onload = renderPayPal;
-      script.onerror = () => setError("Failed to load PayPal. Try again later.");
-      document.body.appendChild(script);
-    } else {
-      renderPayPal();
-    }
-    return () => {
-      if (paypalNode) paypalNode.innerHTML = "";
-      if (script) script.remove();
-    };
-    // eslint-disable-next-line
-  }, [orderId, amount]);
-
-  // Demo MasterCard (Stripe/etc) logic
-  const handleMasterCard = async () => {
-    setPaying(true);
-    setError("");
-    setTimeout(async () => {
-      try {
-        await fetch(PAY_API, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ orderId, method: "mastercard", status: "success" })
-        });
-        onSuccess();
-      } catch {
-        setError("MasterCard payment failed. Try again.");
-      } finally {
-        setPaying(false);
-      }
-    }, 1500);
-  };
-
-  return (
-    <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200 text-center">
-      <h3 className="text-xl font-bold text-blue-900 mb-4">Pay for Your Order</h3>
-      <div className="mb-4 text-lg text-blue-800">Amount: <span className="font-bold">${amount.toFixed(2)}</span> USD</div>
-      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-        <div ref={paypalRef} className="w-56" />
-        <Button
-          onClick={handleMasterCard}
-          disabled={paying}
-          className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold px-6 py-3 rounded-xl shadow hover:from-yellow-600 hover:to-yellow-700"
-        >
-          Pay with MasterCard
-        </Button>
-      </div>
-      {paying && <div className="mt-4 text-blue-600">Processing payment...</div>}
-      {error && <div className="mt-4 text-red-600">{error}</div>}
-    </div>
-  );
-}
 
 const CreateOrder = () => {
   const [loading, setLoading] = useState(false);
@@ -331,7 +238,13 @@ const CreateOrder = () => {
       <Card className="w-full max-w-3xl md:max-w-4xl lg:max-w-5xl p-2 sm:p-6 md:p-10 shadow-2xl border-0 bg-white/95 rounded-3xl">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 mb-6 text-center tracking-tight">Create New Order</h2>
         {showPay && orderId && !paid ? (
-          <PaySection orderId={orderId} amount={form.price} onSuccess={() => setPaid(true)} />
+          <PayPalModal
+            isOpen={showPay}
+            onClose={() => setShowPay(false)}
+            orderId={orderId}
+            amount={form.price}
+            onSuccess={() => setPaid(true)}
+          />
         ) : paid ? (
           <div className="text-green-700 text-xl font-bold text-center my-12">Payment successful! Thank you for your order.</div>
         ) : (
