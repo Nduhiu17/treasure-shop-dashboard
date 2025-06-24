@@ -172,7 +172,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
       {/* Header */}
       <header className="bg-white shadow-sm py-2 px-2 xs:px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50 w-full">
         <div className="flex items-center gap-2 w-full">
