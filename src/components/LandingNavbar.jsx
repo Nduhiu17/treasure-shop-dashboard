@@ -419,7 +419,7 @@ export default function LandingNavbar({ user, onLogout }) {
 											<div className="text-blue-700 text-sm">{user.email}</div>
 										</div>
 									</div>
-									<Button className="w-full bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2" onClick={() => { setProfileOpen(false); window.location.href = 'http://localhost:3000/profile'; }}>My Orders</Button>
+									<Button className="w-full bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2" onClick={() => { setProfileOpen(false); navigate('/my-orders'); }}>My Orders</Button>
 									<hr className="my-2 border-blue-100" />
 									<Button className="w-full bg-red-50 text-red-700 font-semibold px-4 py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2" onClick={() => { setProfileOpen(false); if (onLogout) onLogout(); navigate('/'); }}>Logout</Button>
 								</div>
@@ -452,7 +452,7 @@ export default function LandingNavbar({ user, onLogout }) {
 				onClose={() => setPayPalModalOpen(false)}
 				orderId={payPalOrderId}
 				amount={payPalAmount}
-				onSuccess={() => { setPayPalModalOpen(false); window.location.href = "http://localhost:3000/profile"; }}
+				onSuccess={() => { setPayPalModalOpen(false); navigate('/my-orders'); }}
 			/>
 		</header>
 	);

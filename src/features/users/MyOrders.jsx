@@ -11,6 +11,7 @@ import AssignmentResponseButtons from "../../components/ui/AssignmentResponseBut
 import { useToast } from "../../components/ui/toast";
 import OrderSubmitDialog from "../../components/ui/OrderSubmitDialog";
 import OrderSubmissionsDialog from "../../components/ui/OrderSubmissionsDialog";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -44,6 +45,7 @@ const MyOrders = () => {
 	const [submissionsDialogOpen, setSubmissionsDialogOpen] = useState(false);
 	const [submissionsOrderId, setSubmissionsOrderId] = useState(null);
 	const PAGE_SIZE = 10;
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!user) return;
@@ -395,7 +397,7 @@ const MyOrders = () => {
 						onClose={() => setPayPalModalOpen(false)}
 						orderId={payPalOrderId}
 						amount={payPalAmount}
-						onSuccess={() => { setPayPalModalOpen(false); window.location.href = "http://localhost:3000/profile"; }}
+						onSuccess={() => { setPayPalModalOpen(false); navigate('/my-orders'); }}
 					/>
 					<OrderSubmitDialog
 						isOpen={submitDialogOpen}
