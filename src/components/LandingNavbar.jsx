@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import LoginPage from "../features/auth/LoginPage";
+import RegisterPage from "../features/auth/RegisterPage";
 import CreateOrder from "../features/orders/CreateOrder";
 import PayPalModal from "../features/orders/PayPalModal";
 import { Dialog } from "./ui/dialog";
@@ -44,6 +45,7 @@ export default function LandingNavbar({ user, onLogout }) {
 	const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false); // mobile menu
 	const [mobileMenuServicesOpen, setMobileMenuServicesOpen] = React.useState(false);
 	const [loginModalOpen, setLoginModalOpen] = React.useState(false);
+	const [registerModalOpen, setRegisterModalOpen] = React.useState(false);
 	const [pendingOrder, setPendingOrder] = React.useState(false);
 	const [createOrderModalOpen, setCreateOrderModalOpen] = React.useState(false);
 	const [payPalModalOpen, setPayPalModalOpen] = React.useState(false);
@@ -153,6 +155,12 @@ export default function LandingNavbar({ user, onLogout }) {
 			setPayPalAmount(amount);
 			setPayPalModalOpen(true);
 		}, 300);
+	};
+
+	// Pass this to LoginPage so it can trigger register modal
+	const handleOpenRegister = () => {
+		setLoginModalOpen(false);
+		setTimeout(() => setRegisterModalOpen(true), 200); // slight delay for smooth transition
 	};
 
 	return (
@@ -438,7 +446,13 @@ export default function LandingNavbar({ user, onLogout }) {
 			{/* Login Modal */}
 			{loginModalOpen && (
 				<Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
-					<LoginPage asModal onSuccess={handleLoginSuccess} />
+					<LoginPage asModal onSuccess={handleLoginSuccess} onClose={() => setLoginModalOpen(false)} onOpenRegister={handleOpenRegister} />
+				</Dialog>
+			)}
+			{/* Register Modal */}
+			{registerModalOpen && (
+				<Dialog isOpen={registerModalOpen} onClose={() => setRegisterModalOpen(false)} title="Register">
+					<RegisterPage open={registerModalOpen} onClose={() => setRegisterModalOpen(false)} onSwitchToLogin={() => { setRegisterModalOpen(false); setTimeout(() => setLoginModalOpen(true), 200); }} asModal />
 				</Dialog>
 			)}
 			{/* Create Order Modal */}

@@ -5,7 +5,7 @@ import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import RegisterPage from './RegisterPage';
 
-const LoginPage = ({ asModal = false, onSuccess, open, onClose }) => {
+const LoginPage = ({ asModal = false, onSuccess, open, onClose, onOpenRegister }) => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,28 +65,16 @@ const LoginPage = ({ asModal = false, onSuccess, open, onClose }) => {
       </form>
       <div className="text-center text-blue-700 font-medium">
         Don't have an account?{' '}
-        <button type="button" className="underline hover:text-blue-900 font-bold" onClick={asModal ? () => setModalType('register') : handleOpenRegister}>
+        <button type="button" className="underline hover:text-blue-900 font-bold" onClick={asModal && onOpenRegister ? onOpenRegister : handleOpenRegister}>
           Register
         </button>
       </div>
     </div>
   );
 
-  // If asModal, only render the login form and handle register modal locally
+  // If asModal, only render the login form. Do not render RegisterPage here; parent should handle opening it.
   if (asModal) {
-    return (
-      <>
-        {loginForm}
-        {/* Register modal overlay (local to login modal) */}
-        {modalType === 'register' && (
-          <RegisterPage
-            open={true}
-            onClose={() => setModalType(null)}
-            onSwitchToLogin={() => setModalType(null)}
-          />
-        )}
-      </>
-    );
+    return loginForm;
   }
 
   // Standalone page/modal switching logic
