@@ -3,7 +3,7 @@ import { Dialog } from "../../components/ui/dialog";
 import Loader from "../../components/ui/Loader";
 import { Button } from "../../components/ui/button";
 
-const PAY_API = "http://localhost:8080/api/orders/pay";
+const PAY_API = process.env.REACT_APP_API_BASE_URL + '/api/orders/pay';
 
 export default function PayPalModal({ isOpen, onClose, orderId, amount, onSuccess }) {
   const [paying, setPaying] = useState(false);

@@ -3,7 +3,7 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import Loader from "../../components/ui/Loader";
 
-const API_BASE = "http://localhost:8080/api";
+const API_BASE = process.env.REACT_APP_API_BASE_URL + '/api';
 
 const fetchOptions = async (endpoint) => {
   const jwt = localStorage.getItem("jwt_token");

@@ -9,6 +9,8 @@ import AssignmentResponseButtons from "../../components/ui/AssignmentResponseBut
 import { useToast } from "../../components/ui/toast";
 import OrderSubmitDialog from "../../components/ui/OrderSubmitDialog";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const ORDER_STATUSES = [
 	{ key: "pending_payment", label: "Pending Payment" },
 	{ key: "paid", label: "Paid" },
@@ -69,7 +71,7 @@ const OrdersManagement = () => {
 		setWritersLoading(true);
 		// Fetch writers from backend
 		const jwt = localStorage.getItem('jwt_token');
-		fetch("http://localhost:8080/api/admin/users?role=writer", {
+		fetch(`${API_BASE_URL}/api/admin/users?role=writer`, {
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
@@ -90,7 +92,7 @@ const OrdersManagement = () => {
 	const handleAssignmentResponse = async (orderId, accept) => {
 		const jwt = localStorage.getItem("jwt_token");
 		try {
-			const res = await fetch(`http://localhost:8080/api/writer/orders/${orderId}/assignment-response`, {
+			const res = await fetch(`${API_BASE_URL}/api/writer/orders/${orderId}/assignment-response`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -402,7 +404,7 @@ const OrdersManagement = () => {
 													onClick={async () => {
 														const jwt = localStorage.getItem('jwt_token');
 														try {
-															const res = await fetch(`http://localhost:8080/api/admin/orders/${selectedOrder.id}/assign`, {
+															const res = await fetch(`${API_BASE_URL}/api/admin/orders/${selectedOrder.id}/assign`, {
 																method: 'PUT',
 																headers: {
 																	'Content-Type': 'application/json',

@@ -3,6 +3,8 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useToast } from "../../components/ui/toast";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const OrderStyles = () => {
   const { showToast } = useToast();
   const [orderStyles, setOrderStyles] = useState([]);
@@ -16,7 +18,7 @@ const OrderStyles = () => {
   const fetchOrderStyles = () => {
     setLoading(true);
     setError("");
-    fetch("http://localhost:8080/api/order-styles")
+    fetch(`${API_BASE_URL}/api/order-styles`)
       .then((res) => res.json())
       .then((data) => setOrderStyles(data))
       .catch((err) => setError("Failed to fetch order styles"))
@@ -39,7 +41,7 @@ const OrderStyles = () => {
     }
     try {
       const jwt = localStorage.getItem("jwt_token");
-      const res = await fetch("http://localhost:8080/api/admin/order-styles", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-styles`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

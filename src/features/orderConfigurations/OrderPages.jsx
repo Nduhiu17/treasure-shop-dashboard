@@ -3,6 +3,8 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useToast } from "../../components/ui/toast";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const OrderPages = () => {
   const { showToast } = useToast();
   const [orderPages, setOrderPages] = useState([]);
@@ -16,7 +18,7 @@ const OrderPages = () => {
   const fetchOrderPages = () => {
     setLoading(true);
     setError("");
-    fetch("http://localhost:8080/api/order-pages")
+    fetch(`${API_BASE_URL}/api/order-pages`)
       .then((res) => res.json())
       .then((data) => setOrderPages(data))
       .catch((err) => setError("Failed to fetch order pages"))
@@ -39,7 +41,7 @@ const OrderPages = () => {
     }
     try {
       const jwt = localStorage.getItem("jwt_token");
-      const res = await fetch("http://localhost:8080/api/admin/order-pages", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-pages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

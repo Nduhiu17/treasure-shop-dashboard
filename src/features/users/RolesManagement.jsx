@@ -5,6 +5,8 @@ import Loader from "../../components/ui/Loader";
 import { Dialog } from "../../components/ui/dialog";
 import { useToast } from "../../components/ui/toast";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const RolesManagement = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +22,7 @@ const RolesManagement = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:8080/api/admin/roles", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/roles`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: jwt ? `Bearer ${jwt}` : ""
@@ -46,7 +48,7 @@ const RolesManagement = () => {
     setCreating(true);
     try {
       const payload = { name: form.name, description: form.description };
-      const res = await fetch("http://localhost:8080/api/admin/roles", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/roles`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

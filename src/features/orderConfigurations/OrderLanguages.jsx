@@ -3,6 +3,8 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useToast } from "../../components/ui/toast";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const OrderLanguages = () => {
   const { showToast } = useToast();
   const [orderLanguages, setOrderLanguages] = useState([]);
@@ -16,7 +18,7 @@ const OrderLanguages = () => {
   const fetchOrderLanguages = () => {
     setLoading(true);
     setError("");
-    fetch("http://localhost:8080/api/order-languages")
+    fetch(`${API_BASE_URL}/api/order-languages`)
       .then((res) => res.json())
       .then((data) => setOrderLanguages(data))
       .catch((err) => setError("Failed to fetch order languages"))
@@ -39,7 +41,7 @@ const OrderLanguages = () => {
     }
     try {
       const jwt = localStorage.getItem("jwt_token");
-      const res = await fetch("http://localhost:8080/api/admin/order-languages", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-languages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

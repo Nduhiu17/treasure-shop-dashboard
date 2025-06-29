@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext, useCallback } from 'react';
 import { useToast } from '../../components/ui/toast';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export const AuthContext = createContext(null);
 
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   // Updated login to use API
   const login = useCallback(async (email, password) => {
-    const response = await fetch('http://localhost:8080/auth/login', {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

@@ -3,6 +3,8 @@ import { Button } from "./button";
 import { useToast } from "./toast";
 import { FaUpload, FaFileAlt, FaPaperPlane } from "react-icons/fa";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 export default function OrderSubmitDialog({ isOpen, onClose, orderId, onSubmitted }) {
   const { showToast } = useToast();
   const [file, setFile] = useState(null);
@@ -25,7 +27,7 @@ export default function OrderSubmitDialog({ isOpen, onClose, orderId, onSubmitte
       const formData = new FormData();
       formData.append("file", file);
       const jwt = localStorage.getItem("jwt_token");
-      const uploadRes = await fetch("http://localhost:8080/api/upload", {
+      const uploadRes = await fetch(`${API_BASE_URL}/api/upload`, {
         method: "POST",
         headers: {
           Authorization: jwt ? `Bearer ${jwt}` : "",
@@ -36,7 +38,7 @@ export default function OrderSubmitDialog({ isOpen, onClose, orderId, onSubmitte
       if (!uploadRes.ok) throw new Error("File upload failed");
       const { url } = await uploadRes.json();
       // 2. Submit order
-      const submitRes = await fetch(`http://localhost:8080/api/writer/orders/${orderId}/submit`, {
+      const submitRes = await fetch(`${API_BASE_URL}/api/writer/orders/${orderId}/submit`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

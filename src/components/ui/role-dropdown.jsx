@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 export default function RoleDropdown({ userId, onAssign }) {
   const [open, setOpen] = useState(false);
   const [roles, setRoles] = useState([]);
@@ -9,7 +11,7 @@ export default function RoleDropdown({ userId, onAssign }) {
   useEffect(() => {
     if (!open) return;
     setLoading(true);
-    fetch("http://localhost:8080/api/admin/roles", {
+    fetch(`${API_BASE_URL}/api/admin/roles`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("jwt_token") ? `Bearer ${localStorage.getItem("jwt_token")}` : ""

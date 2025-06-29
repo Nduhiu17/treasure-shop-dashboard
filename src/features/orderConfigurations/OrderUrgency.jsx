@@ -3,6 +3,8 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useToast } from "../../components/ui/toast";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const OrderUrgency = () => {
   const { showToast } = useToast();
   const [orderUrgency, setOrderUrgency] = useState([]);
@@ -16,7 +18,7 @@ const OrderUrgency = () => {
   const fetchOrderUrgency = () => {
     setLoading(true);
     setError("");
-    fetch("http://localhost:8080/api/order-urgency")
+    fetch(`${API_BASE_URL}/api/order-urgency`)
       .then((res) => res.json())
       .then((data) => setOrderUrgency(data))
       .catch((err) => setError("Failed to fetch order urgency"))
@@ -39,7 +41,7 @@ const OrderUrgency = () => {
     }
     try {
       const jwt = localStorage.getItem("jwt_token");
-      const res = await fetch("http://localhost:8080/api/admin/order-urgency", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-urgency`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

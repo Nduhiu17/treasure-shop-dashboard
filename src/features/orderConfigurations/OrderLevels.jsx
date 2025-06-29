@@ -3,6 +3,8 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useToast } from "../../components/ui/toast";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const OrderLevels = () => {
   const { showToast } = useToast();
   const [orderLevels, setOrderLevels] = useState([]);
@@ -16,7 +18,7 @@ const OrderLevels = () => {
   const fetchOrderLevels = () => {
     setLoading(true);
     setError("");
-    fetch("http://localhost:8080/api/order-levels")
+    fetch(`${API_BASE_URL}/api/order-levels`)
       .then((res) => res.json())
       .then((data) => setOrderLevels(data))
       .catch((err) => setError("Failed to fetch order levels"))
@@ -39,7 +41,7 @@ const OrderLevels = () => {
     }
     try {
       const jwt = localStorage.getItem("jwt_token");
-      const res = await fetch("http://localhost:8080/api/admin/order-levels", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-levels`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

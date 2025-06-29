@@ -12,6 +12,8 @@ import { useToast } from "../../components/ui/toast";
 import OrderSubmitDialog from "../../components/ui/OrderSubmitDialog";
 import OrderSubmissionsDialog from "../../components/ui/OrderSubmissionsDialog";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const ORDER_STATUSES = [
 	{ key: "pending_payment", label: "Pending Payment" },
 	{ key: "paid", label: "Paid" },
@@ -49,18 +51,18 @@ const MyOrders = () => {
 		setError("");
 		const jwt = localStorage.getItem("jwt_token");
 		const roles = user.roles || [];
-		let url = `http://localhost:8080/api/admin/orders?page=${currentPage}&page_size=${PAGE_SIZE}`;
+		let url = `${API_BASE_URL}/api/admin/orders?page=${currentPage}&page_size=${PAGE_SIZE}`;
 		if (roles.includes("super_admin") || roles.includes("admin")) {
 			if (activeStatus) {
 				url += `&status=${activeStatus}`;
 			}
 		} else if (roles.includes("writer")) {
-			url = `http://localhost:8080/api/writer/orders/${user.id}?page=${currentPage}&page_size=${PAGE_SIZE}`;
+			url = `${API_BASE_URL}/api/writer/orders/${user.id}?page=${currentPage}&page_size=${PAGE_SIZE}`;
 			if (activeStatus) {
 				url += `&status=${activeStatus}`;
 			}
 		} else if (roles.length === 1 && roles[0] === "user") {
-			url = `http://localhost:8080/api/orders/me?page=${currentPage}&page_size=${PAGE_SIZE}`;
+			url = `${API_BASE_URL}/api/orders/me?page=${currentPage}&page_size=${PAGE_SIZE}`;
 			if (activeStatus) {
 				url += `&status=${activeStatus}`;
 			}
@@ -111,7 +113,7 @@ const MyOrders = () => {
 	const handleAssignmentResponse = async (orderId, accept) => {
 		const jwt = localStorage.getItem("jwt_token");
 		try {
-			const res = await fetch(`http://localhost:8080/api/writer/orders/${orderId}/assignment-response`, {
+			const res = await fetch(`${API_BASE_URL}/api/writer/orders/${orderId}/assignment-response`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -409,18 +411,18 @@ const MyOrders = () => {
 							// refetch orders after approve or feedback
 							const jwt = localStorage.getItem("jwt_token");
 							const roles = user.roles || [];
-							let url = `http://localhost:8080/api/admin/orders?page=${currentPage}&page_size=${PAGE_SIZE}`;
+							let url = `${API_BASE_URL}/api/admin/orders?page=${currentPage}&page_size=${PAGE_SIZE}`;
 							if (roles.includes("super_admin") || roles.includes("admin")) {
 								if (activeStatus) {
 									url += `&status=${activeStatus}`;
 								}
 							} else if (roles.includes("writer")) {
-								url = `http://localhost:8080/api/writer/orders/${user.id}?page=${currentPage}&page_size=${PAGE_SIZE}`;
+								url = `${API_BASE_URL}/api/writer/orders/${user.id}?page=${currentPage}&page_size=${PAGE_SIZE}`;
 								if (activeStatus) {
 									url += `&status=${activeStatus}`;
 								}
 							} else if (roles.length === 1 && roles[0] === "user") {
-								url = `http://localhost:8080/api/orders/me?page=${currentPage}&page_size=${PAGE_SIZE}`;
+								url = `${API_BASE_URL}/api/orders/me?page=${currentPage}&page_size=${PAGE_SIZE}`;
 								if (activeStatus) {
 									url += `&status=${activeStatus}`;
 								}

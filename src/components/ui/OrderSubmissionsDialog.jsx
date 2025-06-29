@@ -37,6 +37,8 @@ function StatusChip({ status }) {
   return <span className={`px-3 py-1 rounded-full text-xs font-bold ${color}`}>{label}</span>;
 }
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissions = [], onAction }) {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
@@ -54,7 +56,7 @@ export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissi
     setLoadingId(sub.id);
     try {
       const jwt = localStorage.getItem("jwt_token");
-      const res = await fetch(`http://localhost:8080/api/orders/${sub.order_id}/review/approve`, {
+      const res = await fetch(`${API_BASE_URL}/api/orders/${sub.order_id}/review/approve`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +94,7 @@ export default function OrderSubmissionsDialog({ isOpen, onClose, writerSubmissi
     setLoadingId(selectedSubmission.id);
     try {
       const jwt = localStorage.getItem("jwt_token");
-      const res = await fetch(`http://localhost:8080/api/orders/${selectedSubmission.order_id}/review/feedback`, {
+      const res = await fetch(`${API_BASE_URL}/api/orders/${selectedSubmission.order_id}/review/feedback`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

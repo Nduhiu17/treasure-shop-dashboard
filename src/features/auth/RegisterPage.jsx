@@ -3,6 +3,8 @@ import { Dialog } from "../../components/ui/dialog";
 import { Button } from "../../components/ui/button";
 import { useToast } from "../../components/ui/toast";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }) {
   const [form, setForm] = useState({
     email: "",
@@ -26,7 +28,7 @@ export default function RegisterPage({ open, onClose, onSwitchToLogin, asModal }
     setError("");
     setSuccess(false);
     try {
-      const res = await fetch("http://localhost:8080/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

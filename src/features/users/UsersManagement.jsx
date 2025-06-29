@@ -17,6 +17,8 @@ const ROLES = [
 
 const PAGE_SIZE = 10;
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const UsersManagement = ({ currentSubPage }) => {
 	const { api } = useAuth();
 	const { showToast } = useToast();
@@ -46,7 +48,7 @@ const UsersManagement = ({ currentSubPage }) => {
 
 	const handleAssignRole = async (userId, role) => {
 		try {
-			const res = await fetch("http://localhost:8080/api/admin/user-roles/assign", {
+			const res = await fetch(`${API_BASE_URL}/api/admin/user-roles/assign`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

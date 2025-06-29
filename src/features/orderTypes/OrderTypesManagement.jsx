@@ -6,6 +6,7 @@ import { Dialog } from "../../components/ui/dialog";
 import { useToast } from "../../components/ui/toast";
 
 const PAGE_SIZE = 10;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const OrderTypesManagement = () => {
   const { api } = useAuth();
@@ -49,7 +50,7 @@ const OrderTypesManagement = () => {
     }
     try {
       const jwt = localStorage.getItem("jwt_token");
-      const res = await fetch("http://localhost:8080/api/admin/order-types", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-types`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
