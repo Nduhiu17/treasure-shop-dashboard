@@ -224,16 +224,16 @@ export default function NewOrderPage() {
                   <li>Outline: {summary.outline}</li>
                 </ul>
                 <div className="text-lg font-bold text-blue-900 mb-4">Total: USD {summary.total}</div>
-                <div className="mb-4">
-                  <div className="font-semibold text-blue-800 mb-1">Alternative payment option</div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <input type="radio" id="card" name="payment" defaultChecked />
-                    <label htmlFor="card" className="text-blue-900">Credit/debit card</label>
-                  </div>
-                  <div className="text-xs text-blue-500">We keep your information and payment data safe</div>
-                </div>
               </div>
-              <button className="w-full mt-4 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 text-lg">Checkout</button>
+              {/* PayWithPayPal at the bottom of the right column */}
+              <div className="mt-2">
+                <PayWithPayPal 
+                  orderId={createdOrder?.id}
+                  amount={createdOrder?.price || price}
+                  onSuccess={() => setOrderStep("done")}
+                  onCancel={() => setOrderStep("form")}
+                />
+              </div>
             </div>
           </div>
         )}
