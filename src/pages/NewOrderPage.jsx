@@ -114,125 +114,119 @@ export default function NewOrderPage() {
           </div>
         </div>
       </nav>
-      {/* Step Description below nav, far left */}
-      {orderStep === "form" && (
-        <div className="w-[80vw] max-w-7xl mx-auto flex flex-row">
-          <div className="mt-4 mb-2" style={{width: '70%'}}>
-            <span className="inline-block bg-blue-100 text-blue-800 text-base font-semibold px-6 py-3 rounded-xl shadow-sm border border-blue-200">
-              {step === 1 && "Select your type of work and deadline"}
-              {step === 2 && "Describe your task"}
-              {step === 3 && "Finalize your order"}
-            </span>
-          </div>
-        </div>
-      )}
       <main className="flex-1 px-4 py-12 w-[80vw] max-w-7xl mx-auto animate-fade-in">
         {orderStep === "form" && (
-          <div className="w-full flex flex-row gap-10 mx-auto mt-8 mb-16 animate-fade-in-up">
-            {/* Left column: 70% */}
-            <div className="flex-1 min-w-0 max-w-[70%] bg-white rounded-2xl shadow-2xl border border-blue-200 p-6 sm:p-10 relative flex flex-col">
-              <button
-                className="absolute top-4 right-4 text-blue-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
-                aria-label="Close order form"
-                onClick={() => navigate(-1)}
-              >
-                &times;
-              </button>
-              {/* <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 mb-6 text-center">Create Your Order</h2> */}
-              {/* ...existing code... */}
-              {/* <div className="mt-8" /> */}
-              {/* Step 1 */}
-              {step === 1 && (
-                <div className="flex flex-col gap-6">
-                  <input className="input" placeholder="Order Title" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))} />
-                  <input className="input" placeholder="Preferred Writer Number" value={form.preferred_writer_number} onChange={e=>setForm(f=>({...f,preferred_writer_number:e.target.value}))} />
-                  <select className="input" value={form.order_type_id} onChange={e=>setForm(f=>({...f,order_type_id:e.target.value}))}>
-                    <option value="">Select Order Type</option>
-                    {options.orderTypes.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                  </select>
-                  <select className="input" value={form.order_level_id} onChange={e=>setForm(f=>({...f,order_level_id:e.target.value}))}>
-                    <option value="">Select Order Level</option>
-                    {options.levels.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                  </select>
-                  <select className="input" value={form.order_pages_id} onChange={e=>setForm(f=>({...f,order_pages_id:e.target.value}))}>
-                    <option value="">Select Page Count</option>
-                    {options.pages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                  </select>
-                  <select className="input" value={form.order_urgency_id} onChange={e=>setForm(f=>({...f,order_urgency_id:e.target.value}))}>
-                    <option value="">Select Urgency</option>
-                    {options.urgency.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                  </select>
-                  <button className="btn-primary mt-4" onClick={()=>setStep(2)}>Next</button>
-                </div>
-              )}
-              {/* Step 2 */}
-              {step === 2 && (
-                <div className="flex flex-col gap-6">
-                  <textarea className="input" placeholder="Order Description" value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
-                  <input className="input" type="file" onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
-                  <select className="input" value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
-                    <option value="">Select Order Style</option>
-                    {options.styles.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                  </select>
-                  <input className="input" placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
-                  <div className="flex gap-4 mt-4">
-                    <button className="btn-secondary" onClick={()=>setStep(1)}><span className="mr-2">&#8592;</span>Go Back</button>
-                    <button className="btn-primary" onClick={()=>setStep(3)}>Next</button>
-                  </div>
-                </div>
-              )}
-              {/* Step 3 */}
-              {step === 3 && (
-                <div className="flex flex-col gap-6">
-                  {/* Render all other fields here as needed */}
-                  <label className="flex items-center gap-2"><input type="checkbox" checked={form.simple_language} onChange={e=>setForm(f=>({...f,simple_language:e.target.checked}))}/> Simple language</label>
-                  <label className="flex items-center gap-2"><input type="checkbox" checked={form.sms_updates} onChange={e=>setForm(f=>({...f,sms_updates:e.target.checked}))}/> SMS Updates</label>
-                  <label className="flex items-center gap-2"><input type="checkbox" checked={form.copy_of_sources} onChange={e=>setForm(f=>({...f,copy_of_sources:e.target.checked}))}/> Copy of sources</label>
-                  <label className="flex items-center gap-2"><input type="checkbox" checked={form.plagiarism_report} onChange={e=>setForm(f=>({...f,plagiarism_report:e.target.checked}))}/> Plagiarism report</label>
-                  <label className="flex items-center gap-2"><input type="checkbox" checked={form.top_writer} onChange={e=>setForm(f=>({...f,top_writer:e.target.checked}))}/> TOP Writer</label>
-                  <label className="flex items-center gap-2"><input type="checkbox" checked={form.title_page} onChange={e=>setForm(f=>({...f,title_page:e.target.checked}))}/> Title page</label>
-                  <label className="flex items-center gap-2"><input type="checkbox" checked={form.bibliography} onChange={e=>setForm(f=>({...f,bibliography:e.target.checked}))}/> Bibliography</label>
-                  <label className="flex items-center gap-2"><input type="checkbox" checked={form.outline} onChange={e=>setForm(f=>({...f,outline:e.target.checked}))}/> Outline</label>
-                  <div className="flex gap-4 mt-4">
-                    <button className="btn-secondary" onClick={()=>setStep(2)}><span className="mr-2">&#8592;</span>Go Back</button>
-                    <button className="btn-primary" onClick={()=>{/* handle submit here */}}>Checkout</button>
-                  </div>
-                </div>
-              )}
-              {/* Go back icon at bottom left */}
-              <button className="absolute left-4 bottom-4 flex items-center text-blue-500 hover:text-blue-700" onClick={()=>step>1?setStep(step-1):navigate(-1)}>
-                <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                Go Back
-              </button>
-            </div>
-            {/* Right column: 30% */}
-            <div className="flex flex-col justify-between max-w-[30%] min-w-[280px] bg-white rounded-2xl shadow-2xl border border-blue-200 p-6">
-              <div>
-                <h3 className="text-xl font-bold mb-4 text-blue-900">Summary</h3>
-                <ul className="text-blue-900 text-sm mb-6">
-                  <li>Type of work: {summary.typeOfWork}</li>
-                  <li>Academic level: {summary.academicLevel}</li>
-                  <li>Page count: {summary.pageCount}</li>
-                  <li>Deadline: {summary.deadline}</li>
-                  <li>Simple language: {summary.simpleLanguage}</li>
-                  <li>SMS Updates: {summary.smsUpdates}</li>
-                  <li>Copy of sources: {summary.copyOfSources}</li>
-                  <li>Plagiarism report: {summary.plagiarismReport}</li>
-                  <li>TOP Writer: {summary.topWriter}</li>
-                  <li>Title page: {summary.titlePage}</li>
-                  <li>Bibliography: {summary.bibliography}</li>
-                  <li>Outline: {summary.outline}</li>
-                </ul>
-                <div className="text-lg font-bold text-blue-900 mb-4">Total: USD {summary.total}</div>
+          <div className="flex flex-col">
+            <div className="flex flex-row">
+              <div className="mt-4 mb-2" style={{width: '70%'}}>
+                <span className="inline-block bg-blue-100 text-blue-800 text-base font-semibold px-6 py-3 rounded-xl shadow-sm border border-blue-200">
+                  {step === 1 && "Select your type of work and deadline"}
+                  {step === 2 && "Describe your task"}
+                  {step === 3 && "Finalize your order"}
+                </span>
               </div>
-              {/* PayWithPayPal at the bottom of the right column */}
-              <div className="mt-2">
-                <PayWithPayPal 
-                  orderId={createdOrder?.id}
-                  amount={createdOrder?.price || price}
-                  onSuccess={() => setOrderStep("done")}
-                  onCancel={() => setOrderStep("form")}
-                />
+            </div>
+            <div className="flex flex-row gap-10 mt-0 mb-16 animate-fade-in-up">
+              {/* Left column: 70% */}
+              <div className="flex-1 min-w-0 max-w-[70%] bg-white rounded-2xl shadow-2xl border border-blue-200 p-6 sm:p-10 relative flex flex-col mt-0">
+                <button
+                  className="absolute top-4 right-4 text-blue-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
+                  aria-label="Close order form"
+                  onClick={() => navigate(-1)}
+                >
+                  &times;
+                </button>
+                {/* Step 1 */}
+                {step === 1 && (
+                  <div className="flex flex-col gap-6">
+                    <input className="input" placeholder="Order Title" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))} />
+                    <input className="input" placeholder="Preferred Writer Number" value={form.preferred_writer_number} onChange={e=>setForm(f=>({...f,preferred_writer_number:e.target.value}))} />
+                    <select className="input" value={form.order_type_id} onChange={e=>setForm(f=>({...f,order_type_id:e.target.value}))}>
+                      <option value="">Select Order Type</option>
+                      {options.orderTypes.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                    </select>
+                    <select className="input" value={form.order_level_id} onChange={e=>setForm(f=>({...f,order_level_id:e.target.value}))}>
+                      <option value="">Select Order Level</option>
+                      {options.levels.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                    </select>
+                    <select className="input" value={form.order_pages_id} onChange={e=>setForm(f=>({...f,order_pages_id:e.target.value}))}>
+                      <option value="">Select Page Count</option>
+                      {options.pages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                    </select>
+                    <select className="input" value={form.order_urgency_id} onChange={e=>setForm(f=>({...f,order_urgency_id:e.target.value}))}>
+                      <option value="">Select Urgency</option>
+                      {options.urgency.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                    </select>
+                    <button className="btn-primary mt-4" onClick={()=>setStep(2)}>Next</button>
+                  </div>
+                )}
+                {step === 2 && (
+                  <div className="flex flex-col gap-6">
+                    <textarea className="input" placeholder="Order Description" value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
+                    <input className="input" type="file" onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
+                    <select className="input" value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
+                      <option value="">Select Order Style</option>
+                      {options.styles.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                    </select>
+                    <input className="input" placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
+                    <div className="flex gap-4 mt-4">
+                      <button className="btn-secondary" onClick={()=>setStep(1)}><span className="mr-2">&#8592;</span>Go Back</button>
+                      <button className="btn-primary" onClick={()=>setStep(3)}>Next</button>
+                    </div>
+                  </div>
+                )}
+                {step === 3 && (
+                  <div className="flex flex-col gap-6">
+                    {/* Render all other fields here as needed */}
+                    <label className="flex items-center gap-2"><input type="checkbox" checked={form.simple_language} onChange={e=>setForm(f=>({...f,simple_language:e.target.checked}))}/> Simple language</label>
+                    <label className="flex items-center gap-2"><input type="checkbox" checked={form.sms_updates} onChange={e=>setForm(f=>({...f,sms_updates:e.target.checked}))}/> SMS Updates</label>
+                    <label className="flex items-center gap-2"><input type="checkbox" checked={form.copy_of_sources} onChange={e=>setForm(f=>({...f,copy_of_sources:e.target.checked}))}/> Copy of sources</label>
+                    <label className="flex items-center gap-2"><input type="checkbox" checked={form.plagiarism_report} onChange={e=>setForm(f=>({...f,plagiarism_report:e.target.checked}))}/> Plagiarism report</label>
+                    <label className="flex items-center gap-2"><input type="checkbox" checked={form.top_writer} onChange={e=>setForm(f=>({...f,top_writer:e.target.checked}))}/> TOP Writer</label>
+                    <label className="flex items-center gap-2"><input type="checkbox" checked={form.title_page} onChange={e=>setForm(f=>({...f,title_page:e.target.checked}))}/> Title page</label>
+                    <label className="flex items-center gap-2"><input type="checkbox" checked={form.bibliography} onChange={e=>setForm(f=>({...f,bibliography:e.target.checked}))}/> Bibliography</label>
+                    <label className="flex items-center gap-2"><input type="checkbox" checked={form.outline} onChange={e=>setForm(f=>({...f,outline:e.target.checked}))}/> Outline</label>
+                    <div className="flex gap-4 mt-4">
+                      <button className="btn-secondary" onClick={()=>setStep(2)}><span className="mr-2">&#8592;</span>Go Back</button>
+                      <button className="btn-primary" onClick={()=>{/* handle submit here */}}>Checkout</button>
+                    </div>
+                  </div>
+                )}
+                {/* Go back icon at bottom left */}
+                <button className="absolute left-4 bottom-4 flex items-center text-blue-500 hover:text-blue-700" onClick={()=>step>1?setStep(step-1):navigate(-1)}>
+                  <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                  Go Back
+                </button>
+              </div>
+              {/* Right column: 30% */}
+              <div className="flex flex-col justify-between max-w-[30%] min-w-[280px] bg-white rounded-2xl shadow-2xl border border-blue-200 p-6" style={{ marginTop: '-40px' }}>
+                <div>
+                  <h3 className="text-xl font-bold mb-4 text-blue-900">Summary</h3>
+                  <ul className="text-blue-900 text-sm mb-6">
+                    <li>Type of work: {summary.typeOfWork}</li>
+                    <li>Academic level: {summary.academicLevel}</li>
+                    <li>Page count: {summary.pageCount}</li>
+                    <li>Deadline: {summary.deadline}</li>
+                    <li>Simple language: {summary.simpleLanguage}</li>
+                    <li>SMS Updates: {summary.smsUpdates}</li>
+                    <li>Copy of sources: {summary.copyOfSources}</li>
+                    <li>Plagiarism report: {summary.plagiarismReport}</li>
+                    <li>TOP Writer: {summary.topWriter}</li>
+                    <li>Title page: {summary.titlePage}</li>
+                    <li>Bibliography: {summary.bibliography}</li>
+                    <li>Outline: {summary.outline}</li>
+                  </ul>
+                  <div className="text-lg font-bold text-blue-900 mb-4">Total: USD {summary.total}</div>
+                </div>
+                {/* PayWithPayPal at the bottom of the right column */}
+                <div className="mt-2">
+                  <PayWithPayPal 
+                    orderId={createdOrder?.id}
+                    amount={createdOrder?.price || price}
+                    onSuccess={() => setOrderStep("done")}
+                    onCancel={() => setOrderStep("form")}
+                  />
+                </div>
               </div>
             </div>
           </div>
