@@ -9,6 +9,7 @@ import { WideDialog } from "../components/ui/wide-dialog";
 import CreateOrder from "../features/orders/CreateOrder";
 import PayPalModal from "../features/orders/PayPalModal";
 import { useNavigate } from "react-router-dom";
+import OrderPriceCalculator from "../components/OrderPriceCalculator";
 
 export default function LandingPage({ user, onLogout }) {
   const { user: authUser } = useAuth();
@@ -53,6 +54,9 @@ export default function LandingPage({ user, onLogout }) {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       <LandingNavbar user={authUser} onLogout={onLogout} />
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
+        <div className="w-full flex justify-center mb-8">
+          <OrderPriceCalculator />
+        </div>
         <section className="max-w-3xl text-center mb-12 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-900 mb-4 leading-tight">
             Academic Excellence, Delivered Fast

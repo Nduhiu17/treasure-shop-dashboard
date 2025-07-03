@@ -3,6 +3,7 @@ import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
+import OrderPriceCalculator from "../components/OrderPriceCalculator";
 
 const SERVICE_DETAILS = {
   "argumentative-essay": {
@@ -210,6 +211,9 @@ export default function ServiceDetailPage() {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       <LandingNavbar user={user} onLogout={logout} />
       <main className="flex-1 px-4 py-12 max-w-3xl mx-auto animate-fade-in">
+        <div className="w-full flex justify-center mb-8">
+          <OrderPriceCalculator />
+        </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-4">{service.title}</h1>
         <p className="text-blue-900 mb-6 text-lg">{service.description}</p>
         <section className="mb-8">
