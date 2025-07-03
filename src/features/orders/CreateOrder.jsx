@@ -233,6 +233,7 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
     <div className="flex justify-center items-center min-h-[60vh] bg-transparent py-2 px-0">
       <Card className="w-full max-w-3xl md:max-w-4xl lg:max-w-5xl p-2 sm:p-6 md:p-10 shadow-2xl border-0 bg-white/95 rounded-3xl">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 mb-6 text-center tracking-tight">Create New Order</h2>
+        {/* Order Price Display removed from top (duplicate) */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex flex-col gap-4">
@@ -325,6 +326,17 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
                     )}
                   </div>
                 )}
+              </div>
+              {/* Order Price Display - below file upload, compact */}
+              <div className="flex justify-center mb-4">
+                <div className="bg-gradient-to-r from-green-400 via-sky-300 to-blue-400 shadow rounded-2xl px-5 py-3 flex flex-col items-center border border-sky-200 animate-fadein">
+                  <span className="uppercase text-xs font-bold text-sky-700 tracking-widest mb-0.5">Estimated Price</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold text-green-700 mb-0.5 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-green-400 animate-bounce-slow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                    ${form.price}
+                  </span>
+                  <span className="text-sky-800 text-xs font-medium">Total for selected options</span>
+                </div>
               </div>
             </div>
             <div className="flex flex-col gap-4">
