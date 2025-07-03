@@ -14,6 +14,7 @@ const OrderLevels = () => {
   const [creating, setCreating] = useState(false);
   const nameRef = useRef();
   const descRef = useRef();
+  const multiplierRef = useRef();
 
   const fetchOrderLevels = () => {
     setLoading(true);
@@ -34,8 +35,14 @@ const OrderLevels = () => {
     setCreating(true);
     const name = nameRef.current.value.trim();
     const description = descRef.current.value.trim();
+    const multiplier = parseFloat(multiplierRef.current.value);
     if (!name) {
       showToast({ message: "Name is required", type: "error" });
+      setCreating(false);
+      return;
+    }
+    if (isNaN(multiplier) || multiplier <= 0) {
+      showToast({ message: "Level price multiplier is required and must be a positive number", type: "error" });
       setCreating(false);
       return;
     }
@@ -47,7 +54,7 @@ const OrderLevels = () => {
           "Content-Type": "application/json",
           Authorization: jwt ? `Bearer ${jwt}` : "",
         },
-        body: JSON.stringify({ name, description }),
+        body: JSON.stringify({ name, description, level_price_multiplier: multiplier }),
       });
       if (!res.ok) throw new Error("Failed to create order level");
       showToast({ message: "Order level created successfully", type: "success" });
@@ -122,21 +129,38 @@ const OrderLevels = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md mx-auto">
             <h3 className="text-lg font-bold mb-4 text-blue-900">Create Order Level</h3>
-            <form onSubmit={handleCreateOrderLevel} className="flex flex-col gap-4">
-              <label className="font-semibold text-blue-900 text-sm sm:text-base">Name
-                <input
-                  ref={nameRef}
-                  type="text"
-                  className="mt-1 w-full rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm"
-                  placeholder="e.g. Undergraduate"
-                  required
-                  disabled={creating}
-                />
-              </label>
-              <label className="font-semibold text-blue-900 text-sm sm:text-base">Description
+            <form onSubmit={handleCreateOrderLevel} className="flex flex-col gap-6 p-4 w-full max-w-lg mx-auto bg-white rounded-2xl shadow-xl border border-blue-100">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+                  Name
+                  <input
+                    ref={nameRef}
+                    type="text"
+                    className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm"
+                    placeholder="e.g. Undergraduate"
+                    required
+                    disabled={creating}
+                  />
+                </label>
+                <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+                  Level Price Multiplier
+                  <input
+                    ref={multiplierRef}
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm"
+                    placeholder="e.g. 1.2"
+                    required
+                    disabled={creating}
+                  />
+                </label>
+              </div>
+              <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+                Description
                 <textarea
                   ref={descRef}
-                  className="mt-1 w-full rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm min-h-[60px] resize-y"
+                  className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm min-h-[60px] resize-y"
                   placeholder="e.g. Undergraduate level work"
                   disabled={creating}
                 />

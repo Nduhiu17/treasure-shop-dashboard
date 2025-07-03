@@ -20,6 +20,7 @@ const OrderTypesManagement = () => {
   const [creating, setCreating] = useState(false);
   const nameRef = useRef();
   const descRef = useRef();
+  const basePriceRef = useRef();
 
   useEffect(() => {
     setLoading(true);
@@ -43,8 +44,14 @@ const OrderTypesManagement = () => {
     setCreating(true);
     const name = nameRef.current.value.trim();
     const description = descRef.current.value.trim();
+    const basePrice = parseFloat(basePriceRef.current.value);
     if (!name) {
       showToast({ message: "Name is required", type: "error" });
+      setCreating(false);
+      return;
+    }
+    if (isNaN(basePrice) || basePrice <= 0) {
+      showToast({ message: "Base price per page is required and must be a positive number", type: "error" });
       setCreating(false);
       return;
     }
@@ -56,7 +63,7 @@ const OrderTypesManagement = () => {
           "Content-Type": "application/json",
           Authorization: jwt ? `Bearer ${jwt}` : "",
         },
-        body: JSON.stringify({ name, description }),
+        body: JSON.stringify({ name, description, base_price_per_page: basePrice }),
       });
       if (!res.ok) throw new Error("Failed to create order type");
       showToast({ message: "Order type created successfully", type: "success" });
@@ -136,21 +143,38 @@ const OrderTypesManagement = () => {
         </div>
       )}
       <Dialog isOpen={dialogOpen} onClose={() => setDialogOpen(false)} title="Create Order Type">
-        <form onSubmit={handleCreateOrderType} className="flex flex-col gap-4 p-2 sm:p-4 w-full max-w-md mx-auto">
-          <label className="font-semibold text-blue-900 text-sm sm:text-base">Name
-            <input
-              ref={nameRef}
-              type="text"
-              className="mt-1 w-full rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm"
-              placeholder="e.g. Science and Engineering"
-              required
-              disabled={creating}
-            />
-          </label>
-          <label className="font-semibold text-blue-900 text-sm sm:text-base">Description
+        <form onSubmit={handleCreateOrderType} className="flex flex-col gap-6 p-4 w-full max-w-lg mx-auto bg-white rounded-2xl shadow-xl border border-blue-100">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+              Name
+              <input
+                ref={nameRef}
+                type="text"
+                className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm"
+                placeholder="e.g. Science and Engineering"
+                required
+                disabled={creating}
+              />
+            </label>
+            <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+              Base Price Per Page ($)
+              <input
+                ref={basePriceRef}
+                type="number"
+                step="0.01"
+                min="0.01"
+                className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm"
+                placeholder="e.g. 12.50"
+                required
+                disabled={creating}
+              />
+            </label>
+          </div>
+          <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+            Description
             <textarea
               ref={descRef}
-              className="mt-1 w-full rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm min-h-[80px] resize-y"
+              className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm min-h-[80px] resize-y"
               placeholder="e.g. STEM projects"
               disabled={creating}
             />
