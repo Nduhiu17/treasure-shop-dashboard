@@ -4,7 +4,7 @@ import { Button } from "../components/ui/button";
 import LoginPage from "../features/auth/LoginPage";
 import RegisterPage from "../features/auth/RegisterPage";
 import CreateOrder from "../features/orders/CreateOrder";
-import PayPalModal from "../features/orders/PayPalModal";
+// import PayPalModal from "../features/orders/PayPalModal"; // Removed: PayPal flow deprecated
 import { Dialog } from "./ui/dialog";
 import { WideDialog } from "../components/ui/wide-dialog";
 
@@ -48,7 +48,7 @@ export default function LandingNavbar({ user, onLogout }) {
 	const [registerModalOpen, setRegisterModalOpen] = React.useState(false);
 	const [pendingOrder, setPendingOrder] = React.useState(false);
 	const [createOrderModalOpen, setCreateOrderModalOpen] = React.useState(false);
-	const [payPalModalOpen, setPayPalModalOpen] = React.useState(false);
+// const [payPalModalOpen, setPayPalModalOpen] = React.useState(false); // Removed: PayPal flow deprecated
 	const [payPalOrderId, setPayPalOrderId] = React.useState(null);
 	const [payPalAmount, setPayPalAmount] = React.useState(null);
 	const mobileMenuButtonRef = React.useRef();
@@ -153,7 +153,7 @@ export default function LandingNavbar({ user, onLogout }) {
 		setTimeout(() => {
 			setPayPalOrderId(orderId);
 			setPayPalAmount(amount);
-			setPayPalModalOpen(true);
+// setPayPalModalOpen(true); // Removed: PayPal flow deprecated
 		}, 300);
 	};
 
@@ -462,13 +462,7 @@ export default function LandingNavbar({ user, onLogout }) {
 					<CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
 				</WideDialog>
 			)}
-			<PayPalModal
-				isOpen={payPalModalOpen}
-				onClose={() => setPayPalModalOpen(false)}
-				orderId={payPalOrderId}
-				amount={payPalAmount}
-				onSuccess={() => { setPayPalModalOpen(false); navigate('/my-orders'); }}
-			/>
+{/* PayPalModal removed: PayPal flow deprecated */}
 		</header>
 	);
 }

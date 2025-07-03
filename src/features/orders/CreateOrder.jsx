@@ -26,13 +26,13 @@ const booleanFields = [
   { key: "same_paper_from_another_writer", label: "Same Paper from Another Writer" }
 ];
 
-const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
+const CreateOrder = ({ onClose, onOrderCreated, initialSelections, hideTitle }) => {
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState({});
   const [form, setForm] = useState({
     title: "",
     description: "",
-    price: "-", // Will be calculated live
+    price: 0, // Will be calculated live, always a number
     order_type_id: initialSelections?.order_type?.id || "",
     order_level_id: initialSelections?.level?.id || "",
     order_pages_id: initialSelections?.pages?.id || "",
@@ -60,10 +60,10 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
     const level = (options.levels || []).find(o => o.id === form.order_level_id);
     const pages = (options.pages || []).find(o => o.id === form.order_pages_id);
     if (type && urgency && level && pages) {
-      const price = (type.base_price_per_page * urgency.urgency_price_multiplier * level.level_price_multiplier * pages.number_of_pages).toFixed(2);
+      const price = Number((type.base_price_per_page * urgency.urgency_price_multiplier * level.level_price_multiplier * pages.number_of_pages).toFixed(2));
       setForm(f => ({ ...f, price }));
     } else {
-      setForm(f => ({ ...f, price: "-" }));
+      setForm(f => ({ ...f, price: 0 }));
     }
   }, [form.order_type_id, form.order_urgency_id, form.order_level_id, form.order_pages_id, options]);
   const [success, setSuccess] = useState("");
@@ -187,6 +187,7 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
         },
         body: JSON.stringify({
           ...form,
+          price: Number(form.price),
           no_of_sources: Number(form.no_of_sources),
           ...(fileUrl ? { original_order_file: fileUrl } : {})
         })
@@ -259,7 +260,10 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
   return (
     <div className="flex justify-center items-center min-h-[60vh] bg-transparent py-2 px-0">
       <Card className="w-full max-w-3xl md:max-w-4xl lg:max-w-5xl p-2 sm:p-6 md:p-10 shadow-2xl border-0 bg-white/95 rounded-3xl">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 mb-6 text-center tracking-tight">Create New Order</h2>
+        {/* Only render the heading if hideTitle is not true */}
+        {(!hideTitle) && (
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 mb-6 text-center tracking-tight">Create New Order</h2>
+        )}
         {/* Order Price Display removed from top (duplicate) */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

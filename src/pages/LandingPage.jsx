@@ -11,7 +11,6 @@ import { WideDialog } from "../components/ui/wide-dialog";
 
 import CreateOrder from "../features/orders/CreateOrder";
 
-import PayPalModal from "../features/orders/PayPalModal";
 
 import OrderPriceCalculator from "../components/OrderPriceCalculator";
 
@@ -23,9 +22,6 @@ export default function LandingPage({ user, onLogout }) {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [pendingOrder, setPendingOrder] = useState(false);
   const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
-  const [payPalModalOpen, setPayPalModalOpen] = useState(false);
-  const [payPalOrderId, setPayPalOrderId] = useState(null);
-  const [payPalAmount, setPayPalAmount] = useState(null);
   const [showCalculator, setShowCalculator] = useState(true);
   const [calculatorSelections, setCalculatorSelections] = useState(null);
   const navigate = useNavigate();
@@ -33,15 +29,14 @@ export default function LandingPage({ user, onLogout }) {
   // DRY: Shared handler for "Proceed to details" and "Order Now"
   const handleCalculatorProceed = useCallback((selections) => {
     if (authUser) {
-      setCalculatorSelections(selections);
-      setShowCalculator(false);
-      setCreateOrderModalOpen(true);
+      // Navigate to new order page, passing calculator selections
+      navigate("/order/new", { state: { calculatorSelections: selections } });
     } else {
       setCalculatorSelections(selections);
       setPendingOrder(true);
       setLoginModalOpen(true);
     }
-  }, [authUser]);
+  }, [authUser, navigate]);
 
   // After successful login
   const handleLoginSuccess = () => {
@@ -52,13 +47,10 @@ export default function LandingPage({ user, onLogout }) {
     }
   };
 
-  const handleOrderCreated = (orderId, amount) => {
+  // No PayPal modal/order flow: just close the form and show calculator again
+  const handleOrderCreated = () => {
     setCreateOrderModalOpen(false);
-    setTimeout(() => {
-      setPayPalOrderId(orderId);
-      setPayPalAmount(amount);
-      setPayPalModalOpen(true);
-    }, 300);
+    setShowCalculator(true);
   };
 
   return (
@@ -121,41 +113,15 @@ export default function LandingPage({ user, onLogout }) {
       <Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
         <LoginPage asModal onSuccess={handleLoginSuccess} />
       </Dialog>
-      <WideDialog
-        isOpen={createOrderModalOpen}
-        onClose={() => {
-          setCreateOrderModalOpen(false);
-          setShowCalculator(true);
-        }}
-        title="Create Order"
-      >
-        <CreateOrder
-          onClose={() => {
-            setCreateOrderModalOpen(false);
-            setShowCalculator(true);
-          }}
-          onOrderCreated={handleOrderCreated}
-          initialSelections={calculatorSelections}
-        />
-      </WideDialog>
-      <PayPalModal
-        isOpen={payPalModalOpen}
-        onClose={() => setPayPalModalOpen(false)}
-        orderId={payPalOrderId}
-        amount={payPalAmount}
-        onSuccess={() => { setPayPalModalOpen(false); navigate('/my-orders'); }}
-      />
-      {/* Sticky Order Price Calculator - middle right, responsive */}
+      {/* Order Price Calculator sticky on main page only, not duplicated */}
       {showCalculator && (
-        <div
-          className="fixed z-40 right-2 md:right-8 top-1/2 w-[95vw] max-w-xs md:max-w-sm lg:max-w-xs px-2 md:px-0"
-          style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}
-        >
+        <div className="fixed z-40 right-2 md:right-8 top-1/2 w-[95vw] max-w-xs md:max-w-sm lg:max-w-xs px-2 md:px-0" style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}>
           <div className="pointer-events-auto shadow-2xl rounded-2xl bg-white/95 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-blue-100 border border-blue-100">
             <OrderPriceCalculator onProceed={handleCalculatorProceed} />
           </div>
         </div>
       )}
+      {/* Create Order form now opens in a new page, not below footer */}
     </div>
   );
 }

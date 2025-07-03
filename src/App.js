@@ -13,6 +13,7 @@ import AboutPage from "./pages/AboutPage";
 import GuaranteesPage from "./pages/GuaranteesPage";
 import ReviewsPage from "./pages/ReviewsPage";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
+import NewOrderPage from "./pages/NewOrderPage";
 import OrderTypes from "./features/orderConfigurations/OrderTypes";
 import OrderStyles from "./features/orderConfigurations/OrderStyles";
 import OrderPages from "./features/orderConfigurations/OrderPages";
@@ -355,6 +356,7 @@ function AppRoutes() {
       <Route path="/guarantees" element={<GuaranteesPage />} />
       <Route path="/reviews" element={<ReviewsPage />} />
       <Route path="/services/:serviceSlug" element={<ServiceDetailPage />} />
+      <Route path="/order/new" element={<NewOrderPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/create-order" element={<CreateOrder />} />
       <Route path="/*" element={<AppContent />} />

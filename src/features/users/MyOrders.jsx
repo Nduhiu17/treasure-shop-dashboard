@@ -6,7 +6,7 @@ import { Button } from "../../components/ui/button";
 import { Select } from "../../components/ui/select";
 import CreateOrder from "../orders/CreateOrder";
 import { WideDialog } from "../../components/ui/wide-dialog";
-import PayPalModal from "../orders/PayPalModal";
+// import PayPalModal from "../orders/PayPalModal"; // Removed: PayPal flow deprecated
 import AssignmentResponseButtons from "../../components/ui/AssignmentResponseButtons";
 import { useToast } from "../../components/ui/toast";
 import OrderSubmitDialog from "../../components/ui/OrderSubmitDialog";
@@ -37,7 +37,7 @@ const MyOrders = () => {
 	const [total, setTotal] = useState(0);
 	const [activeStatus, setActiveStatus] = useState("pending_payment");
 	const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
-	const [payPalModalOpen, setPayPalModalOpen] = useState(false);
+// const [payPalModalOpen, setPayPalModalOpen] = useState(false); // Removed: PayPal flow deprecated
 	const [payPalOrderId, setPayPalOrderId] = useState(null);
 	const [payPalAmount, setPayPalAmount] = useState(null);
 	const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
@@ -108,7 +108,7 @@ const MyOrders = () => {
 		setTimeout(() => {
 			setPayPalOrderId(orderId);
 			setPayPalAmount(amount);
-			setPayPalModalOpen(true);
+// setPayPalModalOpen(true); // Removed: PayPal flow deprecated
 		}, 300);
 	};
 
@@ -392,13 +392,7 @@ const MyOrders = () => {
 					<WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
 						<CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
 					</WideDialog>
-					<PayPalModal
-						isOpen={payPalModalOpen}
-						onClose={() => setPayPalModalOpen(false)}
-						orderId={payPalOrderId}
-						amount={payPalAmount}
-						onSuccess={() => { setPayPalModalOpen(false); navigate('/my-orders'); }}
-					/>
+{/* PayPalModal removed: PayPal flow deprecated */}
 					<OrderSubmitDialog
 						isOpen={submitDialogOpen}
 						onClose={() => setSubmitDialogOpen(false)}
