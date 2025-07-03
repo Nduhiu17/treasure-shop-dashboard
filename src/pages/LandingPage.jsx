@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import LoginPage from "../features/auth/LoginPage";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { Button } from "../components/ui/button";
 import { useAuth } from "../features/auth/AuthProvider";
-import LoginPage from "../features/auth/LoginPage";
+
 import { Dialog } from "../components/ui/dialog";
+
 import { WideDialog } from "../components/ui/wide-dialog";
+
 import CreateOrder from "../features/orders/CreateOrder";
+
 import PayPalModal from "../features/orders/PayPalModal";
-import { useNavigate } from "react-router-dom";
+
 import OrderPriceCalculator from "../components/OrderPriceCalculator";
+
+
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage({ user, onLogout }) {
   const { user: authUser } = useAuth();
@@ -19,18 +26,19 @@ export default function LandingPage({ user, onLogout }) {
   const [payPalModalOpen, setPayPalModalOpen] = useState(false);
   const [payPalOrderId, setPayPalOrderId] = useState(null);
   const [payPalAmount, setPayPalAmount] = useState(null);
+  const [showCalculator, setShowCalculator] = useState(true);
   const navigate = useNavigate();
 
-  // Handler for all "Order" buttons
-  const handleOrderClick = (e) => {
-    e?.preventDefault?.();
+  // DRY: Shared handler for "Proceed to details" and "Order Now"
+  const handleCalculatorProceed = useCallback(() => {
     if (authUser) {
+      setShowCalculator(false);
       setCreateOrderModalOpen(true);
     } else {
       setPendingOrder(true);
       setLoginModalOpen(true);
     }
-  };
+  }, [authUser]);
 
   // After successful login
   const handleLoginSuccess = () => {
@@ -62,7 +70,7 @@ export default function LandingPage({ user, onLogout }) {
             Get top-quality academic writing, editing, and research help from expert writers. Fast, confidential, and always on time.
           </p>
           <Button
-            onClick={handleOrderClick}
+            onClick={handleCalculatorProceed}
             className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-8 py-3 text-lg rounded-xl"
           >
             Order Now
@@ -110,8 +118,18 @@ export default function LandingPage({ user, onLogout }) {
       <Dialog isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} title="Login">
         <LoginPage asModal onSuccess={handleLoginSuccess} />
       </Dialog>
-      <WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
-        <CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
+      <WideDialog
+        isOpen={createOrderModalOpen}
+        onClose={() => {
+          setCreateOrderModalOpen(false);
+          setShowCalculator(true);
+        }}
+        title="Create Order"
+      >
+        <CreateOrder onClose={() => {
+          setCreateOrderModalOpen(false);
+          setShowCalculator(true);
+        }} onOrderCreated={handleOrderCreated} />
       </WideDialog>
       <PayPalModal
         isOpen={payPalModalOpen}
@@ -121,14 +139,16 @@ export default function LandingPage({ user, onLogout }) {
         onSuccess={() => { setPayPalModalOpen(false); navigate('/my-orders'); }}
       />
       {/* Sticky Order Price Calculator - middle right, responsive */}
-      <div
-        className="fixed z-40 right-2 md:right-8 top-1/2 w-[95vw] max-w-xs md:max-w-sm lg:max-w-xs px-2 md:px-0"
-        style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}
-      >
-        <div className="pointer-events-auto shadow-2xl rounded-2xl bg-white/95 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-blue-100 border border-blue-100">
-          <OrderPriceCalculator />
+      {showCalculator && (
+        <div
+          className="fixed z-40 right-2 md:right-8 top-1/2 w-[95vw] max-w-xs md:max-w-sm lg:max-w-xs px-2 md:px-0"
+          style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}
+        >
+          <div className="pointer-events-auto shadow-2xl rounded-2xl bg-white/95 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-blue-100 border border-blue-100">
+            <OrderPriceCalculator onProceed={handleCalculatorProceed} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

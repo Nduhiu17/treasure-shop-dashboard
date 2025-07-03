@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 import OrderPriceCalculator from "../components/OrderPriceCalculator";
+import { WideDialog } from "../components/ui/wide-dialog";
+import CreateOrder from "../features/orders/CreateOrder";
 
 const SERVICE_DETAILS = {
   "argumentative-essay": {
@@ -200,11 +202,21 @@ const SERVICE_DETAILS = {
 export default function ServiceDetailPage() {
   const { user, logout } = useAuth();
   const { serviceSlug } = useParams();
+  const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
+  const [showCalculator, setShowCalculator] = useState(true);
   const service = SERVICE_DETAILS[serviceSlug] || {
     title: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     description: "Detailed information about this service will be available soon.",
     guarantees: [],
     reviews: [],
+  };
+
+  // Handler for OrderPriceCalculator "Proceed to details"
+  const handleCalculatorProceed = () => {
+    if (user) {
+      setShowCalculator(false);
+      setCreateOrderModalOpen(true);
+    }
   };
 
   return (
@@ -233,16 +245,26 @@ export default function ServiceDetailPage() {
             )) : <div className="text-blue-700">No reviews yet for this service.</div>}
           </div>
         </section>
+        {/* Order Price Calculator below the Order button, normal flow */}
+        {showCalculator && (
+          <div className="w-full max-w-md mx-auto mt-8 mb-16 animate-fade-in-up">
+            <OrderPriceCalculator onProceed={handleCalculatorProceed} />
+          </div>
+        )}
+        <WideDialog
+          isOpen={createOrderModalOpen}
+          onClose={() => {
+            setCreateOrderModalOpen(false);
+            setShowCalculator(true);
+          }}
+          title="Create Order"
+        >
+          <CreateOrder onClose={() => {
+            setCreateOrderModalOpen(false);
+            setShowCalculator(true);
+          }} />
+        </WideDialog>
       </main>
-      {/* Sticky Order Price Calculator - middle right, responsive */}
-      <div
-        className="fixed z-40 right-2 md:right-8 top-1/2 w-[95vw] max-w-xs md:max-w-sm lg:max-w-xs px-2 md:px-0"
-        style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}
-      >
-        <div className="pointer-events-auto shadow-2xl rounded-2xl bg-white/95 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-blue-100 border border-blue-100">
-          <OrderPriceCalculator />
-        </div>
-      </div>
       <LandingFooter />
     </div>
   );
