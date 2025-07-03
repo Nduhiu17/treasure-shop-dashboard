@@ -211,9 +211,6 @@ export default function ServiceDetailPage() {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       <LandingNavbar user={user} onLogout={logout} />
       <main className="flex-1 px-4 py-12 max-w-3xl mx-auto animate-fade-in">
-        <div className="w-full flex justify-center mb-8">
-          <OrderPriceCalculator />
-        </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-4">{service.title}</h1>
         <p className="text-blue-900 mb-6 text-lg">{service.description}</p>
         <section className="mb-8">
@@ -237,6 +234,15 @@ export default function ServiceDetailPage() {
           </div>
         </section>
       </main>
+      {/* Sticky Order Price Calculator - middle right, responsive */}
+      <div
+        className="fixed z-40 right-2 md:right-8 top-1/2 w-[95vw] max-w-xs md:max-w-sm lg:max-w-xs px-2 md:px-0"
+        style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}
+      >
+        <div className="pointer-events-auto shadow-2xl rounded-2xl bg-white/95 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-blue-100 border border-blue-100">
+          <OrderPriceCalculator />
+        </div>
+      </div>
       <LandingFooter />
     </div>
   );

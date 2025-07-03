@@ -54,9 +54,6 @@ export default function LandingPage({ user, onLogout }) {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       <LandingNavbar user={authUser} onLogout={onLogout} />
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
-        <div className="w-full flex justify-center mb-8">
-          <OrderPriceCalculator />
-        </div>
         <section className="max-w-3xl text-center mb-12 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-900 mb-4 leading-tight">
             Academic Excellence, Delivered Fast
@@ -123,6 +120,15 @@ export default function LandingPage({ user, onLogout }) {
         amount={payPalAmount}
         onSuccess={() => { setPayPalModalOpen(false); navigate('/my-orders'); }}
       />
+      {/* Sticky Order Price Calculator - middle right, responsive */}
+      <div
+        className="fixed z-40 right-2 md:right-8 top-1/2 w-[95vw] max-w-xs md:max-w-sm lg:max-w-xs px-2 md:px-0"
+        style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}
+      >
+        <div className="pointer-events-auto shadow-2xl rounded-2xl bg-white/95 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-blue-100 border border-blue-100">
+          <OrderPriceCalculator />
+        </div>
+      </div>
     </div>
   );
 }
