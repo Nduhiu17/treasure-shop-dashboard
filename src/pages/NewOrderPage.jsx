@@ -100,24 +100,24 @@ export default function NewOrderPage() {
       <LandingNavbar user={user} onLogout={logout} />
       {/* Stepper Navigation Bar */}
       <nav className="w-full bg-white shadow-md border-b border-blue-200 z-20 relative">
-        <div className="max-w-7xl mx-auto flex flex-row items-center justify-between px-4 sm:px-8 py-4">
-          {/* Stepper UI with labels */}
-          <div className="flex gap-12 w-full justify-center items-center">
-            {[1,2,3].map((n, idx) => (
-              <div key={n} className="flex flex-col items-center">
+        <div className="max-w-7xl mx-auto flex flex-row items-center justify-center px-4 sm:px-8 py-6">
+          {/* Stepper UI with labels in a row, centered */}
+          <div className="flex flex-row gap-16 items-end justify-center w-full">
+            {[1,2,3].map((n) => (
+              <div key={n} className="flex flex-row items-center gap-3">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 transition-all duration-200 ${step===n?'bg-blue-700 text-white border-blue-700':'bg-white text-blue-700 border-blue-300'}`}>{n}</div>
-                <span className={`mt-2 text-xs font-semibold ${step===n?'text-blue-700':'text-blue-400'}`}>{
+                <span className={`text-xs font-semibold ${step===n?'text-blue-700':'text-blue-400'}`}> {
                   n === 1 ? 'Order overview' : n === 2 ? 'Instructions' : 'Checkout'
-                }</span>
+                } </span>
               </div>
             ))}
           </div>
         </div>
       </nav>
-      {/* Step Description below nav, right side */}
+      {/* Step Description below nav, far left */}
       {orderStep === "form" && (
-        <div className="max-w-7xl mx-auto flex flex-row justify-end px-4 sm:px-8">
-          <div className="mt-6 mb-6">
+        <div className="w-[80vw] max-w-7xl mx-auto flex flex-row">
+          <div className="mt-4 mb-2" style={{width: '70%'}}>
             <span className="inline-block bg-blue-100 text-blue-800 text-base font-semibold px-6 py-3 rounded-xl shadow-sm border border-blue-200">
               {step === 1 && "Select your type of work and deadline"}
               {step === 2 && "Describe your task"}
@@ -138,9 +138,9 @@ export default function NewOrderPage() {
               >
                 &times;
               </button>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 mb-6 text-center">Create Your Order</h2>
+              {/* <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-900 mb-6 text-center">Create Your Order</h2> */}
               {/* ...existing code... */}
-              <div className="mt-8" />
+              {/* <div className="mt-8" /> */}
               {/* Step 1 */}
               {step === 1 && (
                 <div className="flex flex-col gap-6">
