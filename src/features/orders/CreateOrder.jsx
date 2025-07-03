@@ -229,6 +229,18 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
     </div>
   );
 
+  // Check if all required fields are filled
+  const allFieldsFilled =
+    form.title &&
+    form.description &&
+    form.order_type_id &&
+    form.order_level_id &&
+    form.order_pages_id &&
+    form.order_urgency_id &&
+    form.order_style_id &&
+    form.order_language_id &&
+    form.no_of_sources;
+
   return (
     <div className="flex justify-center items-center min-h-[60vh] bg-transparent py-2 px-0">
       <Card className="w-full max-w-3xl md:max-w-4xl lg:max-w-5xl p-2 sm:p-6 md:p-10 shadow-2xl border-0 bg-white/95 rounded-3xl">
@@ -237,7 +249,7 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex flex-col gap-4">
-              <label className="block text-blue-900 font-semibold mb-1">Title</label>
+              <label className="block text-blue-900 font-semibold mb-1">Title <span className='text-red-500'>*</span></label>
               <input
                 type="text"
                 name="title"
@@ -256,7 +268,7 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
                 className="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium"
                 placeholder="e.g. 123456"
               />
-              <label className="block text-blue-900 font-semibold mb-1">Description</label>
+              <label className="block text-blue-900 font-semibold mb-1">Description <span className='text-red-500'>*</span></label>
               <textarea
                 name="description"
                 value={form.description}
@@ -267,12 +279,13 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
                 placeholder="Describe your order..."
               />
               <div className="mb-4 w-full">
-                <label className="block text-blue-900 font-semibold mb-1">Number of Sources</label>
+                <label className="block text-blue-900 font-semibold mb-1">Number of Sources <span className='text-red-500'>*</span></label>
                 <div className="relative">
                   <select
                     name="no_of_sources"
                     value={form.no_of_sources}
                     onChange={handleChange}
+                    required
                     className="w-full px-4 py-2 rounded-xl border border-blue-200 bg-white text-blue-900 font-medium appearance-none pr-12 transition-all duration-150 shadow-sm focus:ring-4 focus:ring-blue-200 focus:border-blue-400 outline-none"
                   >
                     {[...Array(30)].map((_, i) => (
@@ -343,12 +356,12 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
               <div className="bg-blue-50/60 border border-blue-100 rounded-2xl p-4 shadow-sm">
                 <h3 className="text-blue-800 font-semibold text-base mb-2">Order Details</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <CustomSelect label="Order Type" name="order_type_id" value={form.order_type_id} options={options.orderTypes} onChange={handleSelect} />
-                  <CustomSelect label="Level" name="order_level_id" value={form.order_level_id} options={options.levels} onChange={handleSelect} />
-                  <CustomSelect label="Pages" name="order_pages_id" value={form.order_pages_id} options={options.pages} onChange={handleSelect} />
-                  <CustomSelect label="Urgency" name="order_urgency_id" value={form.order_urgency_id} options={options.urgency} onChange={handleSelect} />
-                  <CustomSelect label="Style" name="order_style_id" value={form.order_style_id} options={options.styles} onChange={handleSelect} />
-                  <CustomSelect label="Language" name="order_language_id" value={form.order_language_id} options={options.languages} onChange={handleSelect} />
+                  <CustomSelect label="Order Type *" name="order_type_id" value={form.order_type_id} options={options.orderTypes} onChange={handleSelect} required />
+                  <CustomSelect label="Level *" name="order_level_id" value={form.order_level_id} options={options.levels} onChange={handleSelect} required />
+                  <CustomSelect label="Pages *" name="order_pages_id" value={form.order_pages_id} options={options.pages} onChange={handleSelect} required />
+                  <CustomSelect label="Urgency *" name="order_urgency_id" value={form.order_urgency_id} options={options.urgency} onChange={handleSelect} required />
+                  <CustomSelect label="Style *" name="order_style_id" value={form.order_style_id} options={options.styles} onChange={handleSelect} required />
+                  <CustomSelect label="Language *" name="order_language_id" value={form.order_language_id} options={options.languages} onChange={handleSelect} required />
                 </div>
                 {/* Boolean fields on their own full-width row, highly responsive */}
                 <div className="w-full flex flex-wrap gap-2 mt-4 justify-center bg-blue-100/60 rounded-xl p-2">
@@ -400,6 +413,8 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
             <Button
               type="submit"
               className="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold shadow-md hover:bg-green-700 transition-all duration-150 flex items-center justify-center"
+              disabled={!allFieldsFilled || loading}
+              style={!allFieldsFilled ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
             >
               {loading ? (
                 <>
