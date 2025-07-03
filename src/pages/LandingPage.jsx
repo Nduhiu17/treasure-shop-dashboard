@@ -27,14 +27,17 @@ export default function LandingPage({ user, onLogout }) {
   const [payPalOrderId, setPayPalOrderId] = useState(null);
   const [payPalAmount, setPayPalAmount] = useState(null);
   const [showCalculator, setShowCalculator] = useState(true);
+  const [calculatorSelections, setCalculatorSelections] = useState(null);
   const navigate = useNavigate();
 
   // DRY: Shared handler for "Proceed to details" and "Order Now"
-  const handleCalculatorProceed = useCallback(() => {
+  const handleCalculatorProceed = useCallback((selections) => {
     if (authUser) {
+      setCalculatorSelections(selections);
       setShowCalculator(false);
       setCreateOrderModalOpen(true);
     } else {
+      setCalculatorSelections(selections);
       setPendingOrder(true);
       setLoginModalOpen(true);
     }
@@ -126,10 +129,14 @@ export default function LandingPage({ user, onLogout }) {
         }}
         title="Create Order"
       >
-        <CreateOrder onClose={() => {
-          setCreateOrderModalOpen(false);
-          setShowCalculator(true);
-        }} onOrderCreated={handleOrderCreated} />
+        <CreateOrder
+          onClose={() => {
+            setCreateOrderModalOpen(false);
+            setShowCalculator(true);
+          }}
+          onOrderCreated={handleOrderCreated}
+          initialSelections={calculatorSelections}
+        />
       </WideDialog>
       <PayPalModal
         isOpen={payPalModalOpen}

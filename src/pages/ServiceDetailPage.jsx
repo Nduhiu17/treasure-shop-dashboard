@@ -199,11 +199,13 @@ const SERVICE_DETAILS = {
   },
 };
 
+
 export default function ServiceDetailPage() {
   const { user, logout } = useAuth();
   const { serviceSlug } = useParams();
   const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
   const [showCalculator, setShowCalculator] = useState(true);
+  const [calculatorSelections, setCalculatorSelections] = useState(null);
   const service = SERVICE_DETAILS[serviceSlug] || {
     title: serviceSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     description: "Detailed information about this service will be available soon.",
@@ -212,8 +214,9 @@ export default function ServiceDetailPage() {
   };
 
   // Handler for OrderPriceCalculator "Proceed to details"
-  const handleCalculatorProceed = () => {
+  const handleCalculatorProceed = (selections) => {
     if (user) {
+      setCalculatorSelections(selections);
       setShowCalculator(false);
       setCreateOrderModalOpen(true);
     }
@@ -259,10 +262,13 @@ export default function ServiceDetailPage() {
           }}
           title="Create Order"
         >
-          <CreateOrder onClose={() => {
-            setCreateOrderModalOpen(false);
-            setShowCalculator(true);
-          }} />
+          <CreateOrder
+            onClose={() => {
+              setCreateOrderModalOpen(false);
+              setShowCalculator(true);
+            }}
+            initialSelections={calculatorSelections}
+          />
         </WideDialog>
       </main>
       <LandingFooter />

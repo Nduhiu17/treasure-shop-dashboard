@@ -26,17 +26,17 @@ const booleanFields = [
   { key: "same_paper_from_another_writer", label: "Same Paper from Another Writer" }
 ];
 
-const CreateOrder = ({ onClose, onOrderCreated }) => {
+const CreateOrder = ({ onClose, onOrderCreated, initialSelections }) => {
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState({});
   const [form, setForm] = useState({
     title: "",
     description: "",
     price: 37.90, // Hardcoded for now
-    order_type_id: "",
-    order_level_id: "",
-    order_pages_id: "",
-    order_urgency_id: "",
+    order_type_id: initialSelections?.order_type?.id || "",
+    order_level_id: initialSelections?.level?.id || "",
+    order_pages_id: initialSelections?.pages?.id || "",
+    order_urgency_id: initialSelections?.urgency?.id || "",
     order_style_id: "",
     order_language_id: "",
     no_of_sources: 1,
