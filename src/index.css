@@ -1,3 +1,29 @@
+/* --- Custom Animations for OrderPriceCalculator --- */
+.animate-sparkle {
+  animation: sparkle 1.5s infinite linear;
+}
+@keyframes sparkle {
+  0% { opacity: 0.7; transform: scale(1) rotate(0deg);}
+  50% { opacity: 1; transform: scale(1.15) rotate(10deg);}
+  100% { opacity: 0.7; transform: scale(1) rotate(0deg);}
+}
+.animate-bounce-slow {
+  animation: bounce 2.2s infinite;
+}
+.animate-bounce-once {
+  animation: bounce 0.7s 1;
+}
+.animate-fadein {
+  animation: fadein 0.7s cubic-bezier(.4,0,.2,1) both;
+}
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(.4,0,.6,1) infinite;
+}
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: none;}
+}
+/* --- End Custom Animations --- */
 /* src/index.css */
 @tailwind base;
 @tailwind components;

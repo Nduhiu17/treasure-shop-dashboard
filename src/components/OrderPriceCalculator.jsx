@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
 
+// Animated sparkle SVG icon
+const SparkleIcon = () => (
+  <svg className="inline-block animate-sparkle mr-1" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <path d="M11 2v3M11 17v3M4.22 4.22l2.12 2.12M15.66 15.66l2.12 2.12M2 11h3M17 11h3M4.22 17.78l2.12-2.12M15.66 6.34l2.12-2.12" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round"/>
+      <circle cx="11" cy="11" r="4" fill="#38bdf8" fillOpacity="0.15"/>
+    </g>
+  </svg>
+);
+
 // Compact, single-column, minimal-label Order Price Calculator
 export default function OrderPriceCalculator({ onProceed }) {
   const [orderTypes, setOrderTypes] = useState([]);
@@ -47,13 +57,13 @@ export default function OrderPriceCalculator({ onProceed }) {
     ? (selectedType.base_price_per_page * selectedUrgency.urgency_price_multiplier * selectedLevel.level_price_multiplier * selectedPages.number_of_pages).toFixed(2)
     : "-";
 
-  // Compact dropdown
+  // Compact dropdown with animation
   const dropdown = (options, value, setValue, key, getLabel) => (
     <select
-      className="w-full px-3 py-2 rounded-lg border border-blue-200 bg-white text-blue-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 mb-2"
+      className="w-full px-3 py-2 rounded-xl border border-blue-200 bg-white/80 text-blue-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 mb-3 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md hover:border-sky-300"
       value={value?.id || ""}
       onChange={e => setValue(options.find(o => o.id === e.target.value))}
-      style={{ minHeight: 36 }}
+      style={{ minHeight: 40 }}
     >
       {options.map(o => (
         <option key={o.id} value={o.id}>{getLabel(o)}</option>
@@ -63,20 +73,26 @@ export default function OrderPriceCalculator({ onProceed }) {
 
   return (
     <div
-      className="w-full max-w-xs mx-auto bg-gradient-to-br from-blue-50 via-white to-blue-100 border border-blue-100 rounded-2xl shadow-xl p-4 flex flex-col gap-2 items-stretch"
+      className="w-full max-w-xs mx-auto bg-gradient-to-br from-sky-100 via-white to-blue-200 border border-sky-200/80 rounded-3xl shadow-2xl p-5 flex flex-col gap-3 items-stretch relative overflow-hidden animate-fadein"
       style={{ minWidth: 0 }}
     >
-      <div className="text-center text-lg font-bold text-blue-800 mb-1 tracking-tight">Estimate Your Price</div>
+      {/* Animated gradient accent ring */}
+      <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-sky-300/30 via-blue-200/20 to-green-200/10 rounded-full blur-2xl pointer-events-none animate-pulse-slow" />
+      <div className="text-center text-xl font-extrabold text-sky-700 mb-2 tracking-tight flex items-center justify-center gap-1 select-none">
+        <SparkleIcon /> Estimate Your Price
+      </div>
       {dropdown(orderTypes, selectedType, setSelectedType, "type", o => o.name)}
       {dropdown(levels, selectedLevel, setSelectedLevel, "level", o => o.name)}
       {dropdown(urgencies, selectedUrgency, setSelectedUrgency, "urgency", o => o.name)}
       {dropdown(pagesOptions, selectedPages, setSelectedPages, "pages", o => o.name)}
-      <div className="flex items-center justify-between mt-2">
-        <div className="text-blue-700 font-semibold text-base">
+      <div className="flex items-center justify-between mt-3 mb-1 px-1">
+        <div className="text-sky-700 font-bold text-lg flex items-center gap-1 animate-fadein">
+          <svg className="w-5 h-5 text-green-400 animate-bounce-slow mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
           ${price}
         </div>
         <button
-          className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold px-4 py-2 rounded-lg shadow hover:from-green-600 hover:to-green-700 text-sm"
+          className="bg-gradient-to-r from-green-400 via-green-500 to-sky-400 text-white font-bold px-5 py-2 rounded-xl shadow-lg hover:from-green-500 hover:to-sky-500 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out text-base focus:outline-none focus:ring-2 focus:ring-sky-300 animate-bounce-once"
+          style={{ minWidth: 120 }}
           onClick={() => onProceed && onProceed({
             order_type: selectedType,
             urgency: selectedUrgency,
@@ -86,9 +102,19 @@ export default function OrderPriceCalculator({ onProceed }) {
           })}
           disabled={!selectedType || !selectedUrgency || !selectedLevel || !selectedPages}
         >
-          Proceed to details
+          <span className="inline-block align-middle">Proceed to details</span>
         </button>
       </div>
     </div>
   );
 }
+
+// Animations (Tailwind CSS custom classes)
+// Add these to your global CSS (e.g., index.css) if not already present:
+// .animate-sparkle { animation: sparkle 1.5s infinite linear; }
+// @keyframes sparkle { 0% { opacity: 0.7; transform: scale(1) rotate(0deg);} 50% { opacity: 1; transform: scale(1.15) rotate(10deg);} 100% { opacity: 0.7; transform: scale(1) rotate(0deg);} }
+// .animate-bounce-slow { animation: bounce 2.2s infinite; }
+// .animate-bounce-once { animation: bounce 0.7s 1; }
+// .animate-fadein { animation: fadein 0.7s cubic-bezier(.4,0,.2,1) both; }
+// .animate-pulse-slow { animation: pulse 3s cubic-bezier(.4,0,.6,1) infinite; }
+// @keyframes fadein { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: none;} }
