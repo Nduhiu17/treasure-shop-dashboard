@@ -88,9 +88,10 @@ const OrderLevels = () => {
             <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
               <thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
                 <tr>
-                  <th className="px-4 py-3 w-1/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Name</th>
-                  <th className="px-4 py-3 w-2/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Description</th>
-                  <th className="px-4 py-3 w-1/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Actions</th>
+                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Name</th>
+                  <th className="px-4 py-3 w-2/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Description</th>
+                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Level Price Multiplier</th>
+                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Actions</th>
                 </tr>
               </thead>
             </table>
@@ -99,9 +100,10 @@ const OrderLevels = () => {
                 <tbody>
                   {orderLevels.length > 0 ? orderLevels.map((level) => (
                     <tr key={level.id} className="hover:bg-blue-50 h-10">
-                      <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/4">{level.name}</td>
-                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-2/4">{level.description}</td>
-                      <td className="px-4 py-1 align-middle w-1/4">
+                      <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/5">{level.name}</td>
+                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-2/5">{level.description}</td>
+                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/5">{level.level_price_multiplier?.toFixed(2)}</td>
+                      <td className="px-4 py-1 align-middle w-1/5">
                         <Button
                           variant="destructive"
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
@@ -115,7 +117,7 @@ const OrderLevels = () => {
                     </tr>
                   )) : (
                     <tr>
-                      <td colSpan={3} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order levels found.</td>
+                      <td colSpan={4} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order levels found.</td>
                     </tr>
                   )}
                 </tbody>

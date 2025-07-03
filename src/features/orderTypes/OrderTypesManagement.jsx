@@ -106,9 +106,10 @@ const OrderTypesManagement = () => {
             <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
               <thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
                 <tr>
-                  <th className="px-4 py-3 w-1/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Name</th>
-                  <th className="px-4 py-3 w-2/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Description</th>
-                  <th className="px-4 py-3 w-1/4 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Actions</th>
+                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Name</th>
+                  <th className="px-4 py-3 w-2/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Description</th>
+                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Base Price/Page</th>
+                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Actions</th>
                 </tr>
               </thead>
             </table>
@@ -117,9 +118,10 @@ const OrderTypesManagement = () => {
                 <tbody>
                   {orderTypes.length > 0 ? orderTypes.map((type) => (
                     <tr key={type.id} className="hover:bg-blue-50 h-10">
-                      <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/4">{type.name}</td>
-                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-2/4">{type.description}</td>
-                      <td className="px-4 py-1 align-middle w-1/4">
+                      <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/5">{type.name}</td>
+                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-2/5">{type.description}</td>
+                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/5">{type.base_price_per_page?.toFixed(2)}</td>
+                      <td className="px-4 py-1 align-middle w-1/5">
                         <Button
                           variant="destructive"
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
@@ -133,7 +135,7 @@ const OrderTypesManagement = () => {
                     </tr>
                   )) : (
                     <tr>
-                      <td colSpan={3} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order types found.</td>
+                      <td colSpan={4} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order types found.</td>
                     </tr>
                   )}
                 </tbody>
