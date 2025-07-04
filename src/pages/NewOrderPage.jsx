@@ -246,9 +246,11 @@ export default function NewOrderPage() {
                         {options.urgency.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
-                    <Button className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl" onClick={()=>setStep(2)}>
-                      Next <FaChevronRight className="ml-1" />
-                    </Button>
+                    <div className="flex gap-4 mt-4 justify-end">
+                      <Button className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl px-8 min-w-[120px]" onClick={()=>setStep(2)}>
+                        Next <FaChevronRight className="ml-1" />
+                      </Button>
+                    </div>
                   </div>
                 )}
                 {step === 2 && (
@@ -268,7 +270,7 @@ export default function NewOrderPage() {
                       <Button variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>setStep(1)}>
                         <FaChevronLeft /> Go Back
                       </Button>
-                      <Button className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl" onClick={()=>setStep(3)}>
+                      <Button className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl px-8 min-w-[120px]" onClick={()=>setStep(3)}>
                         Next <FaChevronRight className="ml-1" />
                       </Button>
                     </div>
