@@ -399,12 +399,19 @@ export default function LandingNavbar({ user, onLogout }) {
 				{/* Order/Login/Profile Buttons */}
 			   {/* Hide Order and My Profile on navbar for small screens, only show on md+ */}
 			   <div className="hidden md:flex items-center gap-2">
-				   <Button
-					   onClick={handleOrderButton}
-					   className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-8 py-3 text-lg rounded-xl"
-				   >
-					   Order Now
-				   </Button>
+			   <Button
+				   onClick={() => {
+					 if (user) {
+					   navigate('/order/new');
+					 } else {
+					   setPendingOrder(true);
+					   setLoginModalOpen(true);
+					 }
+				   }}
+				   className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-8 py-3 text-lg rounded-xl"
+			   >
+				   Order Now
+			   </Button>
 				   {user ? (
 					   <div className="relative">
 						   <Button
@@ -455,12 +462,7 @@ export default function LandingNavbar({ user, onLogout }) {
 					<RegisterPage open={registerModalOpen} onClose={() => setRegisterModalOpen(false)} onSwitchToLogin={() => { setRegisterModalOpen(false); setTimeout(() => setLoginModalOpen(true), 200); }} asModal />
 				</Dialog>
 			)}
-			{/* Create Order Modal */}
-			{createOrderModalOpen && (
-				<WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
-					<CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
-				</WideDialog>
-			)}
+		   {/* Create Order Modal (no longer used for navbar/hero Order Now) */}
 {/* PayPalModal removed: PayPal flow deprecated */}
 		</header>
 	);

@@ -65,7 +65,14 @@ export default function LandingPage({ user, onLogout }) {
               <div className="text-lg sm:text-2xl text-slate-700 mb-6 max-w-2xl">Struggling with your argumentative essay? Our subject matter experts can tailor a high-quality, AI-free paper to your needs, instructions, and deadline at an affordable price.</div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center mb-6">
                 <Button
-                  onClick={handleCalculatorProceed}
+                  onClick={() => {
+                    if (user) {
+                      navigate('/order/new');
+                    } else {
+                      setPendingOrder(true);
+                      setLoginModalOpen(true);
+                    }
+                  }}
                   className="bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white font-bold shadow-xl hover:from-fuchsia-600 hover:to-cyan-700 px-10 py-4 text-xl rounded-2xl border-2 border-fuchsia-400 hover:scale-105 transition-transform duration-200"
                 >
                   Order Now
