@@ -94,10 +94,9 @@ export default function LandingPage({ user, onLogout }) {
           <div className="absolute right-0 bottom-0 w-60 h-60 bg-cyan-200/30 rounded-full blur-2xl -z-1" />
         </section>
         {/* RATINGS SECTION */}
-        <section className="w-full max-w-5xl mx-auto mt-10 mb-10 px-4 animate-fade-in-up">
-          <div className="bg-white rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border border-cyan-100">
-            <div className="text-xl font-bold text-fuchsia-700 mb-4"><span className="text-cyan-600 font-extrabold">89% OF STUDENTS</span> INCREASED THEIR GPA AFTER USING OUR SERVICE</div>
-            <div className="flex flex-wrap justify-center gap-6">
+        <section className="w-full mt-10 mb-10 px-0 animate-fade-in-up">
+          <div className="w-full bg-white rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border border-cyan-100 mx-auto max-w-7xl">
+            <div className="flex flex-wrap justify-evenly gap-6 w-full">
               <div className="flex flex-col items-center">
                 <img src="/img/sitejabber-badge.svg" alt="Sitejabber" className="h-8 mb-1" />
                 <div className="text-cyan-900 font-semibold">Sitejabber</div>
