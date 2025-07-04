@@ -338,8 +338,8 @@ export default function NewOrderPage() {
                     </div>
                   </div>
                 )}
-                {/* Go back icon at bottom left: only show on step 1 and 3, not on step 2 */}
-                {(step === 1 || step === 3) && (
+                {/* Go back icon at bottom left: only show on step 1, not on step 2 or 3 */}
+                {step === 1 && (
                   <Button variant="secondary" className="absolute left-4 bottom-4 flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>step>1?setStep(step-1):navigate(-1)}>
                     <FaChevronLeft /> Go Back
                   </Button>
