@@ -27,6 +27,7 @@ export default function NewOrderPage() {
     description: "",
     file: null,
     order_style_id: "",
+    order_language_id: "",
     no_of_sources: 1,
     simple_language: false,
     sms_updates: false,
@@ -234,6 +235,10 @@ export default function NewOrderPage() {
                       <option value="">Select Order Style</option>
                       {options.styles.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                     </select>
+                    <select className="input" value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
+                      <option value="">Select Order Language</option>
+                      {options.languages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                    </select>
                     <input className="input" placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
                     <div className="flex gap-4 mt-4">
                       <button className="btn-secondary" onClick={()=>setStep(1)}><span className="mr-2">&#8592;</span>Go Back</button>
@@ -254,7 +259,54 @@ export default function NewOrderPage() {
                     <label className="flex items-center gap-2"><input type="checkbox" checked={form.outline} onChange={e=>setForm(f=>({...f,outline:e.target.checked}))}/> Outline</label>
                     <div className="flex gap-4 mt-4">
                       <button className="btn-secondary" onClick={()=>setStep(2)}><span className="mr-2">&#8592;</span>Go Back</button>
-                      <button className="btn-primary" onClick={()=>{/* handle submit here */}}>Checkout</button>
+                      <button className="btn-primary" onClick={async ()=>{
+                        try {
+                          const jwt = localStorage.getItem("jwt_token");
+                          let fileUrl = null;
+                          if (form.file) {
+                            // Upload file first
+                            const uploadData = new FormData();
+                            uploadData.append('file', form.file);
+                            // eslint-disable-next-line no-console
+                            console.log('Uploading file to /api/upload:', form.file);
+                            const uploadRes = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
+                              method: 'POST',
+                              headers: { 'Authorization': jwt ? `Bearer ${jwt}` : undefined },
+                              body: uploadData
+                            });
+                            if (!uploadRes.ok) throw new Error('File upload failed');
+                            const uploadJson = await uploadRes.json();
+                            fileUrl = uploadJson.url || uploadJson.fileUrl || uploadJson.path || null;
+                            if (!fileUrl) throw new Error('No file URL returned from upload');
+                          }
+                          // Build order payload
+                          const payload = { ...form };
+                          if (!payload.price && price !== "-") payload.price = Number(price);
+                          if (payload.price && typeof payload.price === 'string') payload.price = Number(payload.price);
+                          if (fileUrl) {
+                            payload.file = fileUrl;
+                          } else {
+                            delete payload.file;
+                          }
+                          // eslint-disable-next-line no-console
+                          console.log('Order payload to /api/orders (JSON):', payload);
+                          const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/orders`, {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': jwt ? `Bearer ${jwt}` : undefined
+                            },
+                            body: JSON.stringify(payload)
+                          });
+                          if (!res.ok) throw new Error('Order creation failed');
+                          const data = await res.json();
+                          setCreatedOrder({ id: data.id, price: data.price || price });
+                          setOrderStep("payment");
+                        } catch (e) {
+                          // eslint-disable-next-line no-alert
+                          alert(e.message || "Order creation failed. Please try again.");
+                        }
+                      }}>Checkout</button>
                     </div>
                   </div>
                 )}
