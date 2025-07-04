@@ -20,6 +20,7 @@ export default function NewOrderPage() {
   const [orderStep, setOrderStep] = useState("form"); // "form" | "payment"
   const [createdOrder, setCreatedOrder] = useState(null); // { id, price }
   const [step, setStep] = useState(1); // 1, 2, 3
+  const [error, setError] = useState(""); // Error state for order creation
   // Always initialize with empty/defaults, then patch with calculator selections on mount if present
   const [form, setForm] = useState({
     title: "",
@@ -255,18 +256,33 @@ export default function NewOrderPage() {
                 )}
                 {step === 2 && (
                   <div className="flex flex-col gap-6">
-                    <textarea className="input" placeholder="Order Description" value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
-                    <input className="input" type="file" onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
-                    <Select value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
-                      <option value="">Select Order Style</option>
-                      {options.styles.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                    </Select>
-                    <Select value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
-                      <option value="">Select Order Language</option>
-                      {options.languages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                    </Select>
-                    <Input placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
-                    <div className="flex gap-4 mt-4">
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaFileAlt className="text-blue-400" /> Order Description</span>
+                      <textarea className="input min-h-[120px] sm:min-h-[160px] text-base p-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition-all" placeholder="Describe your order in detail..." value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaFileUpload className="text-blue-400" /> Attach File (optional)</span>
+                      <input className="input" type="file" onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaRegFileAlt className="text-blue-400" /> Order Style</span>
+                      <Select value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
+                        <option value="">Select Order Style</option>
+                        {options.styles.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                      </Select>
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaLanguage className="text-blue-400" /> Order Language</span>
+                      <Select value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
+                        <option value="">Select Order Language</option>
+                        {options.languages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                      </Select>
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaSortNumericUp className="text-blue-400" /> Number of Sources</span>
+                      <Input placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
+                    </label>
+                    <div className="flex gap-4 mt-4 justify-end">
                       <Button variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>setStep(1)}>
                         <FaChevronLeft /> Go Back
                       </Button>
@@ -287,63 +303,70 @@ export default function NewOrderPage() {
                     <label className="flex items-center gap-2"><input type="checkbox" checked={form.title_page} onChange={e=>setForm(f=>({...f,title_page:e.target.checked}))}/> Title page</label>
                     <label className="flex items-center gap-2"><input type="checkbox" checked={form.bibliography} onChange={e=>setForm(f=>({...f,bibliography:e.target.checked}))}/> Bibliography</label>
                     <label className="flex items-center gap-2"><input type="checkbox" checked={form.outline} onChange={e=>setForm(f=>({...f,outline:e.target.checked}))}/> Outline</label>
-                    <div className="flex gap-4 mt-4">
-                      <Button variant="secondary" onClick={()=>setStep(2)}><span className="mr-2">&#8592;</span>Go Back</Button>
-                      <Button onClick={async ()=>{
-                        try {
-                          const jwt = localStorage.getItem("jwt_token");
-                          let fileUrl = null;
-                          if (form.file) {
-                            // Upload file first
-                            const uploadData = new FormData();
-                            uploadData.append('file', form.file);
+                    <div className="flex gap-4 mt-4 justify-end">
+                      <Button variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>setStep(2)}>
+                        <FaChevronLeft /> Go Back
+                      </Button>
+                      <Button className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-blue-400 text-white font-semibold shadow-lg hover:from-green-600 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl px-8 min-w-[140px]"
+                        onClick={async ()=>{
+                          try {
+                            const jwt = localStorage.getItem("jwt_token");
+                            let fileUrl = null;
+                            if (form.file) {
+                              // Upload file first
+                              const uploadData = new FormData();
+                              uploadData.append('file', form.file);
+                              // eslint-disable-next-line no-console
+                              console.log('Uploading file to /api/upload:', form.file);
+                              const uploadRes = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
+                                method: 'POST',
+                                headers: { 'Authorization': jwt ? `Bearer ${jwt}` : undefined },
+                                body: uploadData
+                              });
+                              if (!uploadRes.ok) throw new Error('File upload failed');
+                              const uploadJson = await uploadRes.json();
+                              fileUrl = uploadJson.url || uploadJson.fileUrl || uploadJson.path || null;
+                              if (!fileUrl) throw new Error('No file URL returned from upload');
+                            }
+                            // Build order payload
+                            const payload = { ...form };
+                            if (!payload.price && price !== "-") payload.price = Number(price);
+                            if (payload.price && typeof payload.price === 'string') payload.price = Number(payload.price);
+                            if (fileUrl) {
+                              payload.file = fileUrl;
+                            } else {
+                              delete payload.file;
+                            }
                             // eslint-disable-next-line no-console
-                            console.log('Uploading file to /api/upload:', form.file);
-                            const uploadRes = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/upload`, {
+                            console.log('Order payload to /api/orders (JSON):', payload);
+                            const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/orders`, {
                               method: 'POST',
-                              headers: { 'Authorization': jwt ? `Bearer ${jwt}` : undefined },
-                              body: uploadData
+                              headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': jwt ? `Bearer ${jwt}` : undefined
+                              },
+                              body: JSON.stringify(payload)
                             });
-                            if (!uploadRes.ok) throw new Error('File upload failed');
-                            const uploadJson = await uploadRes.json();
-                            fileUrl = uploadJson.url || uploadJson.fileUrl || uploadJson.path || null;
-                            if (!fileUrl) throw new Error('No file URL returned from upload');
+                            if (!res.ok) throw new Error('Order creation failed');
+                            const orderJson = await res.json();
+                            setCreatedOrder({ id: orderJson.id || orderJson.order_id, price: orderJson.price || payload.price });
+                            setStep(4);
+                          } catch (err) {
+                            setError(err.message || 'Order creation failed');
                           }
-                          // Build order payload
-                          const payload = { ...form };
-                          if (!payload.price && price !== "-") payload.price = Number(price);
-                          if (payload.price && typeof payload.price === 'string') payload.price = Number(payload.price);
-                          if (fileUrl) {
-                            payload.file = fileUrl;
-                          } else {
-                            delete payload.file;
-                          }
-                          // eslint-disable-next-line no-console
-                          console.log('Order payload to /api/orders (JSON):', payload);
-                          const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/orders`, {
-                            method: 'POST',
-                            headers: {
-                              'Content-Type': 'application/json',
-                              'Authorization': jwt ? `Bearer ${jwt}` : undefined
-                            },
-                            body: JSON.stringify(payload)
-                          });
-                          if (!res.ok) throw new Error('Order creation failed');
-                          const data = await res.json();
-                          setCreatedOrder({ id: data.id, price: data.price || price });
-                          setOrderStep("payment");
-                        } catch (e) {
-                          // eslint-disable-next-line no-alert
-                          alert(e.message || "Order creation failed. Please try again.");
-                        }
-                      }}>Checkout</Button>
+                        }}
+                      >
+                        <FaCheckCircle className="mr-1" /> Checkout
+                      </Button>
                     </div>
                   </div>
                 )}
-                {/* Go back icon at bottom left */}
-                <Button variant="secondary" className="absolute left-4 bottom-4 flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>step>1?setStep(step-1):navigate(-1)}>
-                  <FaChevronLeft /> Go Back
-                </Button>
+                {/* Go back icon at bottom left: only show on step 1 and 3, not on step 2 */}
+                {(step === 1 || step === 3) && (
+                  <Button variant="secondary" className="absolute left-4 bottom-4 flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>step>1?setStep(step-1):navigate(-1)}>
+                    <FaChevronLeft /> Go Back
+                  </Button>
+                )}
               </div>
               {/* Right column: 100% on mobile, 30% on desktop */}
               <div className="w-full lg:max-w-[30%] min-w-[220px] bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl shadow-2xl border border-blue-200 p-4 sm:p-6 flex flex-col justify-between mt-6 lg:mt-0" style={{ marginTop: '0' }}>
