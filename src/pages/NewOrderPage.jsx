@@ -11,10 +11,12 @@ export default function NewOrderPage() {
   const location = useLocation();
   const navigate = useNavigate();
   // Get initial selections from navigation state (if any)
-  const initialSelections = location.state?.calculatorSelections || null;
+  // Memoize initialSelections to avoid stale closure in useState
+  const initialSelections = React.useMemo(() => location.state?.calculatorSelections || null, [location.state]);
   const [orderStep, setOrderStep] = useState("form"); // "form" | "payment"
   const [createdOrder, setCreatedOrder] = useState(null); // { id, price }
   const [step, setStep] = useState(1); // 1, 2, 3
+  // Always initialize with empty/defaults, then patch with calculator selections on mount if present
   const [form, setForm] = useState({
     title: "",
     preferred_writer_number: "",
@@ -36,6 +38,11 @@ export default function NewOrderPage() {
     outline: true,
   });
 
+  // (moved up above)
+
+  // Patch form with calculator selections after mount and after options are loaded
+  // (moved below options declaration)
+
   // Options for dropdowns
   const [options, setOptions] = useState({
     orderTypes: [],
@@ -45,6 +52,62 @@ export default function NewOrderPage() {
     styles: [],
     languages: [],
   });
+
+  // Patch form with calculator selections after mount and after options are loaded
+  // Only patch once per navigation (avoid overwriting user changes)
+  const [hasPatchedFromCalculator, setHasPatchedFromCalculator] = useState(false);
+  useEffect(() => {
+    if (
+      initialSelections &&
+      !hasPatchedFromCalculator &&
+      options.orderTypes.length > 0 &&
+      options.levels.length > 0 &&
+      options.pages.length > 0 &&
+      options.urgency.length > 0
+    ) {
+      // Debug: log incoming calculator selections and dropdown options
+      try {
+        // eslint-disable-next-line no-console
+        console.log('Calculator selections:', initialSelections);
+        // eslint-disable-next-line no-console
+        console.log('Dropdown options:', {
+          orderTypes: options.orderTypes,
+          levels: options.levels,
+          pages: options.pages,
+          urgency: options.urgency
+        });
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('Error logging debug info:', e);
+      }
+      setForm(f => {
+        // Support both old (id-based) and new (object-based) calculatorSelections
+        let order_type_id = initialSelections.order_type_id || initialSelections.order_type?.id || "";
+        let order_level_id = initialSelections.order_level_id || initialSelections.level?.id || "";
+        let order_pages_id = initialSelections.order_pages_id || initialSelections.pages?.id || "";
+        let order_urgency_id = initialSelections.order_urgency_id || initialSelections.urgency?.id || "";
+        // Only patch if the current values are still empty (user hasn't changed them)
+        if (
+          (!f.order_type_id || f.order_type_id === "") &&
+          (!f.order_level_id || f.order_level_id === "") &&
+          (!f.order_pages_id || f.order_pages_id === "") &&
+          (!f.order_urgency_id || f.order_urgency_id === "")
+        ) {
+          return {
+            ...f,
+            order_type_id,
+            order_level_id,
+            order_pages_id,
+            order_urgency_id,
+            // If price is passed from calculator, set it as a string (for summary display)
+            ...(initialSelections.price ? { price: initialSelections.price } : {})
+          };
+        }
+        return f;
+      });
+      setHasPatchedFromCalculator(true);
+    }
+  }, [initialSelections, options.orderTypes, options.levels, options.pages, options.urgency, hasPatchedFromCalculator]);
   // Fetch dropdown options on mount
   useEffect(() => {
     async function fetchOptions(endpoint) {
@@ -74,9 +137,12 @@ export default function NewOrderPage() {
   const selectedUrgency = options.urgency.find(o => o.id === form.order_urgency_id);
   const selectedLevel = options.levels.find(o => o.id === form.order_level_id);
   const selectedPages = options.pages.find(o => o.id === form.order_pages_id);
-  const price = selectedType && selectedUrgency && selectedLevel && selectedPages
-    ? (selectedType.base_price_per_page * selectedUrgency.urgency_price_multiplier * selectedLevel.level_price_multiplier * selectedPages.number_of_pages).toFixed(2)
-    : "-";
+  // Use pre-calculated price from form if present, otherwise calculate
+  const price = (typeof form.price !== 'undefined' && form.price !== null && form.price !== "")
+    ? form.price
+    : (selectedType && selectedUrgency && selectedLevel && selectedPages
+      ? (selectedType.base_price_per_page * selectedUrgency.urgency_price_multiplier * selectedLevel.level_price_multiplier * selectedPages.number_of_pages).toFixed(2)
+      : "-");
 
   // Real summary data
   const summary = {
@@ -218,15 +284,7 @@ export default function NewOrderPage() {
                   </ul>
                   <div className="text-lg font-bold text-blue-900 mb-4">Total: USD {summary.total}</div>
                 </div>
-                {/* PayWithPayPal at the bottom of the right column */}
-                <div className="mt-2">
-                  <PayWithPayPal 
-                    orderId={createdOrder?.id}
-                    amount={createdOrder?.price || price}
-                    onSuccess={() => setOrderStep("done")}
-                    onCancel={() => setOrderStep("form")}
-                  />
-                </div>
+                {/* PayWithPayPal removed from the right column. It is only rendered in the payment step below. */}
               </div>
             </div>
           </div>
