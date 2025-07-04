@@ -5,6 +5,10 @@ import CreateOrder from "../features/orders/CreateOrder";
 import PayWithPayPal from "../features/orders/PayWithPayPal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
+import { Input } from "../components/ui/input";
+import { Select } from "../components/ui/select";
+import { Button } from "../components/ui/button";
+import { FaUser, FaFileAlt, FaListOl, FaClock, FaLevelUpAlt, FaLanguage, FaFileUpload, FaSortNumericUp, FaCheckCircle, FaSms, FaCopy, FaShieldAlt, FaStar, FaFileSignature, FaBook, FaRegListAlt, FaChevronLeft, FaChevronRight, FaClipboardList, FaRegClock, FaRegFileAlt, FaRegUser, FaRegStar, FaRegFile, FaRegCopy, FaRegFileArchive, FaRegFileExcel, FaRegFileWord, FaRegFilePdf, FaRegFilePowerpoint, FaRegFileImage, FaRegFileAudio, FaRegFileVideo, FaRegFileCode } from "react-icons/fa";
 
 export default function NewOrderPage() {
   const { user, logout } = useAuth();
@@ -197,52 +201,76 @@ export default function NewOrderPage() {
               {/* Left column: 100% on mobile, 70% on desktop */}
               <div className="w-full lg:flex-1 min-w-0 max-w-full lg:max-w-[70%] bg-white rounded-2xl shadow-2xl border border-blue-200 p-4 sm:p-6 lg:p-10 relative flex flex-col mt-0">
                 <button
-                  className="absolute top-4 right-4 text-blue-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
+                  className="absolute top-4 right-4 flex items-center gap-2 text-blue-400 hover:text-blue-700 text-lg font-bold focus:outline-none px-3 py-1 rounded-full border border-blue-100 bg-blue-50 shadow-sm transition-all duration-150 hover:bg-blue-100"
                   aria-label="Close order form"
                   onClick={() => navigate(-1)}
                 >
-                  &times;
+                  <FaChevronLeft className="text-xl" /> Close
                 </button>
                 {/* Step 1 */}
                 {step === 1 && (
                   <div className="flex flex-col gap-6">
-                    <input className="input" placeholder="Order Title" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))} />
-                    <input className="input" placeholder="Preferred Writer Number" value={form.preferred_writer_number} onChange={e=>setForm(f=>({...f,preferred_writer_number:e.target.value}))} />
-                    <select className="input" value={form.order_type_id} onChange={e=>setForm(f=>({...f,order_type_id:e.target.value}))}>
-                      <option value="">Select Order Type</option>
-                      {options.orderTypes.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                    </select>
-                    <select className="input" value={form.order_level_id} onChange={e=>setForm(f=>({...f,order_level_id:e.target.value}))}>
-                      <option value="">Select Order Level</option>
-                      {options.levels.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                    </select>
-                    <select className="input" value={form.order_pages_id} onChange={e=>setForm(f=>({...f,order_pages_id:e.target.value}))}>
-                      <option value="">Select Page Count</option>
-                      {options.pages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                    </select>
-                    <select className="input" value={form.order_urgency_id} onChange={e=>setForm(f=>({...f,order_urgency_id:e.target.value}))}>
-                      <option value="">Select Urgency</option>
-                      {options.urgency.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                    </select>
-                    <button className="btn-primary mt-4" onClick={()=>setStep(2)}>Next</button>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaFileAlt className="text-blue-400" /> Order Title</span>
+                      <Input placeholder="Enter a descriptive title" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))} />
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaUser className="text-blue-400" /> Preferred Writer Number</span>
+                      <Input placeholder="e.g. 12345 (optional)" value={form.preferred_writer_number} onChange={e=>setForm(f=>({...f,preferred_writer_number:e.target.value}))} />
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaListOl className="text-blue-400" /> Order Type</span>
+                      <Select value={form.order_type_id} onChange={e=>setForm(f=>({...f,order_type_id:e.target.value}))}>
+                        <option value="">Select Order Type</option>
+                        {options.orderTypes.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                      </Select>
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaLevelUpAlt className="text-blue-400" /> Academic Level</span>
+                      <Select value={form.order_level_id} onChange={e=>setForm(f=>({...f,order_level_id:e.target.value}))}>
+                        <option value="">Select Order Level</option>
+                        {options.levels.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                      </Select>
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaSortNumericUp className="text-blue-400" /> Page Count</span>
+                      <Select value={form.order_pages_id} onChange={e=>setForm(f=>({...f,order_pages_id:e.target.value}))}>
+                        <option value="">Select Page Count</option>
+                        {options.pages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                      </Select>
+                    </label>
+                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                      <span className="flex items-center gap-2"><FaClock className="text-blue-400" /> Urgency</span>
+                      <Select value={form.order_urgency_id} onChange={e=>setForm(f=>({...f,order_urgency_id:e.target.value}))}>
+                        <option value="">Select Urgency</option>
+                        {options.urgency.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                      </Select>
+                    </label>
+                    <Button className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl" onClick={()=>setStep(2)}>
+                      Next <FaChevronRight className="ml-1" />
+                    </Button>
                   </div>
                 )}
                 {step === 2 && (
                   <div className="flex flex-col gap-6">
                     <textarea className="input" placeholder="Order Description" value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
                     <input className="input" type="file" onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
-                    <select className="input" value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
+                    <Select value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
                       <option value="">Select Order Style</option>
                       {options.styles.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                    </select>
-                    <select className="input" value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
+                    </Select>
+                    <Select value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
                       <option value="">Select Order Language</option>
                       {options.languages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-                    </select>
-                    <input className="input" placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
+                    </Select>
+                    <Input placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
                     <div className="flex gap-4 mt-4">
-                      <button className="btn-secondary" onClick={()=>setStep(1)}><span className="mr-2">&#8592;</span>Go Back</button>
-                      <button className="btn-primary" onClick={()=>setStep(3)}>Next</button>
+                      <Button variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>setStep(1)}>
+                        <FaChevronLeft /> Go Back
+                      </Button>
+                      <Button className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl" onClick={()=>setStep(3)}>
+                        Next <FaChevronRight className="ml-1" />
+                      </Button>
                     </div>
                   </div>
                 )}
@@ -258,8 +286,8 @@ export default function NewOrderPage() {
                     <label className="flex items-center gap-2"><input type="checkbox" checked={form.bibliography} onChange={e=>setForm(f=>({...f,bibliography:e.target.checked}))}/> Bibliography</label>
                     <label className="flex items-center gap-2"><input type="checkbox" checked={form.outline} onChange={e=>setForm(f=>({...f,outline:e.target.checked}))}/> Outline</label>
                     <div className="flex gap-4 mt-4">
-                      <button className="btn-secondary" onClick={()=>setStep(2)}><span className="mr-2">&#8592;</span>Go Back</button>
-                      <button className="btn-primary" onClick={async ()=>{
+                      <Button variant="secondary" onClick={()=>setStep(2)}><span className="mr-2">&#8592;</span>Go Back</Button>
+                      <Button onClick={async ()=>{
                         try {
                           const jwt = localStorage.getItem("jwt_token");
                           let fileUrl = null;
@@ -306,35 +334,37 @@ export default function NewOrderPage() {
                           // eslint-disable-next-line no-alert
                           alert(e.message || "Order creation failed. Please try again.");
                         }
-                      }}>Checkout</button>
+                      }}>Checkout</Button>
                     </div>
                   </div>
                 )}
                 {/* Go back icon at bottom left */}
-                <button className="absolute left-4 bottom-4 flex items-center text-blue-500 hover:text-blue-700" onClick={()=>step>1?setStep(step-1):navigate(-1)}>
-                  <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                  Go Back
-                </button>
+                <Button variant="secondary" className="absolute left-4 bottom-4 flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>step>1?setStep(step-1):navigate(-1)}>
+                  <FaChevronLeft /> Go Back
+                </Button>
               </div>
               {/* Right column: 100% on mobile, 30% on desktop */}
-              <div className="w-full lg:max-w-[30%] min-w-[220px] bg-white rounded-2xl shadow-2xl border border-blue-200 p-4 sm:p-6 flex flex-col justify-between mt-6 lg:mt-0" style={{ marginTop: '0' }}>
+              <div className="w-full lg:max-w-[30%] min-w-[220px] bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl shadow-2xl border border-blue-200 p-4 sm:p-6 flex flex-col justify-between mt-6 lg:mt-0" style={{ marginTop: '0' }}>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-blue-900">Summary</h3>
-                  <ul className="text-blue-900 text-xs sm:text-sm mb-4 sm:mb-6">
-                    <li>Type of work: {summary.typeOfWork}</li>
-                    <li>Academic level: {summary.academicLevel}</li>
-                    <li>Page count: {summary.pageCount}</li>
-                    <li>Deadline: {summary.deadline}</li>
-                    <li>Simple language: {summary.simpleLanguage}</li>
-                    <li>SMS Updates: {summary.smsUpdates}</li>
-                    <li>Copy of sources: {summary.copyOfSources}</li>
-                    <li>Plagiarism report: {summary.plagiarismReport}</li>
-                    <li>TOP Writer: {summary.topWriter}</li>
-                    <li>Title page: {summary.titlePage}</li>
-                    <li>Bibliography: {summary.bibliography}</li>
-                    <li>Outline: {summary.outline}</li>
+                  <h3 className="text-xl font-extrabold mb-4 text-blue-900 flex items-center gap-2"><FaClipboardList className="text-blue-400 text-2xl" /> Order Summary</h3>
+                  <ul className="text-blue-900 text-xs sm:text-sm mb-4 sm:mb-6 space-y-2">
+                    <li className="flex items-center gap-2"><FaListOl className="text-blue-300" /> <span className="font-semibold">Type of work:</span> <span className="ml-auto">{summary.typeOfWork}</span></li>
+                    <li className="flex items-center gap-2"><FaLevelUpAlt className="text-blue-300" /> <span className="font-semibold">Academic level:</span> <span className="ml-auto">{summary.academicLevel}</span></li>
+                    <li className="flex items-center gap-2"><FaSortNumericUp className="text-blue-300" /> <span className="font-semibold">Page count:</span> <span className="ml-auto">{summary.pageCount}</span></li>
+                    <li className="flex items-center gap-2"><FaRegClock className="text-blue-300" /> <span className="font-semibold">Deadline:</span> <span className="ml-auto">{summary.deadline}</span></li>
+                    <li className="flex items-center gap-2"><FaFileSignature className="text-blue-300" /> <span className="font-semibold">Simple language:</span> <span className="ml-auto">{summary.simpleLanguage}</span></li>
+                    <li className="flex items-center gap-2"><FaSms className="text-blue-300" /> <span className="font-semibold">SMS Updates:</span> <span className="ml-auto">{summary.smsUpdates}</span></li>
+                    <li className="flex items-center gap-2"><FaCopy className="text-blue-300" /> <span className="font-semibold">Copy of sources:</span> <span className="ml-auto">{summary.copyOfSources}</span></li>
+                    <li className="flex items-center gap-2"><FaShieldAlt className="text-blue-300" /> <span className="font-semibold">Plagiarism report:</span> <span className="ml-auto">{summary.plagiarismReport}</span></li>
+                    <li className="flex items-center gap-2"><FaStar className="text-blue-300" /> <span className="font-semibold">TOP Writer:</span> <span className="ml-auto">{summary.topWriter}</span></li>
+                    <li className="flex items-center gap-2"><FaRegFileAlt className="text-blue-300" /> <span className="font-semibold">Title page:</span> <span className="ml-auto">{summary.titlePage}</span></li>
+                    <li className="flex items-center gap-2"><FaBook className="text-blue-300" /> <span className="font-semibold">Bibliography:</span> <span className="ml-auto">{summary.bibliography}</span></li>
+                    <li className="flex items-center gap-2"><FaRegListAlt className="text-blue-300" /> <span className="font-semibold">Outline:</span> <span className="ml-auto">{summary.outline}</span></li>
                   </ul>
-                  <div className="text-base sm:text-lg font-bold text-blue-900 mb-3 sm:mb-4">Total: USD {summary.total}</div>
+                  <div className="text-lg font-extrabold text-blue-800 mb-4 flex items-center gap-2 justify-between bg-white rounded-xl px-4 py-3 shadow border border-blue-100">
+                    <span>Total:</span>
+                    <span className="text-2xl">USD {summary.total}</span>
+                  </div>
                 </div>
                 {/* PayWithPayPal: show in summary column if payment step */}
                 {orderStep === "payment" && createdOrder && (
