@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
-import CreateOrder from "../features/orders/CreateOrder";
 import PayWithPayPal from "../features/orders/PayWithPayPal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 import { Input } from "../components/ui/input";
 import { Select } from "../components/ui/select";
 import { Button } from "../components/ui/button";
-import { FaUser, FaFileAlt, FaListOl, FaClock, FaLevelUpAlt, FaLanguage, FaFileUpload, FaSortNumericUp, FaCheckCircle, FaSms, FaCopy, FaShieldAlt, FaStar, FaFileSignature, FaBook, FaRegListAlt, FaChevronLeft, FaChevronRight, FaClipboardList, FaRegClock, FaRegFileAlt, FaRegUser, FaRegStar, FaRegFile, FaRegCopy, FaRegFileArchive, FaRegFileExcel, FaRegFileWord, FaRegFilePdf, FaRegFilePowerpoint, FaRegFileImage, FaRegFileAudio, FaRegFileVideo, FaRegFileCode } from "react-icons/fa";
+import { FaUser, FaFileAlt, FaListOl, FaClock, FaLevelUpAlt, FaLanguage, FaFileUpload, FaSortNumericUp, FaCheckCircle, FaSms, FaCopy, FaShieldAlt, FaStar, FaFileSignature, FaBook, FaRegListAlt, FaChevronLeft, FaChevronRight, FaClipboardList, FaRegClock, FaRegFileAlt } from "react-icons/fa";
 
 export default function NewOrderPage() {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  // Get initial selections from navigation state (if any)
-  // Memoize initialSelections to avoid stale closure in useState
   const initialSelections = React.useMemo(() => location.state?.calculatorSelections || null, [location.state]);
-  const [orderStep, setOrderStep] = useState("form"); // "form" | "payment"
-  const [createdOrder, setCreatedOrder] = useState(null); // { id, price }
-  const [step, setStep] = useState(1); // 1, 2, 3
-  const [error, setError] = useState(""); // Error state for order creation
-  // Always initialize with empty/defaults, then patch with calculator selections on mount if present
+  const [orderStep, setOrderStep] = useState("form");
+  const [createdOrder, setCreatedOrder] = useState(null);
+  const [step, setStep] = useState(1);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     title: "",
     preferred_writer_number: "",
@@ -43,13 +39,6 @@ export default function NewOrderPage() {
     bibliography: true,
     outline: true,
   });
-
-  // (moved up above)
-
-  // Patch form with calculator selections after mount and after options are loaded
-  // (moved below options declaration)
-
-  // Options for dropdowns
   const [options, setOptions] = useState({
     orderTypes: [],
     levels: [],
@@ -58,10 +47,8 @@ export default function NewOrderPage() {
     styles: [],
     languages: [],
   });
-
-  // Patch form with calculator selections after mount and after options are loaded
-  // Only patch once per navigation (avoid overwriting user changes)
   const [hasPatchedFromCalculator, setHasPatchedFromCalculator] = useState(false);
+
   useEffect(() => {
     if (
       initialSelections &&
@@ -71,11 +58,8 @@ export default function NewOrderPage() {
       options.pages.length > 0 &&
       options.urgency.length > 0
     ) {
-      // Debug: log incoming calculator selections and dropdown options
       try {
-        // eslint-disable-next-line no-console
         console.log('Calculator selections:', initialSelections);
-        // eslint-disable-next-line no-console
         console.log('Dropdown options:', {
           orderTypes: options.orderTypes,
           levels: options.levels,
@@ -83,16 +67,13 @@ export default function NewOrderPage() {
           urgency: options.urgency
         });
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.error('Error logging debug info:', e);
       }
       setForm(f => {
-        // Support both old (id-based) and new (object-based) calculatorSelections
         let order_type_id = initialSelections.order_type_id || initialSelections.order_type?.id || "";
         let order_level_id = initialSelections.order_level_id || initialSelections.level?.id || "";
         let order_pages_id = initialSelections.order_pages_id || initialSelections.pages?.id || "";
         let order_urgency_id = initialSelections.order_urgency_id || initialSelections.urgency?.id || "";
-        // Only patch if the current values are still empty (user hasn't changed them)
         if (
           (!f.order_type_id || f.order_type_id === "") &&
           (!f.order_level_id || f.order_level_id === "") &&
@@ -105,7 +86,6 @@ export default function NewOrderPage() {
             order_level_id,
             order_pages_id,
             order_urgency_id,
-            // If price is passed from calculator, set it as a string (for summary display)
             ...(initialSelections.price ? { price: initialSelections.price } : {})
           };
         }
@@ -114,7 +94,7 @@ export default function NewOrderPage() {
       setHasPatchedFromCalculator(true);
     }
   }, [initialSelections, options.orderTypes, options.levels, options.pages, options.urgency, hasPatchedFromCalculator]);
-  // Fetch dropdown options on mount
+
   useEffect(() => {
     async function fetchOptions(endpoint) {
       const jwt = localStorage.getItem("jwt_token");
@@ -138,19 +118,16 @@ export default function NewOrderPage() {
     })();
   }, []);
 
-  // Calculate price (same as OrderPriceCalculator)
   const selectedType = options.orderTypes.find(o => o.id === form.order_type_id);
   const selectedUrgency = options.urgency.find(o => o.id === form.order_urgency_id);
   const selectedLevel = options.levels.find(o => o.id === form.order_level_id);
   const selectedPages = options.pages.find(o => o.id === form.order_pages_id);
-  // Use pre-calculated price from form if present, otherwise calculate
   const price = (typeof form.price !== 'undefined' && form.price !== null && form.price !== "")
     ? form.price
     : (selectedType && selectedUrgency && selectedLevel && selectedPages
       ? (selectedType.base_price_per_page * selectedUrgency.urgency_price_multiplier * selectedLevel.level_price_multiplier * selectedPages.number_of_pages).toFixed(2)
       : "-");
 
-  // Real summary data
   const summary = {
     typeOfWork: selectedType ? selectedType.name : "-",
     academicLevel: selectedLevel ? selectedLevel.name : "-",
