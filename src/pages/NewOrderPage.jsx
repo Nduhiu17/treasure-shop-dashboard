@@ -190,7 +190,7 @@ export default function NewOrderPage() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row w-full">
               <div className="mt-2 mb-2 w-full sm:w-[70%]">
-                <span className="inline-block bg-blue-100 text-blue-800 text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-sm border border-blue-200">
+                <span className="block text-blue-700 text-base sm:text-lg font-semibold px-0 py-2">
                   {step === 1 && "Select your type of work and deadline"}
                   {step === 2 && "Describe your task"}
                   {step === 3 && "Finalize your order"}
