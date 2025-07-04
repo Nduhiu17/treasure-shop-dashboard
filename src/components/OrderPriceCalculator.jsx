@@ -60,10 +60,10 @@ export default function OrderPriceCalculator({ onProceed }) {
   // Compact dropdown with animation
   const dropdown = (options, value, setValue, key, getLabel) => (
     <select
-      className="w-full px-4 py-3 rounded-2xl border border-cyan-200 bg-white/90 text-slate-800 text-base focus:outline-none focus:ring-2 focus:ring-fuchsia-400 mb-4 transition-all duration-200 ease-in-out shadow-sm hover:shadow-lg hover:border-fuchsia-300"
+      className="w-full px-3 py-2 rounded-xl border border-cyan-200 bg-white/90 text-slate-800 text-base focus:outline-none focus:ring-2 focus:ring-fuchsia-400 mb-2 transition-all duration-200 ease-in-out shadow-sm hover:shadow-lg hover:border-fuchsia-300"
       value={value?.id || ""}
       onChange={e => setValue(options.find(o => o.id === e.target.value))}
-      style={{ minHeight: 44 }}
+      style={{ minHeight: 32 }}
     >
       {options.map(o => (
         <option key={o.id} value={o.id}>{getLabel(o)}</option>
@@ -73,28 +73,28 @@ export default function OrderPriceCalculator({ onProceed }) {
 
   return (
     <form
-      className="w-full h-full min-h-[420px] bg-white/90 rounded-3xl shadow-2xl px-8 py-8 flex flex-col gap-5 items-stretch relative overflow-hidden animate-fadein border-2 border-cyan-100"
+      className="w-full h-full min-h-[420px] bg-white/90 rounded-3xl shadow-2xl px-5 py-5 flex flex-col gap-3 items-stretch relative overflow-hidden animate-fadein border-2 border-cyan-100"
       style={{ minWidth: 0 }}
       onSubmit={e => { e.preventDefault(); if (onProceed && selectedType && selectedUrgency && selectedLevel && selectedPages) { onProceed({ order_type: selectedType, urgency: selectedUrgency, level: selectedLevel, pages: selectedPages, price }); } }}
     >
       {/* Animated gradient accent ring */}
       <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-fuchsia-300/30 via-cyan-200/20 to-yellow-100/10 rounded-full blur-2xl pointer-events-none animate-pulse-slow" />
-      <div className="text-center text-2xl font-extrabold text-fuchsia-700 mb-2 tracking-tight flex items-center justify-center gap-1 select-none">
+      <div className="text-center text-2xl font-extrabold text-fuchsia-700 mb-1 tracking-tight flex items-center justify-center gap-1 select-none">
         <SparkleIcon /> Estimate Your Price
       </div>
       {dropdown(orderTypes, selectedType, setSelectedType, "type", o => o.name)}
       {dropdown(levels, selectedLevel, setSelectedLevel, "level", o => o.name)}
       {dropdown(urgencies, selectedUrgency, setSelectedUrgency, "urgency", o => o.name)}
       {dropdown(pagesOptions, selectedPages, setSelectedPages, "pages", o => o.name)}
-      <div className="flex items-center justify-between mt-4 mb-2 px-1">
+      <div className="flex items-center justify-between mt-2 mb-1 px-1">
         <div className="text-cyan-700 font-bold text-xl flex items-center gap-1 animate-fadein">
           <svg className="w-6 h-6 text-green-400 animate-bounce-slow mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
           ${price}
         </div>
         <button
           type="submit"
-          className="bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-yellow-300 text-white font-bold px-6 py-3 rounded-2xl shadow-lg hover:from-fuchsia-600 hover:to-cyan-500 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out text-base focus:outline-none focus:ring-2 focus:ring-fuchsia-300 animate-bounce-once"
-          style={{ minWidth: 130 }}
+          className="bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-yellow-300 text-white font-bold px-5 py-2 rounded-xl shadow-lg hover:from-fuchsia-600 hover:to-cyan-500 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out text-base focus:outline-none focus:ring-2 focus:ring-fuchsia-300 animate-bounce-once"
+          style={{ minWidth: 110 }}
           disabled={!selectedType || !selectedUrgency || !selectedLevel || !selectedPages}
         >
           <span className="inline-block align-middle">Proceed to details</span>
