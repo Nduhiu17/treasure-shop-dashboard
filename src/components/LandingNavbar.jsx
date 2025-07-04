@@ -163,147 +163,141 @@ export default function LandingNavbar({ user, onLogout }) {
 		setTimeout(() => setRegisterModalOpen(true), 200); // slight delay for smooth transition
 	};
 
-	return (
-		<header className="sticky top-0 z-50 w-full bg-white md:bg-white/95 md:backdrop-blur-md shadow-xl border-b border-blue-100">
-			<nav className="w-full flex items-center justify-between px-2 xs:px-4 py-2 xs:py-3 rounded-b-2xl bg-white md:bg-gradient-to-r md:from-blue-50/95 md:via-white/95 md:to-blue-100/95 shadow-lg">
-				<div className="w-full max-w-7xl mx-auto flex items-center justify-between">
-					{/* Logo */}
-					<Link
-						to="/"
-						className="flex items-center gap-2 text-blue-700 font-extrabold text-2xl tracking-tight drop-shadow-sm hover:scale-105 transition-transform duration-200"
-						style={{ letterSpacing: '0.01em' }}
-					>
-						<img
-							src="/logo.png"
-							alt="Academic Codebase Logo"
-							className="h-10 w-10 rounded-xl shadow-md border border-blue-200 bg-white/80"
-						/>
-						<span className="bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-400 bg-clip-text text-transparent">Academic Codebase</span>
-					</Link>
-					{/* Desktop Nav Items */}
-					<ul className="hidden md:flex items-center gap-4 lg:gap-8">
-						<li className="relative navbar-dropdown">
-							<button
-								className="flex items-center gap-2 font-semibold text-blue-900 hover:text-blue-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-100/80 to-blue-200/80 shadow-md border border-blue-100 hover:shadow-xl hover:from-blue-200 hover:to-blue-300"
-								onMouseEnter={() => setServicesDropdownOpen(true)}
-								onMouseLeave={() => setServicesDropdownOpen(false)}
-								onClick={() => setServicesDropdownOpen((v) => !v)}
-								aria-haspopup="true"
-								aria-expanded={servicesDropdownOpen}
+  return (
+	<header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md shadow-2xl border-b-4 border-fuchsia-200 rounded-b-3xl animate-fade-in-up">
+	  <nav className="w-full flex items-center justify-between px-2 xs:px-4 py-2 xs:py-3 rounded-b-3xl bg-white/95 shadow-lg">
+		<div className="w-full max-w-7xl mx-auto flex items-center justify-between">
+		  {/* Logo */}
+		  <Link
+			to="/"
+			className="flex items-center gap-3 text-fuchsia-700 font-extrabold text-2xl tracking-tight drop-shadow-sm hover:scale-105 transition-transform duration-200"
+			style={{ letterSpacing: '0.01em' }}
+		  >
+			<img
+			  src="/logo.png"
+			  alt="Academic Codebase Logo"
+			  className="h-11 w-11 rounded-2xl shadow-md border-2 border-fuchsia-200 bg-white/80"
+			/>
+			<span className="bg-gradient-to-r from-fuchsia-700 via-cyan-500 to-yellow-400 bg-clip-text text-transparent">Academic Codebase</span>
+		  </Link>
+		  {/* Desktop Nav Items */}
+		  <ul className="hidden md:flex items-center gap-6 lg:gap-10 uppercase font-bold tracking-wide text-base">
+			<li className="relative navbar-dropdown">
+			  <button
+				className="flex items-center gap-2 font-bold text-fuchsia-700 hover:text-cyan-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 px-5 py-2 rounded-2xl bg-gradient-to-r from-fuchsia-50 to-cyan-50 shadow border-2 border-fuchsia-100 hover:shadow-xl hover:from-fuchsia-100 hover:to-cyan-100"
+				onMouseEnter={() => setServicesDropdownOpen(true)}
+				onMouseLeave={() => setServicesDropdownOpen(false)}
+				onClick={() => setServicesDropdownOpen((v) => !v)}
+				aria-haspopup="true"
+				aria-expanded={servicesDropdownOpen}
+			  >
+				Services
+				<svg
+				  className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:rotate-180"
+				  fill="none"
+				  stroke="currentColor"
+				  strokeWidth="2"
+				  viewBox="0 0 24 24"
+				>
+				  <path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					d="M19 9l-7 7-7-7"
+				  />
+				</svg>
+			  </button>
+			  {servicesDropdownOpen && (
+				<div
+				  className="absolute left-0 mt-2 w-[95vw] max-w-2xl sm:max-w-3xl bg-white/95 rounded-2xl shadow-2xl border-2 border-fuchsia-100 py-6 px-4 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl"
+				  onMouseEnter={() => setServicesDropdownOpen(true)}
+				  onMouseLeave={() => setServicesDropdownOpen(false)}
+				>
+				  <h4 className="text-lg font-bold text-fuchsia-700 mb-4 px-2">Our Services</h4>
+				  <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
+					{chunkArray(SERVICE_ITEMS, 3).map((col, colIdx) => (
+					  <div key={colIdx} className="flex flex-col gap-1">
+						{col.map((item) => (
+						  <Link
+							key={item}
+							to={`/services/${encodeURIComponent(item.toLowerCase().replace(/\s+/g, "-"))}`}
+							className="flex items-center gap-2 px-4 py-2 rounded-lg text-fuchsia-700 hover:bg-gradient-to-r hover:from-fuchsia-100 hover:to-cyan-100 hover:text-cyan-700 transition-colors text-sm font-medium shadow-sm group"
+						  >
+							<span className="inline-block w-2 h-2 rounded-full bg-cyan-400 group-hover:bg-fuchsia-400 transition-colors"></span>
+							<span className="truncate">{item}</span>
+							<svg
+							  className="w-4 h-4 text-cyan-200 group-hover:text-fuchsia-500 ml-auto"
+							  fill="none"
+							  stroke="currentColor"
+							  strokeWidth="2"
+							  viewBox="0 0 24 24"
 							>
-								Services
-								<svg
-									className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:rotate-180"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M19 9l-7 7-7-7"
-									/>
-								</svg>
-							</button>
-							{servicesDropdownOpen && (
-								<div
-									className="absolute left-0 mt-2 w-[95vw] max-w-2xl sm:max-w-3xl bg-white/95 rounded-2xl shadow-2xl border border-blue-100 py-6 px-4 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl"
-									onMouseEnter={() => setServicesDropdownOpen(true)}
-									onMouseLeave={() => setServicesDropdownOpen(false)}
-								>
-									<h4 className="text-lg font-bold text-blue-900 mb-4 px-2">Our Services</h4>
-									<div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
-										{chunkArray(SERVICE_ITEMS, 3).map((col, colIdx) => (
-											<div key={colIdx} className="flex flex-col gap-1">
-												{col.map((item) => (
-													<Link
-														key={item}
-														to={`/services/${encodeURIComponent(item.toLowerCase().replace(/\s+/g, "-"))}`}
-														className="flex items-center gap-2 px-4 py-2 rounded-lg text-blue-900 hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-200 hover:text-blue-700 transition-colors text-sm font-medium shadow-sm group"
-													>
-														<span className="inline-block w-2 h-2 rounded-full bg-blue-400 group-hover:bg-blue-600 transition-colors"></span>
-														<span className="truncate">{item}</span>
-														<svg
-															className="w-4 h-4 text-blue-200 group-hover:text-blue-500 ml-auto"
-															fill="none"
-															stroke="currentColor"
-															strokeWidth="2"
-															viewBox="0 0 24 24"
-														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M9 5l7 7-7 7"
-															/>
-														</svg>
-													</Link>
-												))}
-											</div>
-										))}
-									</div>
-								</div>
-							)}
-						</li>
-						<li>
-							<Link
-								to="/about"
-								className="font-semibold text-blue-900 hover:text-blue-600 transition-colors px-3 py-2 rounded-xl hover:bg-blue-50/80"
-							>
-								About Us
-							</Link>
-						</li>
-						<li>
-							<Link
-								to="/guarantees"
-								className="font-semibold text-blue-900 hover:text-blue-600 transition-colors px-3 py-2 rounded-xl hover:bg-blue-50/80"
-							>
-								Guarantees
-							</Link>
-						</li>
-						<li>
-							<Link
-								to="/reviews"
-								className="font-semibold text-blue-900 hover:text-blue-600 transition-colors px-3 py-2 rounded-xl hover:bg-blue-50/80"
-							>
-								Reviews
-							</Link>
-						</li>
-						<li>
-							<a
-								href="tel:+1234567890"
-								className="font-semibold text-blue-900 hover:text-blue-600 transition-colors flex items-center gap-1 px-3 py-2 rounded-xl hover:bg-blue-50/80"
-							>
-								<svg
-									className="w-4 h-4"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 0v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2z"
-									/>
-								</svg>
-								+1 234 567 890
-							</a>
-						</li>
-					</ul>
-					{/* Mobile menu button - improved for small screens */}
-					<div className="md:hidden flex items-center">
-						<button
-							ref={mobileMenuButtonRef}
-							className="p-3 rounded-2xl text-blue-700 bg-white/80 shadow-lg border border-blue-200 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 active:scale-95"
-							aria-label="Open menu"
-							onClick={() => setMobileMenuOpen(true)}
-							style={{ boxShadow: '0 4px 24px 0 rgba(30, 64, 175, 0.10)' }}
-						>
-							<svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
-						</button>
-					</div>
+							  <path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M9 5l7 7-7 7"
+							  />
+							</svg>
+						  </Link>
+						))}
+					  </div>
+					))}
+				  </div>
 				</div>
+			  )}
+			</li>
+			<li>
+			  <Link
+				to="/about"
+				className="font-bold text-cyan-700 hover:text-fuchsia-600 transition-colors px-4 py-2 rounded-2xl hover:bg-cyan-50"
+			  >
+				About Us
+			  </Link>
+			</li>
+			<li>
+			  <Link
+				to="/guarantees"
+				className="font-bold text-yellow-600 hover:text-fuchsia-700 transition-colors px-4 py-2 rounded-2xl hover:bg-yellow-50"
+			  >
+				Guarantees
+			  </Link>
+			</li>
+			<li>
+			  <Link
+				to="/reviews"
+				className="font-bold text-fuchsia-700 hover:text-cyan-700 transition-colors px-4 py-2 rounded-2xl hover:bg-fuchsia-50"
+			  >
+				Reviews
+			  </Link>
+			</li>
+			<li>
+			  <a
+				href="tel:+1234567890"
+				className="font-bold text-cyan-700 hover:text-fuchsia-700 transition-colors flex items-center gap-2 px-4 py-2 rounded-2xl hover:bg-cyan-50"
+			  >
+				<svg
+				  className="w-5 h-5 text-yellow-400"
+				  fill="currentColor"
+				  viewBox="0 0 20 20"
+				>
+				  <path d="M2.003 5.884l2-3.5A2 2 0 016.605 1h6.79a2 2 0 011.732.884l2 3.5A2 2 0 0118 7.118V17a2 2 0 01-2 2H4a2 2 0 01-2-2V7.118a2 2 0 01.003-1.234z" />
+				</svg>
+				+1 234 567 890
+			  </a>
+			</li>
+		  </ul>
+		  {/* Mobile menu button */}
+		  <div className="md:hidden flex items-center">
+			<button
+			  ref={mobileMenuButtonRef}
+			  className="p-3 rounded-2xl text-fuchsia-700 bg-white/80 shadow-lg border-2 border-fuchsia-200 hover:bg-fuchsia-50 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 transition-all duration-200 active:scale-95"
+			  aria-label="Open menu"
+			  onClick={() => setMobileMenuOpen(true)}
+			  style={{ boxShadow: '0 4px 24px 0 rgba(236, 72, 153, 0.10)' }}
+			>
+			  <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+			</button>
+		  </div>
+		</div>
 				{/* Mobile menu (side drawer) - improved animation and style */}
 			   {mobileMenuOpen && (
 				   <div className="fixed inset-0 z-50 bg-gradient-to-br from-blue-200/80 to-blue-400/80 flex md:hidden navbar-mobile-menu" onClick={() => setMobileMenuOpen(false)}>
