@@ -167,12 +167,12 @@ export default function NewOrderPage() {
       <LandingNavbar user={user} onLogout={logout} />
       {/* Stepper Navigation Bar */}
       <nav className="w-full bg-white shadow-md border-b border-blue-200 z-20 relative">
-        <div className="max-w-7xl mx-auto flex flex-row items-center justify-center px-4 sm:px-8 py-6">
-          {/* Stepper UI with labels in a row, centered */}
-          <div className="flex flex-row gap-16 items-end justify-center w-full">
+        <div className="max-w-7xl mx-auto flex flex-row items-center justify-center px-2 sm:px-4 py-4 sm:py-6">
+          {/* Stepper UI with labels in a row, centered, mobile: column */}
+          <div className="flex flex-row gap-4 sm:gap-16 items-center sm:items-end justify-center w-full">
             {[1,2,3].map((n) => (
-              <div key={n} className="flex flex-row items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border-2 transition-all duration-200 ${step===n?'bg-blue-700 text-white border-blue-700':'bg-white text-blue-700 border-blue-300'}`}>{n}</div>
+              <div key={n} className="flex flex-row items-center gap-2 sm:gap-3">
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-base sm:text-lg border-2 transition-all duration-200 ${step===n?'bg-blue-700 text-white border-blue-700':'bg-white text-blue-700 border-blue-300'}`}>{n}</div>
                 <span className={`text-xs font-semibold ${step===n?'text-blue-700':'text-blue-400'}`}> {
                   n === 1 ? 'Order overview' : n === 2 ? 'Instructions' : 'Checkout'
                 } </span>
@@ -181,21 +181,21 @@ export default function NewOrderPage() {
           </div>
         </div>
       </nav>
-      <main className="flex-1 px-4 py-12 w-[80vw] max-w-7xl mx-auto animate-fade-in">
+      <main className="flex-1 px-1 sm:px-4 py-6 sm:py-12 w-full max-w-7xl mx-auto animate-fade-in">
         {orderStep === "form" && (
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="mt-4 mb-2" style={{width: '70%'}}>
-                <span className="inline-block bg-blue-100 text-blue-800 text-base font-semibold px-6 py-3 rounded-xl shadow-sm border border-blue-200">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row w-full">
+              <div className="mt-2 mb-2 w-full sm:w-[70%]">
+                <span className="inline-block bg-blue-100 text-blue-800 text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-sm border border-blue-200">
                   {step === 1 && "Select your type of work and deadline"}
                   {step === 2 && "Describe your task"}
                   {step === 3 && "Finalize your order"}
                 </span>
               </div>
             </div>
-            <div className="flex flex-row gap-10 mt-0 mb-16 animate-fade-in-up">
-              {/* Left column: 70% */}
-              <div className="flex-1 min-w-0 max-w-[70%] bg-white rounded-2xl shadow-2xl border border-blue-200 p-6 sm:p-10 relative flex flex-col mt-0">
+            <div className="flex flex-col lg:flex-row gap-6 sm:gap-10 mt-0 mb-8 sm:mb-16 animate-fade-in-up w-full">
+              {/* Left column: 100% on mobile, 70% on desktop */}
+              <div className="w-full lg:flex-1 min-w-0 max-w-full lg:max-w-[70%] bg-white rounded-2xl shadow-2xl border border-blue-200 p-4 sm:p-6 lg:p-10 relative flex flex-col mt-0">
                 <button
                   className="absolute top-4 right-4 text-blue-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
                   aria-label="Close order form"
@@ -316,11 +316,11 @@ export default function NewOrderPage() {
                   Go Back
                 </button>
               </div>
-              {/* Right column: 30% */}
-              <div className="flex flex-col justify-between max-w-[30%] min-w-[280px] bg-white rounded-2xl shadow-2xl border border-blue-200 p-6" style={{ marginTop: '-40px' }}>
+              {/* Right column: 100% on mobile, 30% on desktop */}
+              <div className="w-full lg:max-w-[30%] min-w-[220px] bg-white rounded-2xl shadow-2xl border border-blue-200 p-4 sm:p-6 flex flex-col justify-between mt-6 lg:mt-0" style={{ marginTop: '0' }}>
                 <div>
-                  <h3 className="text-xl font-bold mb-4 text-blue-900">Summary</h3>
-                  <ul className="text-blue-900 text-sm mb-6">
+                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-blue-900">Summary</h3>
+                  <ul className="text-blue-900 text-xs sm:text-sm mb-4 sm:mb-6">
                     <li>Type of work: {summary.typeOfWork}</li>
                     <li>Academic level: {summary.academicLevel}</li>
                     <li>Page count: {summary.pageCount}</li>
@@ -334,27 +334,28 @@ export default function NewOrderPage() {
                     <li>Bibliography: {summary.bibliography}</li>
                     <li>Outline: {summary.outline}</li>
                   </ul>
-                  <div className="text-lg font-bold text-blue-900 mb-4">Total: USD {summary.total}</div>
+                  <div className="text-base sm:text-lg font-bold text-blue-900 mb-3 sm:mb-4">Total: USD {summary.total}</div>
                 </div>
-                {/* PayWithPayPal removed from the right column. It is only rendered in the payment step below. */}
+                {/* PayWithPayPal: show in summary column if payment step */}
+                {orderStep === "payment" && createdOrder && (
+                  <div className="w-full flex flex-col items-center mt-4">
+                    <PayWithPayPal
+                      orderId={createdOrder.id}
+                      amount={createdOrder.price}
+                      onSuccess={() => {
+                        setOrderStep("done");
+                      }}
+                      onCancel={() => {
+                        setOrderStep("form");
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
         )}
-        {orderStep === "payment" && createdOrder && (
-          <div className="w-full max-w-3xl mx-auto mt-8 mb-16 animate-fade-in-up">
-            <PayWithPayPal
-              orderId={createdOrder.id}
-              amount={createdOrder.price}
-              onSuccess={() => {
-                setOrderStep("done");
-              }}
-              onCancel={() => {
-                setOrderStep("form");
-              }}
-            />
-          </div>
-        )}
+        {/* Payment step PayWithPayPal is now in the summary column above */}
       </main>
       <LandingFooter />
     </div>
