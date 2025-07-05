@@ -304,15 +304,15 @@ export default function LandingNavbar({ user, onLogout }) {
 		  </div>
 		</div>
 				{/* Mobile menu (side drawer) - improved animation and style */}
-	  {mobileMenuOpen && (
-		  <div className="fixed inset-0 z-[99999] flex md:hidden navbar-mobile-menu" style={{ position: 'fixed', height: 'fit-content', maxHeight: '100vh', background: 'radial-gradient(circle at 70% 10%, #f0abfc 0%, #67e8f9 40%, #fef08a 100%)' }} onClick={() => setMobileMenuOpen(false)}>
-			  <div
-				  ref={mobileMenuRef}
-				  className="relative w-full h-full bg-white/95 shadow-2xl p-0 flex flex-col animate-fade-in rounded-none border-none"
-				  onClick={e => e.stopPropagation()}
-				  tabIndex={-1}
-				  style={{ minWidth: 0, maxWidth: '100vw', boxShadow: '0 8px 32px 0 rgba(236, 72, 153, 0.12)' }}
-			  >
+{mobileMenuOpen && (
+  <div className="fixed inset-0 z-[99999] flex md:hidden navbar-mobile-menu" style={{ position: 'fixed', height: 'fit-content', maxHeight: '100vh', background: 'radial-gradient(circle at 70% 10%, #f0abfc 0%, #67e8f9 40%, #fef08a 100%)' }} onClick={() => setMobileMenuOpen(false)}>
+  <div
+	ref={mobileMenuRef}
+	className="relative w-full h-full bg-white/95 shadow-2xl p-0 flex flex-col animate-fade-in rounded-[3.5rem] border-none"
+	onClick={e => e.stopPropagation()}
+	tabIndex={-1}
+	style={{ minWidth: 0, maxWidth: '100vw', boxShadow: '0 8px 32px 0 rgba(236, 72, 153, 0.12)' }}
+  >
 				  {/* Modern top bar with close button */}
 				  <div className="flex items-center justify-between px-6 py-5 border-b border-fuchsia-100 bg-gradient-to-r from-fuchsia-50 via-cyan-50 to-yellow-50 shadow-sm">
 					  <span className="text-xl font-extrabold text-fuchsia-700 tracking-wide">Menu</span>
