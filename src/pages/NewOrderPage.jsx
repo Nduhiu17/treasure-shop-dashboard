@@ -228,28 +228,28 @@ export default function NewOrderPage() {
                     </label>
                     <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaListOl className="text-blue-400" /> Order Type</span>
-                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_type_id} onChange={e=>setForm(f=>({...f,order_type_id:e.target.value}))}>
+<Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow transition-all duration-150 w-full" value={form.order_type_id} onChange={e=>setForm(f=>({...f,order_type_id:e.target.value}))}>
                         <option value="">Select Order Type</option>
                         {options.orderTypes.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
                     <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaLevelUpAlt className="text-blue-400" /> Academic Level</span>
-                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_level_id} onChange={e=>setForm(f=>({...f,order_level_id:e.target.value}))}>
+<Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow transition-all duration-150 w-full" value={form.order_level_id} onChange={e=>setForm(f=>({...f,order_level_id:e.target.value}))}>
                         <option value="">Select Order Level</option>
                         {options.levels.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
                     <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaSortNumericUp className="text-blue-400" /> Page Count</span>
-                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_pages_id} onChange={e=>setForm(f=>({...f,order_pages_id:e.target.value}))}>
+<Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow transition-all duration-150 w-full" value={form.order_pages_id} onChange={e=>setForm(f=>({...f,order_pages_id:e.target.value}))}>
                         <option value="">Select Page Count</option>
                         {options.pages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
                     <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaClock className="text-blue-400" /> Urgency</span>
-                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_urgency_id} onChange={e=>setForm(f=>({...f,order_urgency_id:e.target.value}))}>
+<Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow transition-all duration-150 w-full" value={form.order_urgency_id} onChange={e=>setForm(f=>({...f,order_urgency_id:e.target.value}))}>
                         <option value="">Select Urgency</option>
                         {options.urgency.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
@@ -279,14 +279,14 @@ export default function NewOrderPage() {
                     </label>
                     <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaRegFileAlt className="text-blue-400" /> Order Style</span>
-                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
+<Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow transition-all duration-150 w-full" value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
                         <option value="">Select Order Style</option>
                         {options.styles.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
                     <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaLanguage className="text-blue-400" /> Order Language</span>
-                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
+<Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow transition-all duration-150 w-full" value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
                         <option value="">Select Order Language</option>
                         {options.languages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
