@@ -9,6 +9,10 @@ import { Select } from "../components/ui/select";
 import { Button } from "../components/ui/button";
 import { FaUser, FaFileAlt, FaListOl, FaClock, FaLevelUpAlt, FaLanguage, FaFileUpload, FaSortNumericUp, FaCheckCircle, FaSms, FaCopy, FaShieldAlt, FaStar, FaFileSignature, FaBook, FaRegListAlt, FaChevronLeft, FaChevronRight, FaClipboardList, FaRegClock, FaRegFileAlt } from "react-icons/fa";
 
+// THEME COLORS
+// fuchsia: #d946ef, cyan: #06b6d4, slate: #64748b, yellow: #facc15, rose: #fb7185
+// We'll use Tailwind classes for these colors.
+
 export default function NewOrderPage() {
   const { user, logout } = useAuth();
   const location = useLocation();
@@ -174,14 +178,14 @@ export default function NewOrderPage() {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       <LandingNavbar user={user} onLogout={logout} />
       {/* Stepper Navigation Bar */}
-      <nav className="w-full bg-white shadow-md border-b border-blue-200 z-20 relative">
+      <nav className="w-full bg-gradient-to-r from-fuchsia-100 via-cyan-50 to-yellow-50 shadow-md border-b-2 border-fuchsia-200 z-20 relative rounded-b-3xl">
         <div className="max-w-7xl mx-auto flex flex-row items-center justify-center px-2 sm:px-4 py-4 sm:py-6">
           {/* Stepper UI with labels in a row, centered, mobile: column */}
           <div className="flex flex-row gap-4 sm:gap-16 items-center sm:items-end justify-center w-full">
             {[1,2,3].map((n) => (
               <div key={n} className="flex flex-row items-center gap-2 sm:gap-3">
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-base sm:text-lg border-2 transition-all duration-200 ${step===n?'bg-blue-700 text-white border-blue-700':'bg-white text-blue-700 border-blue-300'}`}>{n}</div>
-                <span className={`text-xs font-semibold ${step===n?'text-blue-700':'text-blue-400'}`}> {
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-extrabold text-lg sm:text-2xl border-4 transition-all duration-200 shadow-lg ${step===n?'bg-gradient-to-br from-fuchsia-500 via-cyan-400 to-yellow-300 text-white border-fuchsia-400':'bg-white text-fuchsia-700 border-fuchsia-100'}`}>{n}</div>
+                <span className={`text-sm font-bold tracking-wide ${step===n?'text-fuchsia-700':'text-slate-400'}`}> {
                   n === 1 ? 'Order overview' : n === 2 ? 'Instructions' : 'Checkout'
                 } </span>
               </div>
@@ -194,18 +198,18 @@ export default function NewOrderPage() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row w-full">
               <div className="mt-2 mb-2 w-full sm:w-[70%]">
-                <span className="block text-blue-700 text-base sm:text-lg font-semibold px-0 py-2">
+                <span className="block text-fuchsia-700 text-xl sm:text-2xl font-extrabold px-0 py-2 tracking-tight">
                   {step === 1 && "Select your type of work and deadline"}
                   {step === 2 && "Describe your task"}
                   {step === 3 && "Finalize your order"}
                 </span>
               </div>
             </div>
-            <div className="flex flex-col lg:flex-row gap-6 sm:gap-10 mt-0 mb-8 sm:mb-16 animate-fade-in-up w-full">
+            <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 mt-0 mb-8 sm:mb-16 animate-fade-in-up w-full">
               {/* Left column: 100% on mobile, 70% on desktop */}
-              <div className="w-full lg:flex-1 min-w-0 max-w-full lg:max-w-[70%] bg-white rounded-2xl shadow-2xl border border-blue-200 p-4 sm:p-6 lg:p-10 relative flex flex-col mt-0">
+              <div className="w-full lg:flex-1 min-w-0 max-w-full lg:max-w-[70%] bg-gradient-to-br from-fuchsia-50 via-white to-cyan-50 rounded-3xl shadow-2xl border-2 border-fuchsia-100 p-4 sm:p-8 lg:p-12 relative flex flex-col mt-0">
                 <button
-                  className="absolute top-4 right-4 flex items-center gap-2 text-blue-400 hover:text-blue-700 text-lg font-bold focus:outline-none px-3 py-1 rounded-full border border-blue-100 bg-blue-50 shadow-sm transition-all duration-150 hover:bg-blue-100"
+                  className="absolute top-4 right-4 flex items-center gap-2 text-fuchsia-400 hover:text-fuchsia-700 text-lg font-bold focus:outline-none px-3 py-1 rounded-full border border-fuchsia-100 bg-fuchsia-50 shadow-sm transition-all duration-150 hover:bg-fuchsia-100"
                   aria-label="Close order form"
                   onClick={() => navigate(-1)}
                 >
@@ -213,39 +217,39 @@ export default function NewOrderPage() {
                 </button>
                 {/* Step 1 */}
                 {step === 1 && (
-                  <div className="flex flex-col gap-6">
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                  <div className="flex flex-col gap-8">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaFileAlt className="text-blue-400" /> Order Title</span>
-                      <Input placeholder="Enter a descriptive title" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))} />
+                      <Input className="bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" placeholder="Enter a descriptive title" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))} />
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaUser className="text-blue-400" /> Preferred Writer Number</span>
-                      <Input placeholder="e.g. 12345 (optional)" value={form.preferred_writer_number} onChange={e=>setForm(f=>({...f,preferred_writer_number:e.target.value}))} />
+                      <Input className="bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" placeholder="e.g. 12345 (optional)" value={form.preferred_writer_number} onChange={e=>setForm(f=>({...f,preferred_writer_number:e.target.value}))} />
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaListOl className="text-blue-400" /> Order Type</span>
-                      <Select value={form.order_type_id} onChange={e=>setForm(f=>({...f,order_type_id:e.target.value}))}>
+                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_type_id} onChange={e=>setForm(f=>({...f,order_type_id:e.target.value}))}>
                         <option value="">Select Order Type</option>
                         {options.orderTypes.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaLevelUpAlt className="text-blue-400" /> Academic Level</span>
-                      <Select value={form.order_level_id} onChange={e=>setForm(f=>({...f,order_level_id:e.target.value}))}>
+                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_level_id} onChange={e=>setForm(f=>({...f,order_level_id:e.target.value}))}>
                         <option value="">Select Order Level</option>
                         {options.levels.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaSortNumericUp className="text-blue-400" /> Page Count</span>
-                      <Select value={form.order_pages_id} onChange={e=>setForm(f=>({...f,order_pages_id:e.target.value}))}>
+                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_pages_id} onChange={e=>setForm(f=>({...f,order_pages_id:e.target.value}))}>
                         <option value="">Select Page Count</option>
                         {options.pages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaClock className="text-blue-400" /> Urgency</span>
-                      <Select value={form.order_urgency_id} onChange={e=>setForm(f=>({...f,order_urgency_id:e.target.value}))}>
+                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_urgency_id} onChange={e=>setForm(f=>({...f,order_urgency_id:e.target.value}))}>
                         <option value="">Select Urgency</option>
                         {options.urgency.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
@@ -261,34 +265,35 @@ export default function NewOrderPage() {
                     </div>
                   </div>
                 )}
+                {/* Step 2 */}
                 {step === 2 && (
-                  <div className="flex flex-col gap-6">
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                  <div className="flex flex-col gap-8">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaFileAlt className="text-blue-400" /> Order Description</span>
-                      <textarea className="input min-h-[120px] sm:min-h-[160px] text-base p-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition-all" placeholder="Describe your order in detail..." value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
+                      <textarea className="bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full min-h-[120px] sm:min-h-[160px]" placeholder="Describe your order in detail..." value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaFileUpload className="text-blue-400" /> Attach File <span className="text-red-500">*</span></span>
-                      <input className="input" type="file" required onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
-                      {!form.file && <span className="text-red-500 text-xs mt-1">File upload is required</span>}
+                      <input className="block w-full text-fuchsia-800 font-bold bg-fuchsia-50 border-2 border-fuchsia-200 rounded-xl shadow px-4 py-3 file:bg-fuchsia-200 file:text-fuchsia-700 file:font-bold file:rounded-lg file:border-0 file:px-4 file:py-2 file:mr-4 hover:file:bg-fuchsia-300 transition-all duration-150" type="file" required onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
+                      {!form.file && <span className="text-red-500 font-semibold text-xs mt-1">File upload is required</span>}
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaRegFileAlt className="text-blue-400" /> Order Style</span>
-                      <Select value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
+                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_style_id} onChange={e=>setForm(f=>({...f,order_style_id:e.target.value}))}>
                         <option value="">Select Order Style</option>
                         {options.styles.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaLanguage className="text-blue-400" /> Order Language</span>
-                      <Select value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
+                      <Select className="bg-cyan-50 border-2 border-cyan-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 text-cyan-800 font-bold rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" value={form.order_language_id || ''} onChange={e=>setForm(f=>({...f,order_language_id:e.target.value}))}>
                         <option value="">Select Order Language</option>
                         {options.languages.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
                       </Select>
                     </label>
-                    <label className="flex flex-col gap-1 font-medium text-blue-900">
+                    <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                       <span className="flex items-center gap-2"><FaSortNumericUp className="text-blue-400" /> Number of Sources</span>
-                      <Input placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
+                      <Input className="bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" placeholder="Number of Sources" type="number" min={1} value={form.no_of_sources} onChange={e=>setForm(f=>({...f,no_of_sources:e.target.value}))} />
                     </label>
                     <div className="flex gap-4 mt-4 justify-end">
                       <Button variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>setStep(1)}>
@@ -304,8 +309,9 @@ export default function NewOrderPage() {
                     </div>
                   </div>
                 )}
+                {/* Step 3 */}
                 {step === 3 && (
-                  <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-8">
                     {/* Boolean fields in two columns, visually aligned */}
                     <div className="flex flex-row flex-wrap gap-4">
                       <div className="flex flex-col flex-1 min-w-[180px] gap-2">
@@ -387,10 +393,10 @@ export default function NewOrderPage() {
                 )}
               </div>
               {/* Right column: 100% on mobile, 30% on desktop */}
-              <div className="w-full lg:max-w-[30%] min-w-[220px] bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl shadow-2xl border border-blue-200 p-4 sm:p-6 flex flex-col justify-between mt-6 lg:mt-0" style={{ marginTop: '0' }}>
+              <div className="w-full lg:max-w-[30%] min-w-[220px] bg-gradient-to-br from-cyan-50 via-yellow-50 to-rose-50 rounded-3xl shadow-2xl border-2 border-cyan-100 p-4 sm:p-8 flex flex-col justify-between mt-6 lg:mt-0" style={{ marginTop: '0' }}>
                 <div>
-                  <h3 className="text-xl font-extrabold mb-4 text-blue-900 flex items-center gap-2"><FaClipboardList className="text-blue-400 text-2xl" /> Order Summary</h3>
-                  <ul className="text-blue-900 text-xs sm:text-sm mb-4 sm:mb-6 space-y-2">
+                  <h3 className="text-2xl font-extrabold mb-4 text-fuchsia-700 flex items-center gap-2"><FaClipboardList className="text-cyan-400 text-2xl" /> Order Summary</h3>
+                  <ul className="text-slate-700 text-sm sm:text-base mb-4 sm:mb-6 space-y-2">
                     <li className="flex items-center gap-2"><FaListOl className="text-blue-300" /> <span className="font-semibold">Type of work:</span> <span className="ml-auto">{summary.typeOfWork}</span></li>
                     <li className="flex items-center gap-2"><FaLevelUpAlt className="text-blue-300" /> <span className="font-semibold">Academic level:</span> <span className="ml-auto">{summary.academicLevel}</span></li>
                     <li className="flex items-center gap-2"><FaSortNumericUp className="text-blue-300" /> <span className="font-semibold">Page count:</span> <span className="ml-auto">{summary.pageCount}</span></li>
@@ -404,7 +410,7 @@ export default function NewOrderPage() {
                     <li className="flex items-center gap-2"><FaBook className="text-blue-300" /> <span className="font-semibold">Bibliography:</span> <span className="ml-auto">{summary.bibliography}</span></li>
                     <li className="flex items-center gap-2"><FaRegListAlt className="text-blue-300" /> <span className="font-semibold">Outline:</span> <span className="ml-auto">{summary.outline}</span></li>
                   </ul>
-                  <div className="text-lg font-extrabold text-blue-800 mb-4 flex items-center gap-2 justify-between bg-white rounded-xl px-4 py-3 shadow border border-blue-100">
+                  <div className="text-lg font-extrabold text-fuchsia-800 mb-4 flex items-center gap-2 justify-between bg-white rounded-xl px-4 py-3 shadow border border-fuchsia-100">
                     <span>Total:</span>
                     <span className="text-2xl">USD {summary.total}</span>
                   </div>
