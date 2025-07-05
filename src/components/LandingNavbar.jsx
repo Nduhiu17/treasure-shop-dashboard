@@ -368,20 +368,31 @@ export default function LandingNavbar({ user, onLogout }) {
 			+1 234 567 890
 		  </a>
 		  {user ? (
-			<>
-			  <Link to="/my-orders" className="rounded-xl bg-gradient-to-br from-green-50 via-cyan-50 to-yellow-50 shadow border border-green-100 px-3 py-2 text-green-700 hover:text-green-900 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
-				My Orders
-			  </Link>
-			  <Link to="/profile" className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
-				My Profile
-			  </Link>
-			  <button
-				className="w-full rounded-xl bg-gradient-to-br from-red-50 via-cyan-50 to-yellow-50 shadow border border-red-100 px-3 py-2 text-red-700 hover:text-red-900 transition-colors text-left"
-				onClick={() => { setMobileMenuOpen(false); if (onLogout) onLogout(); navigate('/'); }}
-			  >
-				Logout
-			  </button>
-			</>
+		<>
+		  <button
+			className="w-full rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-3 py-2 text-center block"
+			onClick={() => {
+			  setMobileMenuOpen(false);
+			  if (user) {
+				navigate('/order/new');
+			  } else {
+				setPendingOrder(true);
+				setLoginModalOpen(true);
+			  }
+			}}
+		  >
+			Order Now
+		  </button>
+		  <Link to="/profile" className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+			My Profile
+		  </Link>
+		  <button
+			className="w-full rounded-xl bg-gradient-to-br from-red-50 via-cyan-50 to-yellow-50 shadow border border-red-100 px-3 py-2 text-red-700 hover:text-red-900 transition-colors text-left"
+			onClick={() => { setMobileMenuOpen(false); if (onLogout) onLogout(); navigate('/'); }}
+		  >
+			Logout
+		  </button>
+		</>
 		  ) : (
 			<Link
 			  to="/login"
