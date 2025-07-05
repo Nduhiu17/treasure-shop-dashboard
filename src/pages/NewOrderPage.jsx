@@ -144,6 +144,32 @@ export default function NewOrderPage() {
     total: price !== "-" ? `$${price}` : "-"
   };
 
+  // Helper: check if all required fields for a step are filled
+  function isStepValid(step, form) {
+    if (step === 1) {
+      // Required: title, order_type_id, order_level_id, order_pages_id, order_urgency_id
+      return (
+        !!form.title &&
+        !!form.order_type_id &&
+        !!form.order_level_id &&
+        !!form.order_pages_id &&
+        !!form.order_urgency_id
+      );
+    }
+    if (step === 2) {
+      // Required: description, file, order_style_id, order_language_id, no_of_sources
+      return (
+        !!form.description &&
+        !!form.file &&
+        !!form.order_style_id &&
+        !!form.order_language_id &&
+        !!form.no_of_sources
+      );
+    }
+    // Step 3: no new required fields, just review/submit
+    return true;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       <LandingNavbar user={user} onLogout={logout} />
@@ -225,7 +251,11 @@ export default function NewOrderPage() {
                       </Select>
                     </label>
                     <div className="flex gap-4 mt-4 justify-end">
-                      <Button className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl px-8 min-w-[120px]" onClick={()=>setStep(2)}>
+                      <Button
+                        className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl px-8 min-w-[120px]"
+                        onClick={()=>setStep(2)}
+                        disabled={!isStepValid(1, form)}
+                      >
                         Next <FaChevronRight className="ml-1" />
                       </Button>
                     </div>
@@ -238,8 +268,9 @@ export default function NewOrderPage() {
                       <textarea className="input min-h-[120px] sm:min-h-[160px] text-base p-4 rounded-xl border-2 border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition-all" placeholder="Describe your order in detail..." value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
                     </label>
                     <label className="flex flex-col gap-1 font-medium text-blue-900">
-                      <span className="flex items-center gap-2"><FaFileUpload className="text-blue-400" /> Attach File (optional)</span>
-                      <input className="input" type="file" onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
+                      <span className="flex items-center gap-2"><FaFileUpload className="text-blue-400" /> Attach File <span className="text-red-500">*</span></span>
+                      <input className="input" type="file" required onChange={e=>setForm(f=>({...f,file:e.target.files[0]}))} />
+                      {!form.file && <span className="text-red-500 text-xs mt-1">File upload is required</span>}
                     </label>
                     <label className="flex flex-col gap-1 font-medium text-blue-900">
                       <span className="flex items-center gap-2"><FaRegFileAlt className="text-blue-400" /> Order Style</span>
@@ -263,7 +294,11 @@ export default function NewOrderPage() {
                       <Button variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow hover:bg-blue-100 transition-all duration-150" onClick={()=>setStep(1)}>
                         <FaChevronLeft /> Go Back
                       </Button>
-                      <Button className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl px-8 min-w-[120px]" onClick={()=>setStep(3)}>
+                      <Button
+                        className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all duration-150 py-3 text-lg rounded-xl px-8 min-w-[120px]"
+                        onClick={()=>setStep(3)}
+                        disabled={!isStepValid(2, form)}
+                      >
                         Next <FaChevronRight className="ml-1" />
                       </Button>
                     </div>
