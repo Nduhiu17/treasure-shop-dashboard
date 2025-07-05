@@ -304,99 +304,95 @@ export default function LandingNavbar({ user, onLogout }) {
 		  </div>
 		</div>
 				{/* Mobile menu (side drawer) - improved animation and style */}
-			   {mobileMenuOpen && (
-				   <div className="fixed inset-0 z-[99999] bg-gradient-to-br from-fuchsia-100 via-cyan-100 to-yellow-100/90 flex md:hidden navbar-mobile-menu" style={{ position: 'fixed', height: 'fit-content', maxHeight: '100vh' }} onClick={() => setMobileMenuOpen(false)}>
-					   <div
-						   ref={mobileMenuRef}
-						   className="relative w-full h-full bg-white/95 shadow-2xl p-0 flex flex-col animate-fade-in rounded-none border-none"
-						   onClick={e => e.stopPropagation()}
-						   tabIndex={-1}
-						   style={{ minWidth: 0, maxWidth: '100vw', boxShadow: '0 8px 32px 0 rgba(236, 72, 153, 0.12)' }}
-					   >
-						   {/* Modern top bar with close button */}
-						   <div className="flex items-center justify-between px-6 py-5 border-b border-fuchsia-100 bg-gradient-to-r from-fuchsia-50 via-cyan-50 to-yellow-50 shadow-sm">
-							   <span className="text-xl font-extrabold text-fuchsia-700 tracking-wide">Menu</span>
-							   <button
-								   className="text-fuchsia-400 hover:text-fuchsia-700 text-3xl font-bold focus:outline-none transition-colors rounded-full p-2 hover:bg-fuchsia-100"
-								   onClick={() => setMobileMenuOpen(false)}
-								   aria-label="Close menu"
-							   >
-								   &times;
-							   </button>
-						   </div>
-						   <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-6 text-lg font-semibold">
-							   {/* Main nav items for mobile menu */}
-							   <Link to="/" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-fuchsia-700 via-cyan-500 to-yellow-400 text-white shadow-lg hover:scale-105 hover:shadow-xl transition-all font-extrabold text-xl" onClick={() => setMobileMenuOpen(false)}>
-								   <img src="/logo.png" alt="Logo" className="h-8 w-8 rounded-xl shadow border-2 border-fuchsia-200 bg-white/80" />
-								   Academic Codebase
-							   </Link>
-							   <div className="relative">
-								   <button
-									   className="flex items-center justify-between w-full px-6 py-4 rounded-2xl bg-gradient-to-r from-fuchsia-50 to-cyan-50 text-fuchsia-700 font-bold shadow border-2 border-fuchsia-100 hover:shadow-xl hover:from-fuchsia-100 hover:to-cyan-100 transition-all text-lg"
-									   onClick={() => setMobileMenuServicesOpen(v => !v)}
-									   aria-expanded={mobileMenuServicesOpen}
-									   aria-controls="mobile-services-list"
-								   >
-									   <span>Services</span>
-									   <svg className={`w-6 h-6 ml-2 transition-transform ${mobileMenuServicesOpen ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-								   </button>
-								   {mobileMenuServicesOpen && (
-									   <div id="mobile-services-list" className="mt-2 ml-2 rounded-2xl bg-white/95 border-2 border-fuchsia-100 shadow-xl p-2 max-h-80 overflow-y-auto animate-fade-in absolute left-0 w-[90vw] z-[10000]">
-										   <h4 className="text-lg font-bold text-fuchsia-700 mb-2 px-2">Our Services</h4>
-										   <div className="grid grid-cols-1 xs:grid-cols-2 gap-1">
-											   {SERVICE_ITEMS.map(item => (
-												   <Link
-													   key={item}
-													   to={`/services/${encodeURIComponent(item.toLowerCase().replace(/\s+/g, "-"))}`}
-													   className="flex items-center gap-2 px-4 py-2 rounded-lg text-fuchsia-700 hover:bg-gradient-to-r hover:from-fuchsia-100 hover:to-cyan-100 hover:text-cyan-700 transition-colors text-base font-medium shadow-sm"
-													   onClick={() => setMobileMenuOpen(false)}
-												   >
-													   <span className="inline-block w-2 h-2 rounded-full bg-cyan-400 group-hover:bg-fuchsia-400 transition-colors"></span>
-													   <span className="truncate">{item}</span>
-													   <svg className="w-4 h-4 text-cyan-200 group-hover:text-fuchsia-500 ml-auto" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-												   </Link>
-											   ))}
-										   </div>
-									   </div>
-								   )}
-							   </div>
-							   <Link to="/about" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-cyan-50 via-fuchsia-50 to-yellow-50 text-fuchsia-700 shadow hover:bg-fuchsia-100 transition-all" onClick={() => setMobileMenuOpen(false)}>
-								   About Us
-							   </Link>
-							   <Link to="/guarantees" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-yellow-50 via-cyan-50 to-fuchsia-50 text-cyan-700 shadow hover:bg-cyan-100 transition-all" onClick={() => setMobileMenuOpen(false)}>
-								   Guarantees
-							   </Link>
-							   <Link to="/reviews" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-fuchsia-50 via-yellow-50 to-cyan-50 text-yellow-700 shadow hover:bg-yellow-100 transition-all" onClick={() => setMobileMenuOpen(false)}>
-								   Reviews
-							   </Link>
-							   <a href="tel:+1234567890" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-cyan-50 via-yellow-50 to-fuchsia-50 text-cyan-700 shadow hover:bg-cyan-100 transition-all" onClick={() => setMobileMenuOpen(false)}>
-								   +1 234 567 890
-							   </a>
-							   {user ? (
-								   <>
-									   <Link to="/my-orders" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-green-600 text-white shadow hover:scale-105 hover:shadow-xl transition-all" onClick={() => setMobileMenuOpen(false)}>
-										   My Orders
-									   </Link>
-									   <Link to="/profile" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-blue-50 text-blue-900 shadow border border-blue-100 hover:bg-blue-100 transition-all" onClick={() => setMobileMenuOpen(false)}>
-										   My Profile
-									   </Link>
-									   <button
-										   className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-red-50 text-red-700 shadow border border-red-100 hover:bg-red-100 transition-all w-full"
-										   onClick={() => { setMobileMenuOpen(false); if (onLogout) onLogout(); navigate('/'); }}
-									   >
-										   Logout
-									   </button>
-								   </>
-							   ) : (
-								   <Link
-									   to="/login"
-									   className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-blue-50 text-blue-900 shadow border border-blue-100 hover:bg-blue-100 transition-all"
-									   onClick={() => setMobileMenuOpen(false)}
-								   >
-									   Login
-								   </Link>
-							   )}
-						   </nav>
+	  {mobileMenuOpen && (
+		  <div className="fixed inset-0 z-[99999] flex md:hidden navbar-mobile-menu" style={{ position: 'fixed', height: 'fit-content', maxHeight: '100vh', background: 'radial-gradient(circle at 70% 10%, #f0abfc 0%, #67e8f9 40%, #fef08a 100%)' }} onClick={() => setMobileMenuOpen(false)}>
+			  <div
+				  ref={mobileMenuRef}
+				  className="relative w-full h-full bg-white/95 shadow-2xl p-0 flex flex-col animate-fade-in rounded-none border-none"
+				  onClick={e => e.stopPropagation()}
+				  tabIndex={-1}
+				  style={{ minWidth: 0, maxWidth: '100vw', boxShadow: '0 8px 32px 0 rgba(236, 72, 153, 0.12)' }}
+			  >
+				  {/* Modern top bar with close button */}
+				  <div className="flex items-center justify-between px-6 py-5 border-b border-fuchsia-100 bg-gradient-to-r from-fuchsia-50 via-cyan-50 to-yellow-50 shadow-sm">
+					  <span className="text-xl font-extrabold text-fuchsia-700 tracking-wide">Menu</span>
+					  <button
+						  className="text-fuchsia-400 hover:text-fuchsia-700 text-3xl font-bold focus:outline-none transition-colors rounded-full p-2 hover:bg-fuchsia-100"
+						  onClick={() => setMobileMenuOpen(false)}
+						  aria-label="Close menu"
+					  >
+						  &times;
+					  </button>
+				  </div>
+	  <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-3 text-base font-semibold">
+		{/* Main nav items for mobile menu, card-like backgrounds, no logo */}
+		<div className="flex flex-col gap-3">
+		  <div className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100">
+			<button
+			  className="w-full px-3 py-2 text-fuchsia-700 font-bold hover:text-cyan-600 transition-colors text-left flex items-center justify-between"
+			  onClick={() => setMobileMenuServicesOpen(v => !v)}
+			  aria-expanded={mobileMenuServicesOpen}
+			  aria-controls="mobile-services-list"
+			>
+			  <span>Services</span>
+			  <svg className={`w-4 h-4 ml-2 transition-transform ${mobileMenuServicesOpen ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+			</button>
+			{mobileMenuServicesOpen && (
+			  <div id="mobile-services-list" className="mt-1 ml-2 rounded bg-white/95 border border-fuchsia-100 shadow p-1 max-h-60 overflow-y-auto absolute left-0 w-[90vw] z-[10000]">
+				<h4 className="text-sm font-bold text-fuchsia-700 mb-1 px-2">Our Services</h4>
+				<div className="grid grid-cols-1 xs:grid-cols-2 gap-0.5">
+				  {SERVICE_ITEMS.map(item => (
+					<Link
+					  key={item}
+					  to={`/services/${encodeURIComponent(item.toLowerCase().replace(/\s+/g, "-"))}`}
+					  className="px-2 py-1 text-fuchsia-700 hover:text-cyan-700 transition-colors text-xs font-medium"
+					  onClick={() => setMobileMenuOpen(false)}
+					>
+					  <span className="truncate">{item}</span>
+					</Link>
+				  ))}
+				</div>
+			  </div>
+			)}
+		  </div>
+		  <Link to="/about" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-fuchsia-700 hover:text-cyan-600 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+			About Us
+		  </Link>
+		  <Link to="/guarantees" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-cyan-700 hover:text-fuchsia-700 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+			Guarantees
+		  </Link>
+		  <Link to="/reviews" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-yellow-700 hover:text-fuchsia-700 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+			Reviews
+		  </Link>
+		  <a href="tel:+1234567890" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-cyan-700 hover:text-fuchsia-700 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+			+1 234 567 890
+		  </a>
+		  {user ? (
+			<>
+			  <Link to="/my-orders" className="rounded-xl bg-gradient-to-br from-green-50 via-cyan-50 to-yellow-50 shadow border border-green-100 px-3 py-2 text-green-700 hover:text-green-900 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+				My Orders
+			  </Link>
+			  <Link to="/profile" className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+				My Profile
+			  </Link>
+			  <button
+				className="w-full rounded-xl bg-gradient-to-br from-red-50 via-cyan-50 to-yellow-50 shadow border border-red-100 px-3 py-2 text-red-700 hover:text-red-900 transition-colors text-left"
+				onClick={() => { setMobileMenuOpen(false); if (onLogout) onLogout(); navigate('/'); }}
+			  >
+				Logout
+			  </button>
+			</>
+		  ) : (
+			<Link
+			  to="/login"
+			  className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block"
+			  onClick={() => setMobileMenuOpen(false)}
+			>
+			  Login
+			</Link>
+		  )}
+		</div>
+	  </nav>
 					   </div>
 				   </div>
 			   )}
