@@ -167,20 +167,22 @@ export default function LandingNavbar({ user, onLogout }) {
 	<header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md shadow-2xl border-b-4 border-fuchsia-200 rounded-b-3xl animate-fade-in-up">
 	<nav className="w-full flex items-center justify-between px-2 xs:px-4 py-2 xs:py-3 rounded-b-3xl bg-white/95 shadow-lg">
 	  <div className="w-full max-w-7xl mx-auto flex items-center justify-between flex-wrap">
-		{/* Logo */}
-		{/* Hide logo on md screens and below for compactness */}
-		<Link
-		  to="/"
-		  className="hidden lg:flex items-center gap-2 text-fuchsia-700 font-extrabold text-lg xs:text-xl sm:text-2xl tracking-tight drop-shadow-sm hover:scale-105 transition-transform duration-200 min-w-0"
-		  style={{ letterSpacing: '0.01em' }}
-		>
-		  <img
-			src="/logo.png"
-			alt="Academic Codebase Logo"
-			className="h-9 w-9 xs:h-10 xs:w-10 sm:h-11 sm:w-11 rounded-2xl shadow-md border-2 border-fuchsia-200 bg-white/80 min-w-[2.25rem]"
-		  />
-		  <span className="bg-gradient-to-r from-fuchsia-700 via-cyan-500 to-yellow-400 bg-clip-text text-transparent truncate max-w-[120px] xs:max-w-[180px] sm:max-w-[240px]">Academic Codebase</span>
-		</Link>
+		{/* Logo left, hamburger right on mobile; logo left on lg+ */}
+		<div className="flex flex-1 items-center justify-between w-full lg:w-auto">
+		  {/* Logo always left */}
+		  <Link
+			to="/"
+			className="flex items-center gap-2 text-fuchsia-700 font-extrabold text-lg xs:text-xl sm:text-2xl tracking-tight drop-shadow-sm hover:scale-105 transition-transform duration-200 min-w-0"
+			style={{ letterSpacing: '0.01em' }}
+		  >
+			<img
+			  src="/logo.png"
+			  alt="Academic Codebase Logo"
+			  className="h-9 w-9 xs:h-10 xs:w-10 sm:h-11 sm:w-11 rounded-2xl shadow-md border-2 border-fuchsia-200 bg-white/80 min-w-[2.25rem]"
+			/>
+			<span className="hidden xs:inline bg-gradient-to-r from-fuchsia-700 via-cyan-500 to-yellow-400 bg-clip-text text-transparent truncate max-w-[120px] xs:max-w-[180px] sm:max-w-[240px] lg:inline">Academic Codebase</span>
+		  </Link>
+		</div>
 		{/* Desktop Nav Items */}
 		<ul className="hidden md:flex items-center gap-1 md:gap-1.5 lg:gap-3 px-1 md:px-2 lg:px-4 uppercase font-bold tracking-wide text-xs xs:text-sm sm:text-base flex-nowrap whitespace-nowrap min-w-0">
 			<li className="relative navbar-dropdown">
