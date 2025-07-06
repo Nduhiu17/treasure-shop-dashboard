@@ -108,12 +108,20 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections, hideTitle }) 
     const { name, value, type, checked } = e.target;
     setForm((f) => ({
       ...f,
-      [name]: type === "checkbox" ? checked : value
+      [name]:
+        type === "checkbox"
+          ? checked
+          : name === "no_of_sources"
+            ? Number(value)
+            : value
     }));
   };
 
   const handleSelect = (name, value) => {
-    setForm((f) => ({ ...f, [name]: value }));
+    setForm((f) => ({
+      ...f,
+      [name]: name === "no_of_sources" ? Number(value) : value
+    }));
   };
 
   const handleFileChange = (e) => {
@@ -188,7 +196,7 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections, hideTitle }) 
         body: JSON.stringify({
           ...form,
           price: Number(form.price),
-          no_of_sources: Number(form.no_of_sources),
+          no_of_sources: typeof form.no_of_sources === 'number' ? form.no_of_sources : Number(form.no_of_sources),
           ...(fileUrl ? { original_order_file: fileUrl } : {})
         })
       });
