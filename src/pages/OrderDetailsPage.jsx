@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 
 // Hardcoded order details for demo
+// Toggle this value to test different scenarios:
+// "pending_payment", "submitted_for_review", "completed"
+const orderStatus = "submitted_for_review";
 const order = {
   apply_feedback_requests: 0,
   created_at: "2025-07-06T20:44:07.782Z",
@@ -30,7 +34,7 @@ const order = {
   price: 27,
   same_paper_from_another_writer: false,
   sms_update: true,
-  status: "submitted_for_review",
+  status: orderStatus,
   submission_trials: 1,
   title: "The Impact of AI on Society",
   top_writer: true,
@@ -57,10 +61,10 @@ const order = {
   ]
 };
 
-
-export default function OrderDetailsPage() {
+function OrderDetailsPage() {
   const [feedbackOpen, setFeedbackOpen] = useState(null); // index of submission for feedback
   const [feedback, setFeedback] = useState({ description: "", file: null });
+  const navigate = useNavigate();
 
   const handleFeedbackOpen = idx => {
     setFeedbackOpen(idx);
@@ -81,7 +85,28 @@ export default function OrderDetailsPage() {
       <LandingNavbar />
       <main className="flex-1 w-full max-w-2xl mx-auto px-2 sm:px-4 py-6 sm:py-10 animate-fade-in">
         <div className="bg-white/90 rounded-3xl shadow-2xl border-2 border-fuchsia-100 p-4 sm:p-8 flex flex-col gap-8">
-          <h2 className="text-2xl font-extrabold text-fuchsia-700 mb-2">Order Details</h2>
+          <div className="flex items-center justify-between mb-2">
+            <button
+              onClick={() => navigate('/profile')}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500 text-white font-bold shadow hover:bg-cyan-600 transition-all text-sm"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              Go Back
+            </button>
+            <h2 className="text-2xl font-extrabold text-fuchsia-700">Order Details</h2>
+            <div className="w-20" />
+          </div>
+          {/* Pay Now Button for pending_payment */}
+          {order.status === "pending_payment" && (
+            <div className="flex justify-center my-4">
+              <button
+                className="animate-bounce px-8 py-3 rounded-2xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white text-lg font-extrabold shadow-lg border-4 border-fuchsia-200 hover:from-fuchsia-600 hover:to-cyan-600 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-fuchsia-200"
+                onClick={() => alert('Redirecting to payment... (demo)')}
+              >
+                💳 Pay Now
+              </button>
+            </div>
+          )}
           {/* Order Info Section */}
           <section className="flex flex-col gap-4 text-sm">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -209,3 +234,4 @@ export default function OrderDetailsPage() {
     </div>
   );
 }
+export default OrderDetailsPage;

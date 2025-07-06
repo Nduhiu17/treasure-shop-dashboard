@@ -28,9 +28,51 @@ const orders = [
   {
     id: "ORD-1003",
     title: "Book Review: 1984",
-    status: "Completed",
+    status: "pending_payment",
     date: "2025-05-20",
     price: 60.0,
+  },
+  {
+    id: "ORD-1004",
+    title: "Dissertation: Machine Learning",
+    status: "submitted_for_review",
+    date: "2025-07-05",
+    price: 200.0,
+  },
+  {
+    id: "ORD-1005",
+    title: "Case Study: Business Ethics",
+    status: "Completed",
+    date: "2025-06-30",
+    price: 90.0,
+  },
+  {
+    id: "ORD-1006",
+    title: "Article: Renewable Energy",
+    status: "pending_payment",
+    date: "2025-07-06",
+    price: 45.0,
+  },
+  {
+    id: "ORD-1007",
+    title: "Thesis: Blockchain Security",
+    status: "submitted_for_review",
+    date: "2025-07-07",
+    price: 300.0,
+  },
+  {
+    id: "ORD-1008",
+    title: "Report: Urban Planning",
+    status: "In Progress",
+    date: "2025-07-03",
+    price: 110.0,
+  },
+  {
+    id: "ORD-1009",
+    title: "Whitepaper: Quantum Computing",
+    status: "submitted_for_review",
+    date: "2025-07-08",
+    price: 500.0,
   },
 ];
 
