@@ -24,16 +24,17 @@ export default function OrderPriceCalculator({ onProceed }) {
 
   // Fetch all dropdown data
   useEffect(() => {
-    fetch("http://localhost:8080/api/order-types/all")
+    const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8080";
+    fetch(`${baseUrl}/api/order-types/all`)
       .then((r) => r.json())
       .then((data) => setOrderTypes(data.order_types || []));
-    fetch("http://localhost:8080/api/order-urgency")
+    fetch(`${baseUrl}/api/order-urgency`)
       .then((r) => r.json())
       .then(setUrgencies);
-    fetch("http://localhost:8080/api/order-levels")
+    fetch(`${baseUrl}/api/order-levels`)
       .then((r) => r.json())
       .then(setLevels);
-    fetch("http://localhost:8080/api/order-pages")
+    fetch(`${baseUrl}/api/order-pages`)
       .then((r) => r.json())
       .then(setPagesOptions);
   }, []);
@@ -96,6 +97,20 @@ export default function OrderPriceCalculator({ onProceed }) {
           className="bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-yellow-300 text-white font-bold px-5 py-2 rounded-xl shadow-lg hover:from-fuchsia-600 hover:to-cyan-500 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out text-base focus:outline-none focus:ring-2 focus:ring-fuchsia-300 animate-bounce-once"
           style={{ minWidth: 110 }}
           disabled={!selectedType || !selectedUrgency || !selectedLevel || !selectedPages}
+          onClick={e => {
+            // Ensure no_of_sources is always a string in the payload
+            if (onProceed && selectedType && selectedUrgency && selectedLevel && selectedPages) {
+              const payload = {
+                order_type: selectedType,
+                urgency: selectedUrgency,
+                level: selectedLevel,
+                pages: selectedPages,
+                price,
+                no_of_sources: selectedPages?.no_of_sources ? String(selectedPages.no_of_sources) : "1"
+              };
+              onProceed(payload);
+            }
+          }}
         >
           <span className="inline-block align-middle">Proceed to details</span>
         </button>

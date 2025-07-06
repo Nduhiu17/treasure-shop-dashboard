@@ -369,6 +369,10 @@ export default function NewOrderPage() {
                               }
                               // Build order payload
                               const payload = { ...form };
+                              // Ensure no_of_sources is a string
+                              if (typeof payload.no_of_sources !== 'undefined' && payload.no_of_sources !== null) {
+                                payload.no_of_sources = String(payload.no_of_sources);
+                              }
                               if (!payload.price && price !== "-") payload.price = Number(price);
                               if (payload.price && typeof payload.price === 'string') payload.price = Number(payload.price);
                               if (fileUrl) {
