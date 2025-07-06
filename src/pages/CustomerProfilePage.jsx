@@ -145,6 +145,7 @@ export default function CustomerProfilePage() {
                     <th className="px-3 py-2 text-left font-bold">Status</th>
                     <th className="px-3 py-2 text-left font-bold">Date</th>
                     <th className="px-3 py-2 text-left font-bold">Price</th>
+                    <th className="px-3 py-2 text-left font-bold">View Details</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -159,6 +160,14 @@ export default function CustomerProfilePage() {
                       </td>
                       <td className="px-3 py-2 text-slate-500">{order.date}</td>
                       <td className="px-3 py-2 text-blue-700 font-bold">${order.price.toFixed(2)}</td>
+                      <td className="px-3 py-2">
+                        <a
+                          href={`/order/${order.id}`}
+                          className="inline-block px-3 py-1 rounded-lg bg-cyan-500 text-white font-bold text-xs hover:bg-cyan-600 transition-all shadow"
+                        >
+                          View Details
+                        </a>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
