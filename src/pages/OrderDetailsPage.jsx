@@ -164,65 +164,69 @@ function OrderDetailsPage() {
             <h3 className="text-lg font-bold text-fuchsia-700 mb-2 mt-6">Writer Submissions</h3>
             {order.writer_submissions && order.writer_submissions.length > 0 ? (
               <div className="flex flex-col gap-4">
-                {order.writer_submissions.map((sub, idx) => (
-                  <div key={idx} className="rounded-xl border border-cyan-100 bg-cyan-50/40 p-4 flex flex-col gap-2 shadow">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-between">
-                      <div className="font-semibold text-slate-700">{sub.description}</div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <a href={sub.file.url} download className="px-3 py-1 rounded-lg bg-fuchsia-500 text-white font-bold text-xs hover:bg-fuchsia-600 transition-all flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" /></svg>
-                          Download {sub.file.name}
-                        </a>
-                        <span className="text-xs text-slate-400">{new Date(sub.submitted_at).toLocaleString()}</span>
+                {order.writer_submissions.map((sub, idx) => {
+                  // Backend returns submissions sorted by date descending, so first item is latest
+                  const isLatest = idx === 0;
+                  return (
+                    <div key={idx} className="rounded-xl border border-cyan-100 bg-cyan-50/40 p-4 flex flex-col gap-2 shadow">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-between">
+                        <div className="font-semibold text-slate-700">{sub.description}</div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <a href={sub.file.url} download className="px-3 py-1 rounded-lg bg-fuchsia-500 text-white font-bold text-xs hover:bg-fuchsia-600 transition-all flex items-center gap-1">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" /></svg>
+                            Download {sub.file.name}
+                          </a>
+                          <span className="text-xs text-slate-400">{new Date(sub.submitted_at).toLocaleString()}</span>
+                        </div>
                       </div>
+                      {order.status === "submitted_for_review" && isLatest && (
+                        <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                          <button
+                            className="px-4 py-1 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 transition-all"
+                            onClick={() => alert('Submission accepted! (demo)')}
+                          >
+                            Accept Submission
+                          </button>
+                          <button
+                            className="px-4 py-1 rounded-lg bg-yellow-400 text-white font-bold hover:bg-yellow-500 transition-all"
+                            onClick={() => handleFeedbackOpen(idx)}
+                          >
+                            Request Feedback
+                          </button>
+                        </div>
+                      )}
+                      {/* Feedback Modal */}
+                      {feedbackOpen === idx && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                          <form
+                            className="bg-white rounded-2xl shadow-2xl border-2 border-fuchsia-100 p-6 w-[95vw] max-w-md flex flex-col gap-4 animate-fade-in"
+                            onSubmit={handleFeedbackSubmit}
+                          >
+                            <h4 className="text-lg font-bold text-fuchsia-700">Request Feedback</h4>
+                            <label className="text-xs font-semibold text-slate-500">Description</label>
+                            <textarea
+                              className="input min-h-[80px]"
+                              value={feedback.description}
+                              onChange={handleFeedbackChange}
+                              placeholder="Describe your feedback request..."
+                              required
+                            />
+                            <label className="text-xs font-semibold text-slate-500">Attach File (optional)</label>
+                            <input
+                              type="file"
+                              className="input"
+                              onChange={handleFileChange}
+                            />
+                            <div className="flex gap-2 mt-2">
+                              <button type="submit" className="px-4 py-1 rounded-lg bg-fuchsia-500 text-white font-bold hover:bg-fuchsia-600 transition-all">Submit</button>
+                              <button type="button" className="px-4 py-1 rounded-lg bg-slate-100 text-slate-700 font-bold border border-slate-200 hover:bg-slate-200 transition-all" onClick={handleFeedbackClose}>Cancel</button>
+                            </div>
+                          </form>
+                        </div>
+                      )}
                     </div>
-                    {order.status === "submitted_for_review" && (
-                      <div className="flex flex-col sm:flex-row gap-2 mt-2">
-                        <button
-                          className="px-4 py-1 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 transition-all"
-                          onClick={() => alert('Submission accepted! (demo)')}
-                        >
-                          Accept Submission
-                        </button>
-                        <button
-                          className="px-4 py-1 rounded-lg bg-yellow-400 text-white font-bold hover:bg-yellow-500 transition-all"
-                          onClick={() => handleFeedbackOpen(idx)}
-                        >
-                          Request Feedback
-                        </button>
-                      </div>
-                    )}
-                    {/* Feedback Modal */}
-                    {feedbackOpen === idx && (
-                      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                        <form
-                          className="bg-white rounded-2xl shadow-2xl border-2 border-fuchsia-100 p-6 w-[95vw] max-w-md flex flex-col gap-4 animate-fade-in"
-                          onSubmit={handleFeedbackSubmit}
-                        >
-                          <h4 className="text-lg font-bold text-fuchsia-700">Request Feedback</h4>
-                          <label className="text-xs font-semibold text-slate-500">Description</label>
-                          <textarea
-                            className="input min-h-[80px]"
-                            value={feedback.description}
-                            onChange={handleFeedbackChange}
-                            placeholder="Describe your feedback request..."
-                            required
-                          />
-                          <label className="text-xs font-semibold text-slate-500">Attach File (optional)</label>
-                          <input
-                            type="file"
-                            className="input"
-                            onChange={handleFileChange}
-                          />
-                          <div className="flex gap-2 mt-2">
-                            <button type="submit" className="px-4 py-1 rounded-lg bg-fuchsia-500 text-white font-bold hover:bg-fuchsia-600 transition-all">Submit</button>
-                            <button type="button" className="px-4 py-1 rounded-lg bg-slate-100 text-slate-700 font-bold border border-slate-200 hover:bg-slate-200 transition-all" onClick={handleFeedbackClose}>Cancel</button>
-                          </div>
-                        </form>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div className="text-slate-500 text-sm">No submissions yet.</div>
