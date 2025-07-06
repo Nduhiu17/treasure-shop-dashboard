@@ -178,42 +178,26 @@ export default function CustomerProfilePage() {
           {/* Orders list */}
           <div>
             <h3 className="text-lg font-bold text-fuchsia-700 mb-3">My Orders</h3>
-            <div className="overflow-x-auto rounded-xl border border-fuchsia-100 bg-white shadow">
-              <table className="min-w-full text-sm">
-                <thead>
-                  <tr className="bg-gradient-to-r from-fuchsia-50 to-cyan-50 text-fuchsia-700">
-                    <th className="px-3 py-2 text-left font-bold">Order ID</th>
-                    <th className="px-3 py-2 text-left font-bold">Title</th>
-                    <th className="px-3 py-2 text-left font-bold">Status</th>
-                    <th className="px-3 py-2 text-left font-bold">Date</th>
-                    <th className="px-3 py-2 text-left font-bold">Price</th>
-                    <th className="px-3 py-2 text-left font-bold">View Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map(order => (
-                    <tr key={order.id} className="border-b last:border-b-0 hover:bg-fuchsia-50/40">
-                      <td className="px-3 py-2 font-mono text-xs text-slate-600">{order.id}</td>
-                      <td className="px-3 py-2 font-semibold text-slate-800">{order.title}</td>
-                      <td className="px-3 py-2">
-                        <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${order.status === "Completed" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
-                          {order.status}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 text-slate-500">{order.date}</td>
-                      <td className="px-3 py-2 text-blue-700 font-bold">${order.price.toFixed(2)}</td>
-                      <td className="px-3 py-2">
-                        <a
-                          href={`/order/${order.id}`}
-                          className="inline-block px-3 py-1 rounded-lg bg-cyan-500 text-white font-bold text-xs hover:bg-cyan-600 transition-all shadow"
-                        >
-                          View Details
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="flex flex-col gap-3">
+              {orders.map(order => (
+                <div key={order.id} className="rounded-xl border border-fuchsia-100 bg-fuchsia-50/60 shadow p-3 flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs text-slate-600">{order.id}</span>
+                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${order.status === "Completed" ? "bg-green-100 text-green-700" : order.status === "In Progress" ? "bg-yellow-100 text-yellow-700" : order.status === "pending_payment" ? "bg-fuchsia-100 text-fuchsia-700" : order.status === "submitted_for_review" ? "bg-cyan-100 text-cyan-700" : "bg-slate-100 text-slate-700"}`}>{order.status.replace(/_/g, " ")}</span>
+                  </div>
+                  <div className="font-semibold text-slate-800 truncate" title={order.title}>{order.title}</div>
+                  <div className="flex items-center justify-between text-xs text-slate-500">
+                    <span>{order.date}</span>
+                    <span className="text-blue-700 font-bold">${order.price.toFixed(2)}</span>
+                  </div>
+                  <a
+                    href={`/order/${order.id}`}
+                    className="mt-2 inline-block px-3 py-1 rounded-lg bg-cyan-500 text-white font-bold text-xs hover:bg-cyan-600 transition-all shadow text-center"
+                  >
+                    View Details
+                  </a>
+                </div>
+              ))}
             </div>
           </div>
         </div>
