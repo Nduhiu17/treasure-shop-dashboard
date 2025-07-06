@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
+import PayWithPayPal from "../features/orders/PayWithPayPal";
 
 // Hardcoded order details for demo
 // Toggle this value to test different scenarios:
 // "pending_payment", "submitted_for_review", "completed"
-const orderStatus = "submitted_for_review";
+const orderStatus = "pending_payment";
 const order = {
   apply_feedback_requests: 0,
   created_at: "2025-07-06T20:44:07.782Z",
@@ -61,9 +62,11 @@ const order = {
   ]
 };
 
+
 function OrderDetailsPage() {
   const [feedbackOpen, setFeedbackOpen] = useState(null); // index of submission for feedback
   const [feedback, setFeedback] = useState({ description: "", file: null });
+  const [showPayPal, setShowPayPal] = useState(false);
   const navigate = useNavigate();
 
   const handleFeedbackOpen = idx => {
@@ -101,10 +104,22 @@ function OrderDetailsPage() {
             <div className="flex justify-center my-4">
               <button
                 className="animate-bounce px-8 py-3 rounded-2xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white text-lg font-extrabold shadow-lg border-4 border-fuchsia-200 hover:from-fuchsia-600 hover:to-cyan-600 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-fuchsia-200"
-                onClick={() => alert('Redirecting to payment... (demo)')}
+                onClick={() => setShowPayPal(true)}
               >
                 💳 Pay Now
               </button>
+              {showPayPal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                  <div className="bg-white rounded-2xl shadow-2xl border-2 border-fuchsia-100 p-6 w-[95vw] max-w-md flex flex-col gap-4 animate-fade-in">
+                    <PayWithPayPal
+                      orderId={order.id}
+                      amount={order.price}
+                      onSuccess={() => { setShowPayPal(false); alert('Payment successful! (demo)'); }}
+                      onCancel={() => setShowPayPal(false)}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           )}
           {/* Order Info Section */}
