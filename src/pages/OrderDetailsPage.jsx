@@ -114,7 +114,10 @@ function OrderDetailsPage() {
                     <PayWithPayPal
                       orderId={order.id}
                       amount={order.price}
-                      onSuccess={() => { setShowPayPal(false); alert('Payment successful! (demo)'); }}
+                      onSuccess={() => {
+                        setShowPayPal(false);
+                        navigate('/order/ORD-1001');
+                      }}
                       onCancel={() => setShowPayPal(false)}
                     />
                   </div>
