@@ -10,6 +10,7 @@ import MyOrders from "./features/users/MyOrders";
 import CreateOrder from "./features/orders/CreateOrder";
 import LandingPage from "./pages/LandingPage";
 import AboutPage from "./pages/AboutPage";
+import CustomerProfilePage from "./pages/CustomerProfilePage";
 import GuaranteesPage from "./pages/GuaranteesPage";
 import ReviewsPage from "./pages/ReviewsPage";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
@@ -359,6 +360,7 @@ function AppRoutes() {
       <Route path="/order/new" element={<NewOrderPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/create-order" element={<CreateOrder />} />
+      <Route path="/profile" element={<CustomerProfilePage />} />
       <Route path="/*" element={<AppContent />} />
     </Routes>
   );
