@@ -165,23 +165,24 @@ export default function LandingNavbar({ user, onLogout }) {
 
   return (
 	<header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md shadow-2xl border-b-4 border-fuchsia-200 rounded-b-3xl animate-fade-in-up">
-	  <nav className="w-full flex items-center justify-between px-2 xs:px-4 py-2 xs:py-3 rounded-b-3xl bg-white/95 shadow-lg">
-		<div className="w-full max-w-7xl mx-auto flex items-center justify-between">
-		  {/* Logo */}
-		  <Link
-			to="/"
-			className="flex items-center gap-3 text-fuchsia-700 font-extrabold text-2xl tracking-tight drop-shadow-sm hover:scale-105 transition-transform duration-200"
-			style={{ letterSpacing: '0.01em' }}
-		  >
-			<img
-			  src="/logo.png"
-			  alt="Academic Codebase Logo"
-			  className="h-11 w-11 rounded-2xl shadow-md border-2 border-fuchsia-200 bg-white/80"
-			/>
-			<span className="bg-gradient-to-r from-fuchsia-700 via-cyan-500 to-yellow-400 bg-clip-text text-transparent">Academic Codebase</span>
-		  </Link>
-		  {/* Desktop Nav Items */}
-		  <ul className="hidden md:flex items-center gap-6 lg:gap-10 uppercase font-bold tracking-wide text-base">
+	<nav className="w-full flex items-center justify-between px-2 xs:px-4 py-2 xs:py-3 rounded-b-3xl bg-white/95 shadow-lg">
+	  <div className="w-full max-w-7xl mx-auto flex items-center justify-between flex-wrap">
+		{/* Logo */}
+		{/* Hide logo on md screens and below for compactness */}
+		<Link
+		  to="/"
+		  className="hidden lg:flex items-center gap-2 text-fuchsia-700 font-extrabold text-lg xs:text-xl sm:text-2xl tracking-tight drop-shadow-sm hover:scale-105 transition-transform duration-200 min-w-0"
+		  style={{ letterSpacing: '0.01em' }}
+		>
+		  <img
+			src="/logo.png"
+			alt="Academic Codebase Logo"
+			className="h-9 w-9 xs:h-10 xs:w-10 sm:h-11 sm:w-11 rounded-2xl shadow-md border-2 border-fuchsia-200 bg-white/80 min-w-[2.25rem]"
+		  />
+		  <span className="bg-gradient-to-r from-fuchsia-700 via-cyan-500 to-yellow-400 bg-clip-text text-transparent truncate max-w-[120px] xs:max-w-[180px] sm:max-w-[240px]">Academic Codebase</span>
+		</Link>
+		{/* Desktop Nav Items */}
+		<ul className="hidden md:flex items-center gap-1 md:gap-1.5 lg:gap-3 px-1 md:px-2 lg:px-4 uppercase font-bold tracking-wide text-xs xs:text-sm sm:text-base flex-nowrap whitespace-nowrap min-w-0">
 			<li className="relative navbar-dropdown">
 			  <button
 				className="flex items-center gap-2 font-bold text-fuchsia-700 hover:text-cyan-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 px-5 py-2 rounded-2xl bg-gradient-to-r from-fuchsia-50 to-cyan-50 shadow border-2 border-fuchsia-100 hover:shadow-xl hover:from-fuchsia-100 hover:to-cyan-100"
@@ -288,7 +289,7 @@ export default function LandingNavbar({ user, onLogout }) {
 		  {/* Mobile menu button */}
 		  {/* World-class mobile-first hamburger menu button */}
 		  {/* Modern mobile-first hamburger menu button and drawer */}
-		  <div className="md:hidden flex items-center">
+		<div className="md:hidden flex items-center ml-2">
 			<button
 			  ref={mobileMenuButtonRef}
 			  aria-label="Open menu"
@@ -308,7 +309,7 @@ export default function LandingNavbar({ user, onLogout }) {
   <div className="fixed inset-0 z-[99999] flex md:hidden navbar-mobile-menu" style={{ position: 'fixed', height: 'fit-content', maxHeight: '100vh', background: 'radial-gradient(circle at 70% 10%, #f0abfc 0%, #67e8f9 40%, #fef08a 100%)' }} onClick={() => setMobileMenuOpen(false)}>
   <div
 	ref={mobileMenuRef}
-	className="relative w-full h-full bg-white/95 shadow-2xl p-0 flex flex-col animate-fade-in rounded-[3.5rem] border-none"
+	className="relative w-full h-full bg-white/95 shadow-2xl p-0 flex flex-col animate-fade-in rounded-[2.5rem] xs:rounded-[3.5rem] border-none"
 	onClick={e => e.stopPropagation()}
 	tabIndex={-1}
 	style={{ minWidth: 0, maxWidth: '100vw', boxShadow: '0 8px 32px 0 rgba(236, 72, 153, 0.12)' }}
@@ -324,10 +325,10 @@ export default function LandingNavbar({ user, onLogout }) {
 						  &times;
 					  </button>
 				  </div>
-	  <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-3 text-base font-semibold">
+	  <nav className="flex-1 overflow-y-auto px-2 xs:px-4 sm:px-6 py-6 xs:py-8 flex flex-col gap-3 text-sm xs:text-base font-semibold">
 		{/* Main nav items for mobile menu, card-like backgrounds, no logo */}
-		<div className="flex flex-col gap-3">
-		  <div className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100">
+	  <div className="flex flex-col gap-2 xs:gap-3">
+		<div className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 min-w-0">
 			<button
 			  className="w-full px-3 py-2 text-fuchsia-700 font-bold hover:text-cyan-600 transition-colors text-left flex items-center justify-between"
 			  onClick={() => setMobileMenuServicesOpen(v => !v)}
@@ -338,9 +339,9 @@ export default function LandingNavbar({ user, onLogout }) {
 			  <svg className={`w-4 h-4 ml-2 transition-transform ${mobileMenuServicesOpen ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
 			</button>
 			{mobileMenuServicesOpen && (
-			  <div id="mobile-services-list" className="mt-1 ml-2 rounded bg-white/95 border border-fuchsia-100 shadow p-1 max-h-60 overflow-y-auto absolute left-0 w-[90vw] z-[10000]">
+			  <div id="mobile-services-list" className="mt-1 ml-2 rounded bg-white/95 border border-fuchsia-100 shadow p-1 max-h-60 overflow-y-auto absolute left-0 w-[90vw] min-w-[180px] z-[10000]">
 				<h4 className="text-sm font-bold text-fuchsia-700 mb-1 px-2">Our Services</h4>
-				<div className="grid grid-cols-1 xs:grid-cols-2 gap-0.5">
+				<div className="grid grid-cols-1 xs:grid-cols-2 gap-0.5 min-w-0">
 				  {SERVICE_ITEMS.map(item => (
 					<Link
 					  key={item}
@@ -355,22 +356,22 @@ export default function LandingNavbar({ user, onLogout }) {
 			  </div>
 			)}
 		  </div>
-		  <Link to="/about" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-fuchsia-700 hover:text-cyan-600 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+	  <Link to="/about" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-fuchsia-700 hover:text-cyan-600 transition-colors block min-w-0" onClick={() => setMobileMenuOpen(false)}>
 			About Us
 		  </Link>
-		  <Link to="/guarantees" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-cyan-700 hover:text-fuchsia-700 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+	  <Link to="/guarantees" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-cyan-700 hover:text-fuchsia-700 transition-colors block min-w-0" onClick={() => setMobileMenuOpen(false)}>
 			Guarantees
 		  </Link>
-		  <Link to="/reviews" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-yellow-700 hover:text-fuchsia-700 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+	  <Link to="/reviews" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-yellow-700 hover:text-fuchsia-700 transition-colors block min-w-0" onClick={() => setMobileMenuOpen(false)}>
 			Reviews
 		  </Link>
-		  <a href="tel:+1234567890" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-cyan-700 hover:text-fuchsia-700 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+	  <a href="tel:+1234567890" className="rounded-xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-yellow-50 shadow border border-fuchsia-100 px-3 py-2 text-cyan-700 hover:text-fuchsia-700 transition-colors block min-w-0" onClick={() => setMobileMenuOpen(false)}>
 			+1 234 567 890
 		  </a>
 		  {user ? (
 		<>
-		  <button
-			className="w-full rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-3 py-2 text-center block"
+	  <button
+		className="w-full rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-3 py-2 text-center block min-w-0"
 			onClick={() => {
 			  setMobileMenuOpen(false);
 			  if (user) {
@@ -383,22 +384,22 @@ export default function LandingNavbar({ user, onLogout }) {
 		  >
 			Order Now
 		  </button>
-		  <Link to="/profile" className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block" onClick={() => setMobileMenuOpen(false)}>
+	  <Link to="/profile" className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block min-w-0" onClick={() => setMobileMenuOpen(false)}>
 			My Profile
 		  </Link>
-		  <button
-			className="w-full rounded-xl bg-gradient-to-br from-red-50 via-cyan-50 to-yellow-50 shadow border border-red-100 px-3 py-2 text-red-700 hover:text-red-900 transition-colors text-left"
+	  <button
+		className="w-full rounded-xl bg-gradient-to-br from-red-50 via-cyan-50 to-yellow-50 shadow border border-red-100 px-3 py-2 text-red-700 hover:text-red-900 transition-colors text-left min-w-0"
 			onClick={() => { setMobileMenuOpen(false); if (onLogout) onLogout(); navigate('/'); }}
 		  >
 			Logout
 		  </button>
 		</>
 		  ) : (
-			<Link
-			  to="/login"
-			  className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block"
-			  onClick={() => setMobileMenuOpen(false)}
-			>
+	  <Link
+		to="/login"
+		className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block min-w-0"
+		onClick={() => setMobileMenuOpen(false)}
+	  >
 			  Login
 			</Link>
 		  )}
@@ -409,35 +410,35 @@ export default function LandingNavbar({ user, onLogout }) {
 			   )}
 				{/* Order/Login/Profile Buttons */}
 			   {/* Hide Order and My Profile on navbar for small screens, only show on md+ */}
-			   <div className="hidden md:flex items-center gap-2">
-			   <Button
-				   onClick={() => {
-					 if (user) {
-					   navigate('/order/new');
-					 } else {
-					   setPendingOrder(true);
-					   setLoginModalOpen(true);
-					 }
-				   }}
-				   className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-8 py-3 text-lg rounded-xl"
-			   >
-				   Order Now
-			   </Button>
+	  <div className="hidden md:flex items-center gap-1 xs:gap-1.5 flex-nowrap min-w-0">
+	   <Button
+		   onClick={() => {
+			 if (user) {
+			   navigate('/order/new');
+			 } else {
+			   setPendingOrder(true);
+			   setLoginModalOpen(true);
+			 }
+		   }}
+		   className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm rounded-xl min-w-0"
+	   >
+		   Order Now
+	   </Button>
 				   {user ? (
 					   <div className="relative">
-						   <Button
-							   ref={profileButtonRef}
-							   className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 flex items-center gap-2"
-							   onClick={() => setProfileOpen((v) => !v)}
-							   aria-haspopup="true"
-							   aria-expanded={profileOpen}
-						   >
+		 <Button
+			 ref={profileButtonRef}
+			 className="bg-blue-50 text-blue-900 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-blue-100 hover:bg-blue-100 flex items-center gap-1.5 min-w-0 text-xs md:text-sm"
+			 onClick={() => setProfileOpen((v) => !v)}
+			 aria-haspopup="true"
+			 aria-expanded={profileOpen}
+		 >
 							   <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
 							   My Profile
 							   <svg className={`w-4 h-4 ml-1 transition-transform ${profileOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
 						   </Button>
 						   {profileOpen && (
-							   <div ref={profileDropdownRef} className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-blue-100 py-4 px-6 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl">
+		   <div ref={profileDropdownRef} className="absolute right-0 mt-2 w-56 md:w-64 bg-white rounded-2xl shadow-2xl border border-blue-100 py-3 px-3 md:py-4 md:px-5 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl min-w-0">
 								   <div className="mb-2 flex items-center gap-3">
 									   <svg className="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M6 20v-2a4 4 0 014-4h0a4 4 0 014 4v2" /></svg>
 									   <div>
@@ -445,9 +446,9 @@ export default function LandingNavbar({ user, onLogout }) {
 										   <div className="text-blue-700 text-sm">{user.email}</div>
 									   </div>
 								   </div>
-								   <Button className="w-full bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2" onClick={() => { setProfileOpen(false); navigate('/my-orders'); }}>My Orders</Button>
+		   <Button className="w-full bg-blue-50 text-blue-900 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2 min-w-0 text-xs md:text-sm" onClick={() => { setProfileOpen(false); navigate('/my-orders'); }}>My Orders</Button>
 								   <hr className="my-2 border-blue-100" />
-								   <Button className="w-full bg-red-50 text-red-700 font-semibold px-4 py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2" onClick={() => { setProfileOpen(false); if (onLogout) onLogout(); navigate('/'); }}>Logout</Button>
+		   <Button className="w-full bg-red-50 text-red-700 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2 min-w-0 text-xs md:text-sm" onClick={() => { setProfileOpen(false); if (onLogout) onLogout(); navigate('/'); }}>Logout</Button>
 							   </div>
 						   )}
 					   </div>
