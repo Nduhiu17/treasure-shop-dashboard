@@ -44,6 +44,7 @@ const WriterOrders = () => {
 	const [submitOrderId, setSubmitOrderId] = useState(null);
 	const [submissionsDialogOpen, setSubmissionsDialogOpen] = useState(false);
 	const [submissionsOrderId, setSubmissionsOrderId] = useState(null);
+	const [expandedRow, setExpandedRow] = useState(null);
 	const PAGE_SIZE = 10;
 	const navigate = useNavigate();
 
@@ -208,98 +209,45 @@ const WriterOrders = () => {
 					{/* Desktop Table View */}
 					<div className="hidden md:block rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
 						<div className="overflow-x-auto h-full">
-							<div style={{ maxHeight: 'calc(60vh - 56px)', overflowY: 'auto' }}>
-								<table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base">
-									<thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
-										<tr>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Title</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Description</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Status</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Writer Username</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Level</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Pages</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Urgency</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Style</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Language</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Priority</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Plagiarism</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Summary</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Quality</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Draft</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">SMS</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Sources</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Top Writer</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Price</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>
-												<span className="flex items-center gap-1">Order File
-													<svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" /></svg>
-												</span>
-											</th>
-											<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>
-												<span className="flex items-center gap-1">Actions</span>
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										{orders.length > 0 ? (
-											orders.map((order) => (
-												<tr key={order.id} className="hover:bg-blue-50">
+							<table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base h-full">
+								<thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
+									<tr>
+										<th className="px-4 py-3"></th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Title</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(236,245,255,0.85)' }}>Description</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Status</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Level</th>
+										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>
+											<span className="flex items-center gap-1">Order File
+												<svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" /></svg>
+											</span>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{orders.length > 0 ? (
+										orders.map(order => (
+											<React.Fragment key={order.id}>
+												<tr className="hover:bg-blue-50">
+													<td className="px-4 py-2 text-center">
+														<button
+															onClick={() => setExpandedRow(expandedRow === order.id ? null : order.id)}
+															className="focus:outline-none"
+															title={expandedRow === order.id ? 'Collapse' : 'Expand'}
+														>
+															{expandedRow === order.id ? (
+																<svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
+															) : (
+																<svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+															)}
+														</button>
+													</td>
 													<td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-2">{order.title}</td>
 													<td className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base px-4 py-2">{order.description}</td>
 													<td className="px-4 py-2">
 														<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
 													</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.writer_username || '-'}</td>
 													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.level_name}</td>
-													<td className="max-w-[60px] truncate whitespace-nowrap text-xs xs:text-sm sm:text-base px-4 py-2">{order.order_pages_name}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.order_urgency_name}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.order_style_name}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.order_language_name}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.is_high_priority ? 'Yes' : 'No'}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.plagarism_report ? 'Yes' : 'No'}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.one_page_summary ? 'Yes' : 'No'}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.extra_quality_check ? 'Yes' : 'No'}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.initial_draft ? 'Yes' : 'No'}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.sms_update ? 'Yes' : 'No'}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.full_text_copy_sources ? 'Yes' : 'No'}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.top_writer ? 'Yes' : 'No'}</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">${order.price?.toFixed(2)}</td>
 													<td className="px-4 py-2">
 														{order.original_order_file ? (
 															<a
@@ -317,42 +265,61 @@ const WriterOrders = () => {
 															<span className="text-gray-400 italic">No file</span>
 														)}
 													</td>
-													<td className="px-4 py-2">
-														<AssignmentResponseButtons order={order} user={user} onRespond={handleAssignmentResponse} />
-														{order.status === "assigned" && user.roles?.includes("writer") ? (
-															<Button
-																className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-																onClick={() => { setSubmitOrderId(order.id); setSubmitDialogOpen(true); }}
-																title="Submit Order"
-															>
-																<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-																Submit
-															</Button>
-														) : null}
-														{order.status === "submitted_for_review" && user.roles?.includes("user") ? (
-															<Button
-																className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold shadow hover:from-cyan-600 hover:to-blue-700 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-																onClick={() => { setSubmissionsOrderId(order.id); setSubmissionsDialogOpen(true); }}
-																title="View Submissions"
-															>
-																<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-																View Submissions
-															</Button>
-														) : null}
-														{!(order.status === "awaiting_asign_acceptance" && user.roles?.includes("writer")) && order.status !== "assigned" && order.status !== "submitted_for_review" && (
-															<span className="text-blue-700 font-semibold">View</span>
-														)}
-													</td>
 												</tr>
-											))
-										) : (
-											<tr>
-												<td colSpan={21} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</td>
-											</tr>
-										)}
-									</tbody>
-								</table>
-							</div>
+												{expandedRow === order.id && (
+													<tr className="bg-blue-50">
+														<td colSpan={6} className="px-6 py-4 text-xs xs:text-sm sm:text-base">
+															<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+																<div><b>Writer Username:</b> {order.writer_username || '-'}</div>
+																<div><b>Pages:</b> {order.order_pages_name}</div>
+																<div><b>Urgency:</b> {order.order_urgency_name}</div>
+																<div><b>Style:</b> {order.order_style_name}</div>
+																<div><b>Language:</b> {order.order_language_name}</div>
+																<div><b>Priority:</b> {order.is_high_priority ? 'Yes' : 'No'}</div>
+																<div><b>Plagiarism:</b> {order.plagarism_report ? 'Yes' : 'No'}</div>
+																<div><b>Summary:</b> {order.one_page_summary ? 'Yes' : 'No'}</div>
+																<div><b>Quality:</b> {order.extra_quality_check ? 'Yes' : 'No'}</div>
+																<div><b>Draft:</b> {order.initial_draft ? 'Yes' : 'No'}</div>
+																<div><b>SMS:</b> {order.sms_update ? 'Yes' : 'No'}</div>
+																<div><b>Sources:</b> {order.full_text_copy_sources ? 'Yes' : 'No'}</div>
+																<div><b>Top Writer:</b> {order.top_writer ? 'Yes' : 'No'}</div>
+																<div><b>Price:</b> ${order.price?.toFixed(2)}</div>
+															</div>
+															<div className="mt-2">
+																<AssignmentResponseButtons order={order} user={user} onRespond={handleAssignmentResponse} />
+																{order.status === "assigned" && user.roles?.includes("writer") ? (
+																	<Button
+																		className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+																		onClick={() => { setSubmitOrderId(order.id); setSubmitDialogOpen(true); }}
+																		title="Submit Order"
+																	>
+																		<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+																		Submit
+																	</Button>
+																) : null}
+																{order.status === "submitted_for_review" && user.roles?.includes("user") ? (
+																	<Button
+																		className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold shadow hover:from-cyan-600 hover:to-blue-700 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+																		onClick={() => { setSubmissionsOrderId(order.id); setSubmissionsDialogOpen(true); }}
+																		title="View Submissions"
+																	>
+																		<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+																		View Submissions
+																	</Button>
+																) : null}
+															</div>
+														</td>
+													</tr>
+												)}
+											</React.Fragment>
+										))
+									) : (
+										<tr>
+											<td colSpan={6} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</td>
+										</tr>
+									)}
+								</tbody>
+							</table>
 						</div>
 					</div>
 					{/* Pagination */}
