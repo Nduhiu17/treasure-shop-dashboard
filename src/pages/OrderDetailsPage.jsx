@@ -189,7 +189,7 @@ function OrderDetailsPage() {
                               Download {sub.file.name}
                             </a>
                           )}
-                          <span className="text-xs text-slate-400">{new Date(sub.submitted_at).toLocaleString()}</span>
+                          <span className="text-xs text-slate-400">{new Date(sub.submission_date).toLocaleString()}</span>
                         </div>
                       </div>
                       {order.status === "submitted_for_review" && isLatest && (
