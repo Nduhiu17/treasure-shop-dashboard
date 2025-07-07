@@ -119,52 +119,67 @@ function OrderDetailsPage() {
             </div>
           )}
           {/* Order Info Section */}
-          <section className="flex flex-col gap-4 text-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1">
-                <span className="font-bold text-slate-700">Order ID:</span>
-                <span className="font-mono text-xs text-slate-500 mb-2">{order.id}</span>
-                <span className="font-bold text-slate-700">Title:</span>
-                <span className="mb-2">{order.title}</span>
-                <span className="font-bold text-slate-700">Status:</span>
-                <span className="mb-2 capitalize">
+          <section className="flex flex-col gap-6 text-sm">
+            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Main Details Card */}
+              <div className="col-span-2 bg-gradient-to-br from-blue-50 to-fuchsia-50 rounded-2xl border border-fuchsia-100 shadow-lg p-4 flex flex-col gap-2">
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <span className="font-bold text-slate-700">Order ID:</span>
+                  <span className="font-mono text-xs text-slate-500 bg-slate-100 rounded px-2 py-1">{order.id}</span>
+                  <span className="font-bold text-slate-700 ml-4">Status:</span>
                   <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${order.status === "completed" ? "bg-green-100 text-green-700" : order.status === "pending_payment" ? "bg-yellow-100 text-yellow-700" : order.status === "submitted_for_review" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-700"}`}>{order.status.replace(/_/g, " ")}</span>
-                </span>
-                <span className="font-bold text-slate-700">Created At:</span>
-                <span className="mb-2">{new Date(order.created_at).toLocaleString()}</span>
-                <span className="font-bold text-slate-700">Last Updated:</span>
-                <span className="mb-2">{new Date(order.updated_at).toLocaleString()}</span>
-                <span className="font-bold text-slate-700">Description:</span>
-                <span className="mb-2">{order.description}</span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="font-bold text-slate-700">Title:</span>
+                  <span className="mb-2 text-lg font-semibold text-fuchsia-700">{order.title}</span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="font-bold text-slate-700">Description:</span>
+                  <span className="mb-2 text-slate-700">{order.description}</span>
+                </div>
+                <div className="flex flex-wrap gap-4 mt-2">
+                  <div>
+                    <span className="font-bold text-slate-700">Created:</span>
+                    <span className="ml-1 text-xs text-slate-500">{new Date(order.created_at).toLocaleString()}</span>
+                  </div>
+                  <div>
+                    <span className="font-bold text-slate-700">Updated:</span>
+                    <span className="ml-1 text-xs text-slate-500">{new Date(order.updated_at).toLocaleString()}</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col gap-1">
-                <span className="font-bold text-slate-700">Level:</span>
-                <span className="mb-2">{order.level_name}</span>
-                <span className="font-bold text-slate-700">Style:</span>
-                <span className="mb-2">{order.order_style_name}</span>
-                <span className="font-bold text-slate-700">Language:</span>
-                <span className="mb-2">{order.order_language_name}</span>
-                <span className="font-bold text-slate-700">Pages:</span>
-                <span className="mb-2">{order.order_pages_name}</span>
-                <span className="font-bold text-slate-700">Urgency:</span>
-                <span className="mb-2">{order.order_urgency_name}</span>
-                <span className="font-bold text-slate-700">Sources:</span>
-                <span className="mb-2">{order.no_of_sources}</span>
-                <span className="font-bold text-slate-700">Price:</span>
-                <span className="mb-2 text-blue-700 font-bold">${order.price?.toFixed(2)}</span>
+              {/* Quick Info Card */}
+              <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl border border-cyan-100 shadow-lg p-4 flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
+                  <span className="font-bold text-slate-700">Level:</span>
+                  <span className="mb-1">{order.level_name}</span>
+                  <span className="font-bold text-slate-700">Style:</span>
+                  <span className="mb-1">{order.order_style_name}</span>
+                  <span className="font-bold text-slate-700">Language:</span>
+                  <span className="mb-1">{order.order_language_name}</span>
+                  <span className="font-bold text-slate-700">Pages:</span>
+                  <span className="mb-1">{order.order_pages_name}</span>
+                  <span className="font-bold text-slate-700">Urgency:</span>
+                  <span className="mb-1">{order.order_urgency_name}</span>
+                  <span className="font-bold text-slate-700">Sources:</span>
+                  <span className="mb-1">{order.no_of_sources}</span>
+                  <span className="font-bold text-slate-700">Price:</span>
+                  <span className="mb-1 text-blue-700 font-bold">${order.price?.toFixed(2)}</span>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
-              <div className="bg-gradient-to-br from-fuchsia-50 to-cyan-50 rounded-xl p-2 text-xs text-center border border-fuchsia-100">
+            {/* Feature Chips Row */}
+            <div className="flex flex-wrap gap-2 justify-center md:justify-start mt-2">
+              <div className="bg-gradient-to-br from-fuchsia-50 to-cyan-50 rounded-xl p-2 text-xs text-center border border-fuchsia-100 min-w-[120px]">
                 <span className="font-bold">Top Writer:</span> {order.top_writer ? "Yes" : "No"}
               </div>
-              <div className="bg-gradient-to-br from-cyan-50 to-yellow-50 rounded-xl p-2 text-xs text-center border border-cyan-100">
+              <div className="bg-gradient-to-br from-cyan-50 to-yellow-50 rounded-xl p-2 text-xs text-center border border-cyan-100 min-w-[120px]">
                 <span className="font-bold">Plagiarism Report:</span> {order.plagarism_report ? "Yes" : "No"}
               </div>
-              <div className="bg-gradient-to-br from-yellow-50 to-fuchsia-50 rounded-xl p-2 text-xs text-center border border-yellow-100">
+              <div className="bg-gradient-to-br from-yellow-50 to-fuchsia-50 rounded-xl p-2 text-xs text-center border border-yellow-100 min-w-[120px]">
                 <span className="font-bold">SMS Update:</span> {order.sms_update ? "Yes" : "No"}
               </div>
-              <div className="bg-gradient-to-br from-fuchsia-50 to-blue-50 rounded-xl p-2 text-xs text-center border border-blue-100">
+              <div className="bg-gradient-to-br from-fuchsia-50 to-blue-50 rounded-xl p-2 text-xs text-center border border-blue-100 min-w-[120px]">
                 <span className="font-bold">One Page Summary:</span> {order.one_page_summary ? "Yes" : "No"}
               </div>
             </div>
