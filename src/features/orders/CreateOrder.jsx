@@ -187,18 +187,25 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections, hideTitle }) 
     setLoading(true);
     try {
       const jwt = localStorage.getItem("jwt_token");
+      // Build payload, always use original_order_file instead of file
+      const payload = {
+        ...form,
+        price: Number(form.price),
+        no_of_sources: typeof form.no_of_sources === 'number' ? form.no_of_sources : Number(form.no_of_sources)
+      };
+      if (fileUrl) {
+        payload.original_order_file = fileUrl;
+        delete payload.file;
+      } else {
+        delete payload.file;
+      }
       const res = await fetch(`${API_BASE}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": jwt ? `Bearer ${jwt}` : ""
         },
-        body: JSON.stringify({
-          ...form,
-          price: Number(form.price),
-          no_of_sources: typeof form.no_of_sources === 'number' ? form.no_of_sources : Number(form.no_of_sources),
-          ...(fileUrl ? { original_order_file: fileUrl } : {})
-        })
+        body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error("Failed to create order");
       const data = await res.json();

@@ -376,10 +376,11 @@ export default function NewOrderPage() {
                               if (!payload.price && price !== "-") payload.price = Number(price);
                               if (payload.price && typeof payload.price === 'string') payload.price = Number(payload.price);
                               if (fileUrl) {
-                                payload.file = fileUrl;
-                              } else {
-                                delete payload.file;
-                              }
+            payload.original_order_file = fileUrl;
+            delete payload.file;
+          } else {
+            delete payload.file;
+          }
                               // eslint-disable-next-line no-console
                               console.log('Order payload to /api/orders (JSON):', payload);
                               const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/orders`, {

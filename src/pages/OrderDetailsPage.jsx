@@ -65,7 +65,7 @@ const order = {
 
 function OrderDetailsPage() {
   const [feedbackOpen, setFeedbackOpen] = useState(null); // index of submission for feedback
-  const [feedback, setFeedback] = useState({ description: "", file: null });
+  const [feedback, setFeedback] = useState({ description: "", original_order_file: null });
   const [showPayPal, setShowPayPal] = useState(false);
   const navigate = useNavigate();
 
@@ -75,7 +75,7 @@ function OrderDetailsPage() {
   };
   const handleFeedbackClose = () => setFeedbackOpen(null);
   const handleFeedbackChange = e => setFeedback(f => ({ ...f, description: e.target.value }));
-  const handleFileChange = e => setFeedback(f => ({ ...f, file: e.target.files[0] }));
+  const handleFileChange = e => setFeedback(f => ({ ...f, original_order_file: e.target.files[0] }));
   const handleFeedbackSubmit = e => {
     e.preventDefault();
     // For demo, just close modal
