@@ -64,29 +64,30 @@ const OrdersManagement = () => {
 	};
 
 	const handleAssignClick = (order) => {
-		setSelectedOrder(order);
-		setDialogOpen(true);
-		setWriters([]);
-		setWritersError("");
-		setWritersLoading(true);
-		// Fetch writers from backend
-		const jwt = localStorage.getItem('jwt_token');
-		fetch(`${API_BASE_URL}/api/admin/users?role=writer`, {
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': jwt ? `Bearer ${jwt}` : ''
-			}
+	setSelectedOrder(order);
+	setDialogOpen(true);
+	setWriters([]);
+	setWritersError("");
+	setWritersLoading(true);
+	// Fetch writers from backend using GET method
+	const jwt = localStorage.getItem('jwt_token');
+	fetch(`${API_BASE_URL}/api/admin/users?role=writer`, {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': jwt ? `Bearer ${jwt}` : ''
+		}
+	})
+		.then(res => res.json())
+		.then(data => {
+			setWriters(data.users || []);
+			setWritersLoading(false);
 		})
-			.then(res => res.json())
-			.then(data => {
-				setWriters(data.users || []);
-				setWritersLoading(false);
-			})
-			.catch(err => {
-				setWritersError("Failed to fetch writers");
-				setWritersLoading(false);
-			});
+		.catch(err => {
+			setWritersError("Failed to fetch writers");
+			setWritersLoading(false);
+		});
 	};
 
 	const handleAssignmentResponse = async (orderId, accept) => {
@@ -331,9 +332,9 @@ const OrdersManagement = () => {
 									key={i + 1}
 									onClick={() => setCurrentPage(i + 1)}
 									className={`rounded-full px-3 py-1 text-xs xs:text-sm sm:text-base font-medium transition-all duration-150
-                          focus:outline-none focus:ring-2 focus:ring-blue-400
-                          ${currentPage === i + 1 ? 'bg-blue-600 text-white shadow-md' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}
-                        `}
+						  focus:outline-none focus:ring-2 focus:ring-blue-400
+						  ${currentPage === i + 1 ? 'bg-blue-600 text-white shadow-md' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}
+						`}
 									aria-label={`Page ${i + 1}`}
 								>
 									{i + 1}
