@@ -6,7 +6,7 @@ import UsersManagement from "./features/users/UsersManagement";
 import { AuthProvider, useAuth } from "./features/auth/AuthProvider";
 import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from "./features/auth/LoginPage";
-import MyOrders from "./features/users/MyOrders";
+import WriterOrders from "./features/users/WritterOrders";
 import CreateOrder from "./features/orders/CreateOrder";
 import LandingPage from "./pages/LandingPage";
 import AboutPage from "./pages/AboutPage";
@@ -108,8 +108,8 @@ const menuItems = [
     ]
   },
   {
-    key: 'my-orders',
-    label: 'My Orders',
+    key: 'writer-orders',
+    label: 'Writter Orders',
     icon: (
       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7V6a2 2 0 012-2h14a2 2 0 012 2v1M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7M3 7h18" /></svg>
     )
@@ -130,8 +130,8 @@ const Dashboard = () => {
     const isAdmin = roles.includes('admin') || roles.includes('super_admin');
     const isWriterOrUser = (roles.includes('writer') || roles.includes('user')) && !isAdmin;
     if (isWriterOrUser) {
-      filteredMenuItems = menuItems.filter(item => item.key === 'my-orders');
-      if (currentPage !== 'my-orders') setCurrentPage('my-orders');
+      filteredMenuItems = menuItems.filter(item => item.key === 'admin-dashboard');
+      if (currentPage !== 'admin-dashboard') setCurrentPage('admin-dashboard');
     }
   }
 
@@ -158,8 +158,8 @@ const Dashboard = () => {
         return <OrderLanguages />;
       case 'order-urgency':
         return <OrderUrgency />;
-      case 'my-orders':
-        return <MyOrders />;
+      case 'writer-orders':
+        return <WriterOrders />;
       default:
         return <OrdersManagement />;
     }

@@ -448,7 +448,7 @@ export default function LandingNavbar({ user, onLogout }) {
 										   <div className="text-blue-700 text-sm">{user.email}</div>
 									   </div>
 								   </div>
-		   <Button className="w-full bg-blue-50 text-blue-900 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2 min-w-0 text-xs md:text-sm" onClick={() => { setProfileOpen(false); navigate('/my-orders'); }}>My Orders</Button>
+   <Button className="w-full bg-blue-50 text-blue-900 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2 min-w-0 text-xs md:text-sm" onClick={() => { setProfileOpen(false); navigate('/admin/dashboard'); }}>My Orders</Button>
 								   <hr className="my-2 border-blue-100" />
 		   <Button className="w-full bg-red-50 text-red-700 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2 min-w-0 text-xs md:text-sm" onClick={() => { setProfileOpen(false); if (onLogout) onLogout(); navigate('/'); }}>Logout</Button>
 							   </div>

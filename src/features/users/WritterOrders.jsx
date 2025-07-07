@@ -27,7 +27,7 @@ const ORDER_STATUSES = [
 	{ key: "completed", label: "Completed" },
 ];
 
-const MyOrders = () => {
+const WriterOrders = () => {
 	const { user } = useAuth();
 	const { showToast } = useToast();
 	const [orders, setOrders] = useState([]);
@@ -448,4 +448,4 @@ const MyOrders = () => {
 	);
 };
 
-export default MyOrders;
+export default WriterOrders;

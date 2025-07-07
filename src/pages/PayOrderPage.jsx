@@ -21,8 +21,8 @@ export default function PayOrderPage() {
         <PayWithPayPal
           orderId={orderId}
           amount={amount}
-          onSuccess={() => navigate("/my-orders")}
-          onCancel={() => navigate("/my-orders")}
+          onSuccess={() => navigate("/admin/dashboard")}
+          onCancel={() => navigate("/admin/dashboard")}
         />
       </div>
     </div>

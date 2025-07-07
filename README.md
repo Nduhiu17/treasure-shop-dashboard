@@ -6,7 +6,7 @@ A modern, responsive React admin dashboard for managing the Treasure Shop platfo
 
 - **User Authentication**: Secure login with JWT, protected routes, and logout functionality.
 - **Role-Based Access**: Admin, Super Admin, Writer, and User roles with tailored dashboard views and actions.
-- **Order Management**: View, filter, paginate, and assign orders. Custom modal for assigning writers.
+- **Order Management**: View, filter, paginate, and assign orders. Custom modal for assigning writers. The "My Orders" page is now accessible at `/admin/dashboard`.
 - **User Management**: List, filter, and paginate users by role.
 - **Order Types Management**: Manage order types with pagination.
 - **User Profile Page**: Beautiful, role-aware profile page showing user details and relevant orders, with world-class design and logout.
@@ -32,7 +32,7 @@ src/
     orders/           # Orders management, assign writer modal
     orderTypes/       # Order types management
     users/            # User management, user profile page
-  App.js              # Main app and routing
+  App.js              # Main app and routing ("My Orders" is now at /admin/dashboard)
   index.js            # Entry point
   index.css           # Tailwind base styles
 openapi.yaml          # Backend API spec
