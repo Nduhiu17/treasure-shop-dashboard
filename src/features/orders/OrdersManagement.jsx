@@ -157,104 +157,107 @@ const OrdersManagement = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{orders.length > 0 ? (
-										orders.map(order => (
-											<React.Fragment key={order.id}>
-												<tr className="hover:bg-blue-50">
-													<td className="px-4 py-1 text-center">
-														<button
-															onClick={() => setExpandedRow(expandedRow === order.id ? null : order.id)}
-															className="focus:outline-none"
-															title={expandedRow === order.id ? 'Collapse' : 'Expand'}
-														>
-															{expandedRow === order.id ? (
-																<svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
-															) : (
-																<svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-															)}
-														</button>
-													</td>
-													<td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1">{order.title}</td>
-													<td className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base px-4 py-1">{order.description}</td>
-													<td className="px-4 py-1">
-														<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
-													</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-1">{order.level_name}</td>
-													<td className="px-4 py-1">
-														{order.original_order_file ? (
-															<a
-																href={order.original_order_file}
-																target="_blank"
-																rel="noopener noreferrer"
-																className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 border border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-																title="Open file in new tab"
-															>
-																<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-																	<path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
-																</svg>
-															</a>
-														) : (
-															<span className="text-gray-400 italic">No file</span>
-														)}
-													</td>
-												</tr>
-												{expandedRow === order.id && (
-													<tr className="bg-blue-50">
-														<td colSpan={6} className="px-6 py-2 text-xs xs:text-sm sm:text-base">
-															<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-																<div><b>Writer Username:</b> {order.writer_username || '-'}</div>
-																<div><b>Pages:</b> {order.order_pages_name}</div>
-																<div><b>Urgency:</b> {order.order_urgency_name}</div>
-																<div><b>Style:</b> {order.order_style_name}</div>
-																<div><b>Language:</b> {order.order_language_name}</div>
-																<div><b>Priority:</b> {order.is_high_priority ? 'Yes' : 'No'}</div>
-																<div><b>Plagiarism:</b> {order.plagarism_report ? 'Yes' : 'No'}</div>
-																<div><b>Summary:</b> {order.one_page_summary ? 'Yes' : 'No'}</div>
-																<div><b>Quality:</b> {order.extra_quality_check ? 'Yes' : 'No'}</div>
-																<div><b>Draft:</b> {order.initial_draft ? 'Yes' : 'No'}</div>
-																<div><b>SMS:</b> {order.sms_update ? 'Yes' : 'No'}</div>
-																<div><b>Sources:</b> {order.full_text_copy_sources ? 'Yes' : 'No'}</div>
-																<div><b>Top Writer:</b> {order.top_writer ? 'Yes' : 'No'}</div>
-																<div><b>Price:</b> ${order.price?.toFixed(2)}</div>
-															</div>
-															<div className="mt-2">
-																<AssignmentResponseButtons order={order} user={user} onRespond={handleAssignmentResponse} />
-																{order.status === "assigned" && user.roles?.includes("writer") ? (
-																	<Button
-																		className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-																		onClick={() => { setSubmitOrderId(order.id); setSubmitDialogOpen(true); }}
-																		title="Submit Order"
-																	>
-																		<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-																		Submit
-																	</Button>
-																) : null}
-																{order.status === "submitted_for_review" && user.roles?.includes("user") ? (
-																	<Button
-																		className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold shadow hover:from-cyan-600 hover:to-blue-700 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-																		onClick={() => { setSubmissionsOrderId(order.id); setSubmissionsDialogOpen(true); }}
-																		title="View Submissions"
-																	>
-																		<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-																		View Submissions
-																	</Button>
-																) : null}
-																{!(order.status === "awaiting_asign_acceptance" && user.roles?.includes("writer")) && order.status !== "assigned" && order.status !== "submitted_for_review" && (
-																	<Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base">
-																		Assign Writer
-																	</Button>
-																)}
-															</div>
-														</td>
-													</tr>
-												)}
-											</React.Fragment>
-										))
-									) : (
-										<tr>
-											<td colSpan={6} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</td>
-										</tr>
-									)}
+				   {orders.length > 0 ? (
+					   orders.map(order => (
+						   <React.Fragment key={order.id}>
+							   <tr className="hover:bg-blue-50">
+								   <td className="px-4 py-1 text-center">
+									   <button
+										   onClick={() => setExpandedRow(expandedRow === order.id ? null : order.id)}
+										   className="focus:outline-none"
+										   title={expandedRow === order.id ? 'Collapse' : 'Expand'}
+									   >
+										   {expandedRow === order.id ? (
+											   <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
+										   ) : (
+											   <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+										   )}
+									   </button>
+								   </td>
+								   <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1">{order.title}</td>
+								   <td className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base px-4 py-1">{order.description}</td>
+								   <td className="px-4 py-1">
+									   <span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
+								   </td>
+								   <td className="text-xs xs:text-sm sm:text-base px-4 py-1">{order.level_name}</td>
+								   <td className="px-4 py-1">
+									   {order.original_order_file ? (
+										   <a
+											   href={order.original_order_file}
+											   target="_blank"
+											   rel="noopener noreferrer"
+											   className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 border border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+											   title="Open file in new tab"
+										   >
+											   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+												   <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+											   </svg>
+										   </a>
+									   ) : (
+										   <span className="text-gray-400 italic">No file</span>
+									   )}
+								   </td>
+							   </tr>
+							   {expandedRow === order.id && (
+								   <tr>
+									   <td colSpan={6} className="py-0 px-2">
+										   <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-lg p-4 my-2 animate-fade-in-up">
+											   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg><span className="font-semibold text-blue-900">Writer Username:</span><span className="text-blue-800">{order.writer_username || '-'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">Pages:</span><span className="text-blue-800">{order.order_pages_name}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">Urgency:</span><span className="text-blue-800">{order.order_urgency_name}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg><span className="font-semibold text-blue-900">Style:</span><span className="text-blue-800">{order.order_style_name}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg><span className="font-semibold text-blue-900">Language:</span><span className="text-blue-800">{order.order_language_name}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg><span className="font-semibold text-blue-900">Priority:</span><span className="text-blue-800">{order.is_high_priority ? 'Yes' : 'No'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-2a4 4 0 014-4h4a4 4 0 014 4v2M9 17H5a2 2 0 01-2-2v-5a2 2 0 012-2h4a2 2 0 012 2v5a2 2 0 01-2 2z" /></svg><span className="font-semibold text-blue-900">Plagiarism:</span><span className="text-blue-800">{order.plagarism_report ? 'Yes' : 'No'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h8M12 8v8" /></svg><span className="font-semibold text-blue-900">Summary:</span><span className="text-blue-800">{order.one_page_summary ? 'Yes' : 'No'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg><span className="font-semibold text-blue-900">Quality:</span><span className="text-blue-800">{order.extra_quality_check ? 'Yes' : 'No'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">Draft:</span><span className="text-blue-800">{order.initial_draft ? 'Yes' : 'No'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">SMS:</span><span className="text-blue-800">{order.sms_update ? 'Yes' : 'No'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">Sources:</span><span className="text-blue-800">{order.full_text_copy_sources ? 'Yes' : 'No'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg><span className="font-semibold text-blue-900">Top Writer:</span><span className="text-blue-800">{order.top_writer ? 'Yes' : 'No'}</span></div>
+												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">Price:</span><span className="text-blue-800">${order.price?.toFixed(2)}</span></div>
+											   </div>
+											   <div className="mt-4 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+												   <AssignmentResponseButtons order={order} user={user} onRespond={handleAssignmentResponse} />
+												   {order.status === "assigned" && user.roles?.includes("writer") ? (
+													   <Button
+														   className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+														   onClick={() => { setSubmitOrderId(order.id); setSubmitDialogOpen(true); }}
+														   title="Submit Order"
+													   >
+														   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+														   Submit
+													   </Button>
+												   ) : null}
+												   {order.status === "submitted_for_review" && user.roles?.includes("user") ? (
+													   <Button
+														   className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold shadow hover:from-cyan-600 hover:to-blue-700 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+														   onClick={() => { setSubmissionsOrderId(order.id); setSubmissionsDialogOpen(true); }}
+														   title="View Submissions"
+													   >
+														   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+														   View Submissions
+													   </Button>
+												   ) : null}
+												   {!(order.status === "awaiting_asign_acceptance" && user.roles?.includes("writer")) && order.status !== "assigned" && order.status !== "submitted_for_review" && (
+													   <Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-bold shadow hover:from-blue-700 hover:to-cyan-600 hover:to-green-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-blue-400">
+														   <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+														   Assign Writer
+													   </Button>
+												   )}
+											   </div>
+										   </div>
+									   </td>
+								   </tr>
+							   )}
+						   </React.Fragment>
+					   ))
+				   ) : (
+					   <tr>
+						   <td colSpan={6} className="text-center text-xs xs:text-sm sm:text-base">No orders found.</td>
+					   </tr>
+				   )}
 								</tbody>
 							</table>
 						</div>

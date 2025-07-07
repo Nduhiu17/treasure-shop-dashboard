@@ -11,14 +11,14 @@ export default function AssignmentResponseButtons({ order, user, onRespond }) {
   return (
     <div className="flex gap-2">
       <button
-        className="flex items-center gap-1 px-3 py-1 rounded-lg bg-green-500 hover:bg-green-600 text-white font-bold shadow transition-all duration-150 text-xs xs:text-sm sm:text-base"
+        className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150 text-xs xs:text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-green-400"
         title="Accept Assignment"
         onClick={() => onRespond(order.id, true)}
       >
         <FaCheckCircle className="text-lg" /> Accept
       </button>
       <button
-        className="flex items-center gap-1 px-3 py-1 rounded-lg bg-red-500 hover:bg-red-600 text-white font-bold shadow transition-all duration-150 text-xs xs:text-sm sm:text-base"
+        className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow hover:from-red-600 hover:to-pink-600 transition-all duration-150 text-xs xs:text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-400"
         title="Reject Assignment"
         onClick={() => onRespond(order.id, false)}
       >

@@ -187,11 +187,14 @@ const Dashboard = () => {
           >
             <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
-          <h1 className="text-base xs:text-lg sm:text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight truncate whitespace-nowrap drop-shadow-sm">
-            <span className="inline-block align-middle mr-2">
-              <svg className="w-6 h-6 text-blue-700 inline-block align-middle" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7V6a2 2 0 012-2h14a2 2 0 012 2v1M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7M3 7h18" /></svg>
+          <h1 className="flex items-center gap-2 text-base xs:text-lg sm:text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight truncate whitespace-nowrap drop-shadow-sm px-2 py-1 rounded-xl bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100 border border-blue-200/60 shadow-md">
+            <span className="inline-block align-middle mr-1">
+              <svg className="w-7 h-7 md:w-8 md:h-8 text-blue-700 inline-block align-middle drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7V6a2 2 0 012-2h14a2 2 0 012 2v1M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7M3 7h18" /></svg>
             </span>
-            Academic Codebase Dashboard
+            <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white px-2 py-1 rounded-lg shadow font-bold text-xs xs:text-sm md:text-base mr-2 animate-gradient-x">
+              DASHBOARD
+            </span>
+            <span className="hidden xs:inline-block align-middle text-blue-900 font-extrabold tracking-tight drop-shadow-sm">Academic Codebase</span>
           </h1>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
