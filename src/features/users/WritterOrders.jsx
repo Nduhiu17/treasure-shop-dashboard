@@ -207,17 +207,17 @@ const WriterOrders = () => {
 						)) : <div className="text-center text-xs xs:text-sm sm:text-base">No orders found.</div>}
 					</div>
 					{/* Desktop Table View */}
-					<div className="hidden md:block rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
+					<div className="hidden md:block rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full" style={{ height: 'auto' }}>
 						<div className="overflow-x-auto h-full">
 							<table className="w-full min-w-[1200px] text-xs xs:text-sm sm:text-base h-full">
 								<thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
 									<tr>
-										<th className="px-4 py-3"></th>
-										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Title</th>
-										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(236,245,255,0.85)' }}>Description</th>
-										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Status</th>
-										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Level</th>
-										<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>
+										<th className="px-4 py-1"></th>
+										<th className="px-4 py-1 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Title</th>
+										<th className="px-4 py-1 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(236,245,255,0.85)' }}>Description</th>
+										<th className="px-4 py-1 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Status</th>
+										<th className="px-4 py-1 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>Level</th>
+										<th className="px-4 py-1 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ background: 'rgba(255,255,255,0.85)' }}>
 											<span className="flex items-center gap-1">Order File
 												<svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" /></svg>
 											</span>
@@ -229,7 +229,7 @@ const WriterOrders = () => {
 										orders.map(order => (
 											<React.Fragment key={order.id}>
 												<tr className="hover:bg-blue-50">
-													<td className="px-4 py-2 text-center">
+													<td className="px-4 py-1 text-center">
 														<button
 															onClick={() => setExpandedRow(expandedRow === order.id ? null : order.id)}
 															className="focus:outline-none"
@@ -242,13 +242,13 @@ const WriterOrders = () => {
 															)}
 														</button>
 													</td>
-													<td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-2">{order.title}</td>
-													<td className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base px-4 py-2">{order.description}</td>
-													<td className="px-4 py-2">
+													<td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1">{order.title}</td>
+													<td className="max-w-[200px] truncate text-xs xs:text-sm sm:text-base px-4 py-1">{order.description}</td>
+													<td className="px-4 py-1">
 														<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
 													</td>
-													<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{order.level_name}</td>
-													<td className="px-4 py-2">
+													<td className="text-xs xs:text-sm sm:text-base px-4 py-1">{order.level_name}</td>
+													<td className="px-4 py-1">
 														{order.original_order_file ? (
 															<a
 																href={order.original_order_file}
@@ -268,7 +268,7 @@ const WriterOrders = () => {
 												</tr>
 												{expandedRow === order.id && (
 													<tr className="bg-blue-50">
-														<td colSpan={6} className="px-6 py-4 text-xs xs:text-sm sm:text-base">
+														<td colSpan={6} className="px-6 py-2 text-xs xs:text-sm sm:text-base">
 															<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
 																<div><b>Writer Username:</b> {order.writer_username || '-'}</div>
 																<div><b>Pages:</b> {order.order_pages_name}</div>
