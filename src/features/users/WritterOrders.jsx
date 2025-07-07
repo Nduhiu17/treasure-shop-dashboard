@@ -16,15 +16,15 @@ import { useNavigate } from "react-router-dom";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const ORDER_STATUSES = [
-	{ key: "pending_payment", label: "Pending Payment" },
-	{ key: "paid", label: "Paid" },
-	{ key: "awaiting_asign_acceptance", label: "Awaiting Assignment" },
-	{ key: "assigned", label: "Assigned" },
-	{ key: "in_progress", label: "In Progress" },
-	{ key: "submitted_for_review", label: "Submitted for Review" },
-	{ key: "approved", label: "Approved" },
-	{ key: "feedback", label: "Feedback" },
-	{ key: "completed", label: "Completed" },
+  { key: "", label: "All" },
+  { key: "pending_payment", label: "Pending Payment" },
+  { key: "paid", label: "Paid" },
+  { key: "awaiting_assignment", label: "Awaiting Assignment" },
+  { key: "assigned", label: "Assigned" },
+  { key: "in_progress", label: "In Progress" },
+  { key: "submitted_for_review", label: "Submitted for Review" },
+  { key: "approved", label: "Approved" },
+  { key: "feedback", label: "Feedback" },
 ];
 
 const WriterOrders = ({ writerId: propWriterId }) => {
@@ -35,7 +35,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	const [error, setError] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [total, setTotal] = useState(0);
-	const [activeStatus, setActiveStatus] = useState("pending_payment");
+	const [activeStatus, setActiveStatus] = useState("");
 	const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
 	const [payPalOrderId, setPayPalOrderId] = useState(null);
 	const [payPalAmount, setPayPalAmount] = useState(null);

@@ -2,100 +2,120 @@ import React, { useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 
-// Hardcoded user and orders data for design/demo
-const initialUser = {
-  firstName: "Jane",
-  lastName: "Doe",
-  username: "janedoe123",
-  email: "jane.doe@email.com",
-};
 
-const orders = [
-  {
-    id: "ORD-1001",
-    title: "Research Paper on AI",
-    status: "Completed",
-    date: "2025-06-15",
-    price: 120.5,
-  },
-  {
-    id: "ORD-1002",
-    title: "Essay: Climate Change",
-    status: "In Progress",
-    date: "2025-07-01",
-    price: 75.0,
-  },
-  {
-    id: "ORD-1003",
-    title: "Book Review: 1984",
-    status: "pending_payment",
-    date: "2025-05-20",
-    price: 60.0,
-  },
-  {
-    id: "ORD-1004",
-    title: "Dissertation: Machine Learning",
-    status: "submitted_for_review",
-    date: "2025-07-05",
-    price: 200.0,
-  },
-  {
-    id: "ORD-1005",
-    title: "Case Study: Business Ethics",
-    status: "Completed",
-    date: "2025-06-30",
-    price: 90.0,
-  },
-  {
-    id: "ORD-1006",
-    title: "Article: Renewable Energy",
-    status: "pending_payment",
-    date: "2025-07-06",
-    price: 45.0,
-  },
-  {
-    id: "ORD-1007",
-    title: "Thesis: Blockchain Security",
-    status: "submitted_for_review",
-    date: "2025-07-07",
-    price: 300.0,
-  },
-  {
-    id: "ORD-1008",
-    title: "Report: Urban Planning",
-    status: "In Progress",
-    date: "2025-07-03",
-    price: 110.0,
-  },
-  {
-    id: "ORD-1009",
-    title: "Whitepaper: Quantum Computing",
-    status: "submitted_for_review",
-    date: "2025-07-08",
-    price: 500.0,
-  },
-];
+
+
 
 export default function CustomerProfilePage() {
-  const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState(null);
+  const [orders, setOrders] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  const [form, setForm] = useState(user);
+  const [form, setForm] = useState(null);
+
+  // Filtering & Pagination state
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 4; // Mobile-first: fewer per page
+
+  // Fetch user and orders on mount and when page/status changes
+  React.useEffect(() => {
+    const fetchUserAndOrders = async () => {
+      try {
+        const token = localStorage.getItem("jwt_token");
+        const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "";
+        // Only fetch user on first load
+        if (!user) {
+          const userRes = await fetch(`${API_BASE_URL}/api/users/me`, {
+            headers: { "Authorization": `Bearer ${token}` }
+          });
+          if (!userRes.ok) throw new Error("Failed to fetch user");
+          const data = await userRes.json();
+          setUser(data.user || data);
+          setForm(data.user || data);
+        }
+        // Fetch orders for this user (with pagination and filter)
+        let url = `${API_BASE_URL}/api/orders/me?page=${currentPage}&page_size=${pageSize}`;
+        if (statusFilter !== "all") {
+          url += `&status=${statusFilter}`;
+        }
+        const ordersRes = await fetch(url, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (!ordersRes.ok) throw new Error("Failed to fetch orders");
+        const ordersData = await ordersRes.json();
+        if (Array.isArray(ordersData.orders)) {
+          setOrders(ordersData.orders);
+        } else if (Array.isArray(ordersData)) {
+          setOrders(ordersData);
+        } else {
+          setOrders([]);
+        }
+      } catch (err) {
+        // Optionally handle error
+      }
+    };
+    fetchUserAndOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, statusFilter]);
 
   // Order summary
   const totalOrders = orders.length;
-  const completedOrders = orders.filter(o => o.status === "Completed").length;
-  const inProgressOrders = orders.filter(o => o.status === "In Progress").length;
-  const totalSpent = orders.reduce((sum, o) => sum + o.price, 0);
+  const completedOrders = orders.filter(o => o.status === "approved").length;
+  const inProgressOrders = orders.filter(o => o.status === "in_progress").length;
+  const totalSpent = orders.reduce((sum, o) => sum + (o.price || 0), 0);
+
+  // Filtering logic
+  // Allowed statuses for filtering (must match backend and project-wide allowed set)
+  const allowedStatuses = [
+    "pending_payment",
+    "paid",
+    "awaiting_assignment",
+    "assigned",
+    "in_progress",
+    "submitted_for_review",
+    "approved",
+    "feedback"
+  ];
+
+  // Orders are now paginated from backend
+  const filteredOrders = orders;
+  // Pagination: backend-driven, so we only show current page
+  const paginatedOrders = filteredOrders;
+  // Note: totalPages should ideally come from backend response for true pagination
+  const totalPages = filteredOrders.length < pageSize ? currentPage : currentPage + 1;
 
   const handleEdit = () => {
     setEditMode(true);
     setForm(user);
   };
   const handleCancel = () => setEditMode(false);
-  const handleSave = () => {
-    setUser(form);
-    setEditMode(false);
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("jwt_token");
+      const res = await fetch(`/api/users/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(form)
+      });
+      if (!res.ok) throw new Error("Failed to update user");
+      const updated = await res.json();
+      setUser(updated.user || updated);
+      setEditMode(false);
+    } catch (err) {
+      // Optionally handle error
+    }
   };
+
+  if (!user || !form) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+        <div className="text-xl text-fuchsia-700 font-bold">Loading profile...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
@@ -105,7 +125,7 @@ export default function CustomerProfilePage() {
           {/* Profile header */}
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
             <div className="flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br from-fuchsia-200 via-cyan-100 to-yellow-100 flex items-center justify-center text-4xl font-bold text-fuchsia-700 shadow-lg border-2 border-fuchsia-200">
-              {user.firstName[0]}{user.lastName[0]}
+              {user.first_name?.[0]}{user.last_name?.[0]}
             </div>
             <div className="flex-1 flex flex-col gap-2">
               <div className="flex items-center gap-2">
@@ -117,23 +137,23 @@ export default function CustomerProfilePage() {
               <div className="flex flex-col gap-1 mt-2">
                 <label className="text-xs font-semibold text-slate-500">First Name</label>
                 {editMode ? (
-                  <input className="input" value={form.firstName} onChange={e => setForm(f => ({ ...f, firstName: e.target.value }))} />
+                  <input className="input" value={form.first_name || ""} onChange={e => setForm(f => ({ ...f, first_name: e.target.value }))} />
                 ) : (
-                  <div className="font-bold text-slate-800">{user.firstName}</div>
+                  <div className="font-bold text-slate-800">{user.first_name}</div>
                 )}
               </div>
               <div className="flex flex-col gap-1">
                 <label className="text-xs font-semibold text-slate-500">Last Name</label>
                 {editMode ? (
-                  <input className="input" value={form.lastName} onChange={e => setForm(f => ({ ...f, lastName: e.target.value }))} />
+                  <input className="input" value={form.last_name || ""} onChange={e => setForm(f => ({ ...f, last_name: e.target.value }))} />
                 ) : (
-                  <div className="font-bold text-slate-800">{user.lastName}</div>
+                  <div className="font-bold text-slate-800">{user.last_name}</div>
                 )}
               </div>
               <div className="flex flex-col gap-1">
                 <label className="text-xs font-semibold text-slate-500">Username</label>
                 {editMode ? (
-                  <input className="input" value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} />
+                  <input className="input" value={form.username || ""} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} />
                 ) : (
                   <div className="font-bold text-slate-800">{user.username}</div>
                 )}
@@ -141,7 +161,7 @@ export default function CustomerProfilePage() {
               <div className="flex flex-col gap-1">
                 <label className="text-xs font-semibold text-slate-500">Email</label>
                 {editMode ? (
-                  <input className="input" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+                  <input className="input" value={form.email || ""} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
                 ) : (
                   <div className="font-bold text-slate-800">{user.email}</div>
                 )}
@@ -175,15 +195,51 @@ export default function CustomerProfilePage() {
             </div>
           </div>
 
-          {/* Orders list */}
+          {/* Orders list with filtering and pagination */}
           <div>
-            <h3 className="text-lg font-bold text-fuchsia-700 mb-3">My Orders</h3>
-            <div className="flex flex-col gap-3">
-              {orders.map(order => (
+            <div className="flex flex-col sm:flex-row gap-2 items-center justify-between mb-3">
+              <h3 className="text-lg font-bold text-fuchsia-700">My Orders</h3>
+              <select
+                className="border border-fuchsia-200 rounded-lg px-3 py-2 text-fuchsia-700 shadow focus:ring-2 focus:ring-fuchsia-400"
+                value={statusFilter}
+                onChange={e => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+              >
+                <option value="all">All Statuses</option>
+                <option value="pending_payment">Pending Payment</option>
+                <option value="paid">Paid</option>
+                <option value="awaiting_assignment">Awaiting Assignment</option>
+                <option value="assigned">Assigned</option>
+                <option value="in_progress">In Progress</option>
+                <option value="submitted_for_review">Submitted for Review</option>
+                <option value="approved">Approved</option>
+                <option value="feedback">Feedback</option>
+              </select>
+            </div>
+            {/* Mobile-first card view */}
+            <div className="flex flex-col gap-3 sm:hidden">
+              {filteredOrders.map(order => (
                 <div key={order.id} className="rounded-xl border border-fuchsia-100 bg-fuchsia-50/60 shadow p-3 flex flex-col gap-2">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs text-slate-600">{order.id}</span>
-                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${order.status === "Completed" ? "bg-green-100 text-green-700" : order.status === "In Progress" ? "bg-yellow-100 text-yellow-700" : order.status === "pending_payment" ? "bg-fuchsia-100 text-fuchsia-700" : order.status === "submitted_for_review" ? "bg-cyan-100 text-cyan-700" : "bg-slate-100 text-slate-700"}`}>{order.status.replace(/_/g, " ")}</span>
+                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${
+                      order.status === "approved"
+                        ? "bg-green-100 text-green-700"
+                        : order.status === "feedback"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : order.status === "pending_payment"
+                        ? "bg-fuchsia-100 text-fuchsia-700"
+                        : order.status === "awaiting_assignment"
+                        ? "bg-gray-100 text-gray-700"
+                        : order.status === "assigned"
+                        ? "bg-purple-100 text-purple-700"
+                        : order.status === "in_progress"
+                        ? "bg-orange-100 text-orange-700"
+                        : order.status === "submitted_for_review"
+                        ? "bg-cyan-100 text-cyan-700"
+                        : "bg-slate-100 text-slate-700"
+                    }`}>
+                      {order.status.replace(/_/g, " ")}
+                    </span>
                   </div>
                   <div className="font-semibold text-slate-800 truncate" title={order.title}>{order.title}</div>
                   <div className="flex items-center justify-between text-xs text-slate-500">
@@ -199,6 +255,95 @@ export default function CustomerProfilePage() {
                 </div>
               ))}
             </div>
+            {/* Desktop table view */}
+            <div className="hidden sm:block">
+              <table className="w-full bg-white rounded-xl shadow-lg overflow-hidden">
+                <thead className="bg-gradient-to-r from-fuchsia-50 to-cyan-50">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Order ID</th>
+                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Title</th>
+                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Status</th>
+                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Date</th>
+                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Price</th>
+                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredOrders.map(order => (
+                    <tr key={order.id} className="hover:bg-fuchsia-50 transition">
+                      <td className="px-4 py-2 font-mono text-xs text-slate-600">{order.id}</td>
+                      <td className="px-4 py-2 font-semibold text-slate-800">{order.title}</td>
+                      <td className="px-4 py-2">
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${
+                          order.status === "approved"
+                            ? "bg-green-100 text-green-700"
+                            : order.status === "feedback"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : order.status === "pending_payment"
+                            ? "bg-fuchsia-100 text-fuchsia-700"
+                            : order.status === "awaiting_assignment"
+                            ? "bg-gray-100 text-gray-700"
+                            : order.status === "assigned"
+                            ? "bg-purple-100 text-purple-700"
+                            : order.status === "in_progress"
+                            ? "bg-orange-100 text-orange-700"
+                            : order.status === "submitted_for_review"
+                            ? "bg-cyan-100 text-cyan-700"
+                            : "bg-slate-100 text-slate-700"
+                        }`}>
+                          {order.status.replace(/_/g, " ")}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2 text-xs text-slate-500">{order.date}</td>
+                      <td className="px-4 py-2 text-blue-700 font-bold">${order.price.toFixed(2)}</td>
+                      <td className="px-4 py-2">
+                        <a
+                          href={`/order/${order.id}`}
+                          className="inline-block px-3 py-1 rounded-lg bg-cyan-500 text-white font-bold text-xs hover:bg-cyan-600 transition-all shadow"
+                        >
+                          View Details
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Pagination */}
+            <div className="flex justify-center items-center gap-2 mt-4">
+              <button
+                className="px-3 py-1 rounded-full bg-fuchsia-100 text-fuchsia-700 hover:bg-fuchsia-200 font-bold shadow transition"
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                &lt;
+              </button>
+              {[...Array(totalPages).keys()].map(i => (
+                <button
+                  key={i}
+                  className={`px-3 py-1 rounded-full font-bold shadow transition
+                    ${currentPage === i + 1
+                      ? "bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white"
+                      : "bg-fuchsia-100 text-fuchsia-700 hover:bg-fuchsia-200"}`}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                className="px-3 py-1 rounded-full bg-fuchsia-100 text-fuchsia-700 hover:bg-fuchsia-200 font-bold shadow transition"
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                &gt;
+              </button>
+            </div>
+            {/* No orders message */}
+            {filteredOrders.length === 0 && (
+              <div className="text-center text-slate-500 mt-6">
+                No orders found for this filter.
+              </div>
+            )}
           </div>
         </div>
       </main>
