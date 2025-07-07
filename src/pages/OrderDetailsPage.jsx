@@ -148,23 +148,37 @@ function OrderDetailsPage() {
                   </div>
                 </div>
               </div>
-              {/* Quick Info Card */}
+              {/* Quick Info Card - now as key-value pairs in a single row */}
               <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl border border-cyan-100 shadow-lg p-4 flex flex-col gap-2">
-                <div className="flex flex-col gap-1">
-                  <span className="font-bold text-slate-700">Level:</span>
-                  <span className="mb-1">{order.level_name}</span>
-                  <span className="font-bold text-slate-700">Style:</span>
-                  <span className="mb-1">{order.order_style_name}</span>
-                  <span className="font-bold text-slate-700">Language:</span>
-                  <span className="mb-1">{order.order_language_name}</span>
-                  <span className="font-bold text-slate-700">Pages:</span>
-                  <span className="mb-1">{order.order_pages_name}</span>
-                  <span className="font-bold text-slate-700">Urgency:</span>
-                  <span className="mb-1">{order.order_urgency_name}</span>
-                  <span className="font-bold text-slate-700">Sources:</span>
-                  <span className="mb-1">{order.no_of_sources}</span>
-                  <span className="font-bold text-slate-700">Price:</span>
-                  <span className="mb-1 text-blue-700 font-bold">${order.price?.toFixed(2)}</span>
+                <div className="flex flex-wrap gap-x-4 gap-y-2 items-center justify-between w-full">
+                  <div className="flex items-center gap-1 min-w-[90px]">
+                    <span className="font-bold text-slate-700">Level:</span>
+                    <span className="text-slate-700">{order.level_name}</span>
+                  </div>
+                  <div className="flex items-center gap-1 min-w-[90px]">
+                    <span className="font-bold text-slate-700">Style:</span>
+                    <span className="text-slate-700">{order.order_style_name}</span>
+                  </div>
+                  <div className="flex items-center gap-1 min-w-[90px]">
+                    <span className="font-bold text-slate-700">Language:</span>
+                    <span className="text-slate-700">{order.order_language_name}</span>
+                  </div>
+                  <div className="flex items-center gap-1 min-w-[90px]">
+                    <span className="font-bold text-slate-700">Pages:</span>
+                    <span className="text-slate-700">{order.order_pages_name}</span>
+                  </div>
+                  <div className="flex items-center gap-1 min-w-[90px]">
+                    <span className="font-bold text-slate-700">Urgency:</span>
+                    <span className="text-slate-700">{order.order_urgency_name}</span>
+                  </div>
+                  <div className="flex items-center gap-1 min-w-[90px]">
+                    <span className="font-bold text-slate-700">Sources:</span>
+                    <span className="text-slate-700">{order.no_of_sources}</span>
+                  </div>
+                  <div className="flex items-center gap-1 min-w-[90px]">
+                    <span className="font-bold text-slate-700">Price:</span>
+                    <span className="text-blue-700 font-bold">${order.price?.toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
             </div>
