@@ -363,7 +363,9 @@ function AppRoutes() {
       <Route path="/create-order" element={<CreateOrder />} />
       <Route path="/profile" element={<CustomerProfilePage />} />
       <Route path="/order/:orderId" element={<OrderDetailsPage />} />
-      <Route path="/*" element={<AppContent />} />
+      <Route path="/admin/dashboard" element={<AppContent />} />
+      <Route path="/*" element={<LandingPage user={user} onLogout={logout} />} />
+
     </Routes>
   );
 }
