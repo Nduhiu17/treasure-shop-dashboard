@@ -177,7 +177,7 @@ const Dashboard = () => {
   return (
     <div className="h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
       {/* Header */}
-      <header className="bg-white shadow-sm py-2 px-2 xs:px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50 w-full">
+      <header className="bg-white shadow-sm py-1 px-2 xs:px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50 w-full border-b border-blue-100">
         <div className="flex items-center gap-2 w-full">
           {/* Mobile menu button */}
           <button
@@ -187,7 +187,12 @@ const Dashboard = () => {
           >
             <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
-          <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-blue-900 truncate">Academic Codebase Dashboard</h1>
+          <h1 className="text-base xs:text-lg sm:text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight truncate whitespace-nowrap drop-shadow-sm">
+            <span className="inline-block align-middle mr-2">
+              <svg className="w-6 h-6 text-blue-700 inline-block align-middle" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7V6a2 2 0 012-2h14a2 2 0 012 2v1M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7M3 7h18" /></svg>
+            </span>
+            Academic Codebase Dashboard
+          </h1>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <a
