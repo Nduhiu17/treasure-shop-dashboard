@@ -200,9 +200,16 @@ const Dashboard = () => {
             <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
           <h1 className="flex items-center gap-2 text-base xs:text-lg sm:text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight truncate whitespace-nowrap drop-shadow-sm px-2 py-1 rounded-xl bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100 border border-blue-200/60 shadow-md">
-            <span className="inline-block align-middle mr-1">
-              <svg className="w-7 h-7 md:w-8 md:h-8 text-blue-700 inline-block align-middle drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7V6a2 2 0 012-2h14a2 2 0 012 2v1M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7M3 7h18" /></svg>
-            </span>
+            <button
+              onClick={() => window.location.href = '/'}
+              className="flex items-center gap-2 px-3 py-1 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-bold shadow hover:from-blue-700 hover:to-cyan-600 transition-all text-xs xs:text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+              aria-label="Go back to main page"
+            >
+              <svg className="w-6 h-6 md:w-7 md:h-7 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              Go To Website
+            </button>
             <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white px-2 py-1 rounded-lg shadow font-bold text-xs xs:text-sm md:text-base mr-2 animate-gradient-x">
               DASHBOARD
             </span>

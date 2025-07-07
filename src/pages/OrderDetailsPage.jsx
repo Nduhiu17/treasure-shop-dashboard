@@ -1,87 +1,80 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import PayWithPayPal from "../features/orders/PayWithPayPal";
 
-// Hardcoded order details for demo
-// Toggle this value to test different scenarios:
-// "pending_payment", "submitted_for_review", "completed"
-const orderStatus = "pending_payment";
-const order = {
-  apply_feedback_requests: 0,
-  created_at: "2025-07-06T20:44:07.782Z",
-  description: "A detailed research paper on the impact of AI in modern society.",
-  extra_quality_check: false,
-  full_text_copy_sources: false,
-  id: "686ae017529c7e2c7808eaa6",
-  initial_draft: false,
-  is_high_priority: false,
-  level_name: "PHD",
-  no_of_sources: "3",
-  one_page_summary: true,
-  order_language_id: "6866abd4c70f7a9bf41c5e03",
-  order_language_name: "English US",
-  order_level_id: "6866ab84c70f7a9bf41c5dfd",
-  order_pages_id: "6866aad2c70f7a9bf41c5df7",
-  order_pages_name: "275 Words / 1 Page",
-  order_style_id: "6866aa82c70f7a9bf41c5df3",
-  order_style_name: "Chicago",
-  order_type_id: "6866a9b4c70f7a9bf41c5ded",
-  order_urgency_id: "6866ac73c70f7a9bf41c5e0b",
-  order_urgency_name: "4 hour",
-  plagarism_report: true,
-  preferred_writer_number: "",
-  price: 27,
-  same_paper_from_another_writer: false,
-  sms_update: true,
-  status: orderStatus,
-  submission_trials: 1,
-  title: "The Impact of AI on Society",
-  top_writer: true,
-  updated_at: "2025-07-06T20:44:07.782Z",
-  user_id: "6865833ce55a3c5e47fc6991",
-  writer_id: null,
-  writer_submissions: [
-    {
-      description: "First draft submission.",
-      file: {
-        name: "AI_Research_Draft1.pdf",
-        url: "#"
-      },
-      submitted_at: "2025-07-07T10:00:00.000Z"
-    },
-    {
-      description: "Final version with corrections.",
-      file: {
-        name: "AI_Research_Final.pdf",
-        url: "#"
-      },
-      submitted_at: "2025-07-07T18:00:00.000Z"
-    }
-  ]
-};
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 
 
 function OrderDetailsPage() {
+  const { orderId } = useParams();
+  const [order, setOrder] = useState(null);
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [feedbackOpen, setFeedbackOpen] = useState(null); // index of submission for feedback
   const [feedback, setFeedback] = useState({ description: "", original_order_file: null });
   const [showPayPal, setShowPayPal] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const token = localStorage.getItem("jwt_token");
+        const orderRes = await fetch(`${API_BASE_URL}/api/orders/${orderId}/details`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (!orderRes.ok) throw new Error("Failed to fetch order details");
+        const orderData = await orderRes.json();
+        setOrder(orderData.order || orderData);
+
+        const submissionsRes = await fetch(`${API_BASE_URL}/api/orders/${orderId}/submissions`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (!submissionsRes.ok) throw new Error("Failed to fetch submissions");
+        const submissionsData = await submissionsRes.json();
+        setSubmissions(submissionsData.submissions || submissionsData || []);
+      } catch (err) {
+        setError(err.message || "Failed to load order");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrderDetails();
+  }, [orderId]);
+
   const handleFeedbackOpen = idx => {
     setFeedbackOpen(idx);
-    setFeedback({ description: "", file: null });
+    setFeedback({ description: "", original_order_file: null });
   };
   const handleFeedbackClose = () => setFeedbackOpen(null);
   const handleFeedbackChange = e => setFeedback(f => ({ ...f, description: e.target.value }));
   const handleFileChange = e => setFeedback(f => ({ ...f, original_order_file: e.target.files[0] }));
   const handleFeedbackSubmit = e => {
     e.preventDefault();
-    // For demo, just close modal
+    // TODO: Implement feedback submission to backend
     setFeedbackOpen(null);
-    alert("Feedback submitted! (demo)");
+    alert("Feedback submitted!");
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+        <div className="text-xl text-fuchsia-700 font-bold">Loading order details...</div>
+      </div>
+    );
+  }
+  if (error || !order) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+        <div className="text-xl text-red-600 font-bold">{error || "Order not found."}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
@@ -116,7 +109,7 @@ function OrderDetailsPage() {
                       amount={order.price}
                       onSuccess={() => {
                         setShowPayPal(false);
-                        navigate('/order/ORD-1001');
+                        navigate(`/order/${order.id}`);
                       }}
                       onCancel={() => setShowPayPal(false)}
                     />
@@ -158,7 +151,7 @@ function OrderDetailsPage() {
                 <span className="font-bold text-slate-700">Sources:</span>
                 <span className="mb-2">{order.no_of_sources}</span>
                 <span className="font-bold text-slate-700">Price:</span>
-                <span className="mb-2 text-blue-700 font-bold">${order.price.toFixed(2)}</span>
+                <span className="mb-2 text-blue-700 font-bold">${order.price?.toFixed(2)}</span>
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
@@ -180,9 +173,9 @@ function OrderDetailsPage() {
           {/* Writer Submissions */}
           <section>
             <h3 className="text-lg font-bold text-fuchsia-700 mb-2 mt-6">Writer Submissions</h3>
-            {order.writer_submissions && order.writer_submissions.length > 0 ? (
+            {submissions && submissions.length > 0 ? (
               <div className="flex flex-col gap-4">
-                {order.writer_submissions.map((sub, idx) => {
+                {submissions.map((sub, idx) => {
                   // Backend returns submissions sorted by date descending, so first item is latest
                   const isLatest = idx === 0;
                   return (
@@ -190,10 +183,12 @@ function OrderDetailsPage() {
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-between">
                         <div className="font-semibold text-slate-700">{sub.description}</div>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <a href={sub.file.url} download className="px-3 py-1 rounded-lg bg-fuchsia-500 text-white font-bold text-xs hover:bg-fuchsia-600 transition-all flex items-center gap-1">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" /></svg>
-                            Download {sub.file.name}
-                          </a>
+                          {sub.file && sub.file.url && (
+                            <a href={sub.file.url} download className="px-3 py-1 rounded-lg bg-fuchsia-500 text-white font-bold text-xs hover:bg-fuchsia-600 transition-all flex items-center gap-1">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" /></svg>
+                              Download {sub.file.name}
+                            </a>
+                          )}
                           <span className="text-xs text-slate-400">{new Date(sub.submitted_at).toLocaleString()}</span>
                         </div>
                       </div>
