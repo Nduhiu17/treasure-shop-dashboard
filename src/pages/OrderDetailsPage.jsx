@@ -17,6 +17,7 @@ function OrderDetailsPage() {
   const [feedbackOpen, setFeedbackOpen] = useState(null); // index of submission for feedback
   const [feedback, setFeedback] = useState({ description: "", original_order_file: null });
   const [showPayPal, setShowPayPal] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,11 +55,70 @@ function OrderDetailsPage() {
   const handleFeedbackClose = () => setFeedbackOpen(null);
   const handleFeedbackChange = e => setFeedback(f => ({ ...f, description: e.target.value }));
   const handleFileChange = e => setFeedback(f => ({ ...f, original_order_file: e.target.files[0] }));
-  const handleFeedbackSubmit = e => {
+
+  // Accept order (approve)
+  const handleAcceptOrder = async () => {
+    setActionLoading(true);
+    try {
+      const token = localStorage.getItem("jwt_token");
+      const res = await fetch(`${API_BASE_URL}/api/orders/${order.id}/review/approve`, {
+        method: "PUT",
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Failed to approve order");
+      setOrder(o => ({ ...o, status: "approved" }));
+    } catch (err) {
+      alert(err.message || "Failed to approve order");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  // Upload file helper (now uses /upload endpoint)
+  const uploadFile = async (file) => {
+    const token = localStorage.getItem("jwt_token");
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(`${API_BASE_URL}/api/upload`, {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${token}` },
+      body: formData
+    });
+    if (!res.ok) throw new Error("File upload failed");
+    const data = await res.json();
+    return data.url || data.file_url || data.path || "";
+  };
+
+  // Feedback submit
+  const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement feedback submission to backend
-    setFeedbackOpen(null);
-    alert("Feedback submitted!");
+    setActionLoading(true);
+    try {
+      const token = localStorage.getItem("jwt_token");
+      let feedback_file = "";
+      if (feedback.original_order_file) {
+        feedback_file = await uploadFile(feedback.original_order_file);
+      }
+      const payload = {
+        feedback_file,
+        feedback: feedback.description
+      };
+      const res = await fetch(`${API_BASE_URL}/api/orders/${order.id}/review/feedback`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error("Failed to submit feedback");
+      setFeedbackOpen(null);
+      alert("Feedback submitted!");
+    } catch (err) {
+      alert(err.message || "Failed to submit feedback");
+    } finally {
+      setActionLoading(false);
+    }
   };
 
   if (loading) {
@@ -225,12 +285,13 @@ function OrderDetailsPage() {
                       </div>
                       {order.status === "submitted_for_review" && isLatest && (
                         <div className="flex flex-col sm:flex-row gap-2 mt-2">
-                          <button
-                            className="px-4 py-1 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 transition-all"
-                            onClick={() => alert('Submission accepted! (demo)')}
-                          >
-                            Accept Submission
-                          </button>
+                      <button
+                        className="px-4 py-1 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                        onClick={handleAcceptOrder}
+                        disabled={actionLoading || order.status === "approved"}
+                      >
+                        {actionLoading ? "Processing..." : order.status === "approved" ? "Approved" : "Accept Submission"}
+                      </button>
                           <button
                             className="px-4 py-1 rounded-lg bg-yellow-400 text-white font-bold hover:bg-yellow-500 transition-all"
                             onClick={() => handleFeedbackOpen(idx)}
@@ -262,7 +323,7 @@ function OrderDetailsPage() {
                               onChange={handleFileChange}
                             />
                             <div className="flex gap-2 mt-2">
-                              <button type="submit" className="px-4 py-1 rounded-lg bg-fuchsia-500 text-white font-bold hover:bg-fuchsia-600 transition-all">Submit</button>
+                              <button type="submit" className="px-4 py-1 rounded-lg bg-fuchsia-500 text-white font-bold hover:bg-fuchsia-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed" disabled={actionLoading}>{actionLoading ? "Submitting..." : "Submit"}</button>
                               <button type="button" className="px-4 py-1 rounded-lg bg-slate-100 text-slate-700 font-bold border border-slate-200 hover:bg-slate-200 transition-all" onClick={handleFeedbackClose}>Cancel</button>
                             </div>
                           </form>

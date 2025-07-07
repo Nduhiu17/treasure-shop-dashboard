@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
+// import OrderDetailsPanel from "../components/OrderDetailsPanel";
 
 
 
@@ -16,6 +17,9 @@ export default function CustomerProfilePage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 4; // Mobile-first: fewer per page
+
+  // Order details panel state
+  // const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   // Fetch user and orders on mount and when page/status changes
   React.useEffect(() => {
@@ -309,6 +313,8 @@ export default function CustomerProfilePage() {
                 </tbody>
               </table>
             </div>
+          {/* Order Details Panel (modal style overlay) */}
+          {/* (removed by undo) */}
             {/* Pagination */}
             <div className="flex justify-center items-center gap-2 mt-4">
               <button
