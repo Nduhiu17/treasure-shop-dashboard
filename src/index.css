@@ -97,3 +97,11 @@ html {
 .input {
   @apply bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full;
 }
+
+@keyframes slide-in-left {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.35s cubic-bezier(0.4,0,0.2,1) both;
+}

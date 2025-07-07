@@ -130,6 +130,7 @@ const Dashboard = () => {
     const roles = user.roles;
     const isAdmin = roles.includes('admin') || roles.includes('super_admin');
     const isWriter = roles.includes('writer') && !isAdmin;
+    const isUserOnly = roles.length === 1 && roles[0] === 'user';
     if (isAdmin) {
       // Show all menu items for admin/super_admin
       filteredMenuItems = menuItems;
@@ -138,6 +139,10 @@ const Dashboard = () => {
       filteredMenuItems = menuItems.filter(item => item.key === 'writer-orders');
       writerId = user.id;
       if (currentPage !== 'writer-orders') setCurrentPage('writer-orders');
+    } else if (isUserOnly) {
+      // If just user role, redirect to /profile
+      navigate('/profile', { replace: true });
+      return null;
     }
   }
 
