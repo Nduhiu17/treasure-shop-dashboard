@@ -125,13 +125,19 @@ const Dashboard = () => {
 
   // Determine menu items based on user roles
   let filteredMenuItems = menuItems;
+  let writerId = null;
   if (user && user.roles) {
     const roles = user.roles;
     const isAdmin = roles.includes('admin') || roles.includes('super_admin');
-    const isWriterOrUser = (roles.includes('writer') || roles.includes('user')) && !isAdmin;
-    if (isWriterOrUser) {
-      filteredMenuItems = menuItems.filter(item => item.key === 'admin-dashboard');
-      if (currentPage !== 'admin-dashboard') setCurrentPage('admin-dashboard');
+    const isWriter = roles.includes('writer') && !isAdmin;
+    if (isAdmin) {
+      // Show all menu items for admin/super_admin
+      filteredMenuItems = menuItems;
+    } else if (isWriter) {
+      // Only show writer orders for writers
+      filteredMenuItems = menuItems.filter(item => item.key === 'writer-orders');
+      writerId = user.id;
+      if (currentPage !== 'writer-orders') setCurrentPage('writer-orders');
     }
   }
 
@@ -159,7 +165,8 @@ const Dashboard = () => {
       case 'order-urgency':
         return <OrderUrgency />;
       case 'writer-orders':
-        return <WriterOrders />;
+        // Pass writerId as prop for WriterOrders to fetch data from endpoint
+        return <WriterOrders writerId={writerId} />;
       default:
         return <OrdersManagement />;
     }

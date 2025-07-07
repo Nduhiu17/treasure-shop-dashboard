@@ -27,7 +27,7 @@ const ORDER_STATUSES = [
 	{ key: "completed", label: "Completed" },
 ];
 
-const WriterOrders = () => {
+const WriterOrders = ({ writerId: propWriterId }) => {
 	const { user } = useAuth();
 	const { showToast } = useToast();
 	const [orders, setOrders] = useState([]);
@@ -60,7 +60,9 @@ const WriterOrders = () => {
 				url += `&status=${activeStatus}`;
 			}
 		} else if (roles.includes("writer")) {
-			url = `${API_BASE_URL}/api/writer/orders/${user.id}?page=${currentPage}&page_size=${PAGE_SIZE}`;
+			// Use propWriterId if provided, else fallback to user.id
+			const writerId = propWriterId || user.id;
+			url = `${API_BASE_URL}/api/writer/orders/${writerId}?page=${currentPage}&page_size=${PAGE_SIZE}`;
 			if (activeStatus) {
 				url += `&status=${activeStatus}`;
 			}
@@ -93,7 +95,7 @@ const WriterOrders = () => {
 				setLoading(false);
 			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user && user.id, user && JSON.stringify(user.roles), currentPage, activeStatus]);
+	}, [user && user.id, user && JSON.stringify(user.roles), currentPage, activeStatus, propWriterId]);
 
 	const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 	const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
