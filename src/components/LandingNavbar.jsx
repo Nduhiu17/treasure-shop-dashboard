@@ -386,9 +386,24 @@ export default function LandingNavbar({ user, onLogout }) {
 		  >
 			Order Now
 		  </button>
-	  <Link to="/profile" className="rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors block min-w-0" onClick={() => setMobileMenuOpen(false)}>
-			My Profile
-		  </Link>
+	  <button
+		className="w-full rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors text-left min-w-0"
+		onClick={() => {
+		  setMobileMenuOpen(false);
+		  if (user && user.roles) {
+			const roles = user.roles;
+			if (roles.includes('admin') || roles.includes('super_admin') || roles.includes('writer')) {
+			  navigate('/admin/dashboard');
+			} else {
+			  navigate('/profile');
+			}
+		  } else {
+			navigate('/');
+		  }
+		}}
+	  >
+		My Orders
+	  </button>
 	  <button
 		className="w-full rounded-xl bg-gradient-to-br from-red-50 via-cyan-50 to-yellow-50 shadow border border-red-100 px-3 py-2 text-red-700 hover:text-red-900 transition-colors text-left min-w-0"
 			onClick={() => { setMobileMenuOpen(false); if (onLogout) onLogout(); navigate('/'); }}
@@ -454,14 +469,11 @@ export default function LandingNavbar({ user, onLogout }) {
 	   setProfileOpen(false);
 	   if (user && user.roles) {
 		 const roles = user.roles;
-		 const isAdmin = roles.includes('admin') || roles.includes('super_admin');
-		 const isWriter = roles.includes('writer');
-		 if (isAdmin || isWriter) {
+		 // Robust role check: if any admin, super_admin, or writer, go to /admin/dashboard
+		 if (roles.includes('admin') || roles.includes('super_admin') || roles.includes('writer')) {
 		   navigate('/admin/dashboard');
-		 } else if (roles.length === 1 && roles[0] === 'user') {
-		   navigate('/profile');
 		 } else {
-		   navigate('/');
+		   navigate('/profile');
 		 }
 	   } else {
 		 navigate('/');
