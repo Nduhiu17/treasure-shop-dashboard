@@ -224,7 +224,7 @@ export default function CustomerProfilePage() {
               {filteredOrders.map(order => (
                 <div key={order.id} className="rounded-xl border border-fuchsia-100 bg-fuchsia-50/60 shadow p-3 flex flex-col gap-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs text-slate-600">{order.id}</span>
+                    <span className="font-mono text-xs text-slate-600">{order.order_number}</span>
                     <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${
                       order.status === "approved"
                         ? "bg-green-100 text-green-700"
@@ -264,7 +264,7 @@ export default function CustomerProfilePage() {
               <table className="w-full bg-white rounded-xl shadow-lg overflow-hidden">
                 <thead className="bg-gradient-to-r from-fuchsia-50 to-cyan-50">
                   <tr>
-                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Order ID</th>
+                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Order Number</th>
                     <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Title</th>
                     <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Status</th>
                     <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Date</th>
@@ -275,7 +275,7 @@ export default function CustomerProfilePage() {
                 <tbody>
                   {filteredOrders.map(order => (
                     <tr key={order.id} className="hover:bg-fuchsia-50 transition">
-                      <td className="px-4 py-2 font-mono text-xs text-slate-600">{order.id}</td>
+                      <td className="px-4 py-2 font-mono text-xs text-slate-600">{order.order_number}</td>
                       <td className="px-4 py-2 font-semibold text-slate-800">{order.title}</td>
                       <td className="px-4 py-2">
                         <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${

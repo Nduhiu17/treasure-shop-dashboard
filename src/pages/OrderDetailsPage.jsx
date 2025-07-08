@@ -211,8 +211,8 @@ function OrderDetailsPage() {
               {/* Main Details Card */}
               <div className="col-span-2 bg-gradient-to-br from-blue-50 to-fuchsia-50 rounded-2xl border border-fuchsia-100 shadow-lg p-4 flex flex-col gap-2">
                 <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <span className="font-bold text-slate-700">Order ID:</span>
-                  <span className="font-mono text-xs text-slate-500 bg-slate-100 rounded px-2 py-1">{order.id}</span>
+                  <span className="font-bold text-slate-700">Order Number:</span>
+                  <span className="font-mono text-xs text-slate-500 bg-slate-100 rounded px-2 py-1">{order.order_number}</span>
                   <span className="font-bold text-slate-700 ml-4">Status:</span>
                   <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${order.status === "completed" ? "bg-green-100 text-green-700" : order.status === "pending_payment" ? "bg-yellow-100 text-yellow-700" : order.status === "submitted_for_review" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-700"}`}>{order.status.replace(/_/g, " ")}</span>
                 </div>
