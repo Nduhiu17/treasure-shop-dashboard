@@ -222,8 +222,8 @@ export default function NewOrderPage() {
                   <PayWithPayPal
                     orderId={createdOrder.id}
                     amount={createdOrder.price}
-                    onSuccess={() => setOrderStep("done")}
-                    onCancel={() => setOrderStep("form")}
+                    onSuccess={() => navigate('/profile')}
+                    onCancel={() => navigate('/profile')}
                   />
                 </div>
               ) : orderStep === "form" ? (

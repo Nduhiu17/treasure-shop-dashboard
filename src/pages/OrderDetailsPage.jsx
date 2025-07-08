@@ -196,9 +196,12 @@ function OrderDetailsPage() {
                       amount={order.price}
                       onSuccess={() => {
                         setShowPayPal(false);
-                        navigate(`/order/${order.id}`);
+                        navigate('/profile');
                       }}
-                      onCancel={() => setShowPayPal(false)}
+                      onCancel={() => {
+                        setShowPayPal(false);
+                        navigate('/profile');
+                      }}
                     />
                   </div>
                 </div>
