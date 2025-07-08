@@ -83,86 +83,46 @@ const OrderUrgency = () => {
         </Button>
       </div>
       {loading ? (
-        <div className="text-center py-8 text-blue-700">Loading order urgency...</div>
+        <div className="text-center py-8 text-blue-700">Loading order urgency options...</div>
       ) : error ? (
         <div className="text-center py-8 text-red-600">{error}</div>
       ) : (
-        <div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
-          <div className="overflow-x-auto h-full">
-            <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
-              <thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
-                <tr>
-                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Name</th>
-                  <th className="px-4 py-3 w-2/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Description</th>
-                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Urgency Price Multiplier</th>
-                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Actions</th>
+        <div className="overflow-x-auto w-full">
+          <table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white">
+            <thead className="sticky top-0 bg-gradient-to-r from-blue-100 to-blue-50 z-10">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Description</th>
+                <th className="px-6 py-3 text-right text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-blue-100">
+              {orderUrgency.length > 0 ? orderUrgency.map((urg, idx) => (
+                <tr key={urg.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-blue-50'} hover:bg-blue-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 64, 175, 0.04)' }}>
+                  <td className="px-6 py-4 font-semibold text-blue-900 capitalize align-middle">{urg.name}</td>
+                  <td className="px-6 py-4 text-gray-700 align-middle">{urg.description}</td>
+                  <td className="px-6 py-4 text-right align-middle">
+                    <Button
+                      variant="destructive"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+                      title="Delete Order Urgency"
+                      onClick={() => {
+                        setDeleteTarget(urg);
+                        setConfirmOpen(true);
+                      }}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                      Delete
+                    </Button>
+                  </td>
                 </tr>
-              </thead>
-            </table>
-            <div className="overflow-y-auto" style={{ maxHeight: 'calc(60vh - 56px)' }}>
-              <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
-                <tbody>
-                  {orderUrgency.length > 0 ? orderUrgency.map((urg) => (
-                    <tr key={urg.id} className="hover:bg-blue-50 h-10">
-                      <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/5">{urg.name}</td>
-                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-2/5">{urg.description}</td>
-                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/5">{urg.urgency_price_multiplier?.toFixed(2)}</td>
-                      <td className="px-4 py-1 align-middle w-1/5">
-                        <Button
-                          variant="destructive"
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-                          title="Delete Order Urgency"
-                          onClick={() => {
-                            setDeleteTarget(urg);
-                            setConfirmOpen(true);
-                          }}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                          Delete
-                        </Button>
-      <ConfirmDialog
-        isOpen={confirmOpen}
-        title="Delete Order Urgency"
-        message={deleteTarget ? `Are you sure you want to delete order urgency '${deleteTarget.name}'? This action cannot be undone.` : ''}
-        confirmText="Delete"
-        cancelText="Cancel"
-        loading={deleting}
-        onCancel={() => { setConfirmOpen(false); setDeleteTarget(null); }}
-        onConfirm={async () => {
-          if (!deleteTarget) return;
-          setDeleting(true);
-          try {
-            const jwt = localStorage.getItem("jwt_token");
-            const res = await fetch(`${API_BASE_URL}/api/admin/order-urgency/${deleteTarget.id}`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: jwt ? `Bearer ${jwt}` : "",
-              },
-            });
-            if (!res.ok) throw new Error("Failed to delete order urgency");
-            showToast({ message: `Order urgency '${deleteTarget.name}' deleted successfully`, type: "success" });
-            setOrderUrgency(orderUrgency => orderUrgency.filter(u => u.id !== deleteTarget.id));
-            setConfirmOpen(false);
-            setDeleteTarget(null);
-          } catch (err) {
-            showToast({ message: err.message || "Failed to delete order urgency", type: "error" });
-          } finally {
-            setDeleting(false);
-          }
-        }}
-      />
-                      </td>
-                    </tr>
-                  )) : (
-                    <tr>
-                      <td colSpan={4} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order urgency found.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+              )) : (
+                <tr>
+                  <td colSpan={3} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order urgency options found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       )}
       {/* Create Order Urgency Dialog */}
