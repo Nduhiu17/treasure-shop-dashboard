@@ -1,0 +1,63 @@
+/* Visually attractive font stack for dashboard */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --font-primary: 'Inter', 'Montserrat', 'Roboto', 'Segoe UI', Arial, sans-serif;
+  --font-heading: 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 1.04rem;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+h1, .text-4xl, .text-3xl, .text-2xl, .dashboard-heading, .font-heading {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #0f172a;
+}
+
+h2, .text-xl, .text-lg, .dashboard-subheading {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: #1e293b;
+}
+
+th, .table-header, .font-table-header {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #1e40af;
+  font-size: 1rem;
+}
+
+button, .btn, .Button, .font-button {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-size: 1rem;
+}
+
+.table-cell, td, .font-table-cell {
+  font-family: var(--font-primary);
+  font-size: 0.98rem;
+  color: #334155;
+}
+
+input, select, textarea {
+  font-family: var(--font-primary);
+  font-size: 1rem;
+}
+
+/* Responsive font sizes for headings */
+@media (max-width: 640px) {
+  h1, .text-4xl, .dashboard-heading { font-size: 2rem; }
+  h2, .text-2xl, .dashboard-subheading { font-size: 1.3rem; }
+}
+@media (min-width: 641px) {
+  h1, .text-4xl, .dashboard-heading { font-size: 2.5rem; }
+  h2, .text-2xl, .dashboard-subheading { font-size: 1.7rem; }
+}
