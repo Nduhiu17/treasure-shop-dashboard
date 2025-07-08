@@ -136,7 +136,6 @@ const UsersManagement = ({ currentSubPage }) => {
 	</table>
   </div>
 </div>
-// ...debug info removed...
 							{/* Pagination */}
 							<div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
 								<nav

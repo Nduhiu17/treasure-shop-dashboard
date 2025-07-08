@@ -343,7 +343,7 @@ const Dashboard = () => {
           </nav>
         </aside>
         {/* Content */}
-        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0 w-full overflow-x-auto">
+        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0 w-full overflow-x-hidden">
           {renderContent()}
         </main>
       </div>
