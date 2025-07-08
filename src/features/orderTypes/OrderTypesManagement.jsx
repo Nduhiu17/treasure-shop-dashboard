@@ -146,70 +146,6 @@ const OrderTypesManagement = () => {
                 )}
               </tbody>
             </table>
-            <div className="overflow-y-auto" style={{ maxHeight: 'calc(60vh - 56px)' }}>
-              <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
-                <tbody>
-                  {orderTypes.length > 0 ? orderTypes.map((type) => (
-                    <tr key={type.id} className="hover:bg-blue-50 h-10">
-                      <td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/5">{type.name}</td>
-                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-2/5">{type.description}</td>
-                      <td className="text-xs xs:text-sm sm:text-base px-4 py-1 align-middle w-1/5">{type.base_price_per_page?.toFixed(2)}</td>
-                      <td className="px-4 py-1 align-middle w-1/5">
-                        <Button
-                          variant="destructive"
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-                          title="Delete Order Type"
-                          onClick={() => {
-                            setDeleteTarget(type);
-                            setConfirmOpen(true);
-                          }}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                          Delete
-                        </Button>
-      <ConfirmDialog
-        isOpen={confirmOpen}
-        title="Delete Order Type"
-        message={deleteTarget ? `Are you sure you want to delete order type '${deleteTarget.name}'? This action cannot be undone.` : ''}
-        confirmText="Delete"
-        cancelText="Cancel"
-        loading={deleting}
-        onCancel={() => { setConfirmOpen(false); setDeleteTarget(null); }}
-        onConfirm={async () => {
-          if (!deleteTarget) return;
-          setDeleting(true);
-          try {
-            const jwt = localStorage.getItem("jwt_token");
-            const res = await fetch(`${API_BASE_URL}/api/admin/order-types/${deleteTarget.id}`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: jwt ? `Bearer ${jwt}` : "",
-              },
-            });
-            if (!res.ok) throw new Error("Failed to delete order type");
-            showToast({ message: `Order type '${deleteTarget.name}' deleted successfully`, type: "success" });
-            setOrderTypes(orderTypes => orderTypes.filter(ot => ot.id !== deleteTarget.id));
-            setTotal(t => t - 1);
-            setConfirmOpen(false);
-            setDeleteTarget(null);
-          } catch (err) {
-            showToast({ message: err.message || "Failed to delete order type", type: "error" });
-          } finally {
-            setDeleting(false);
-          }
-        }}
-      />
-                      </td>
-                    </tr>
-                  )) : (
-                    <tr>
-                      <td colSpan={4} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order types found.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
           </div>
         </div>
       )}
@@ -270,6 +206,39 @@ const OrderTypesManagement = () => {
           </div>
         </form>
       </Dialog>
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        title="Delete Order Type"
+        message={deleteTarget ? `Are you sure you want to delete order type '${deleteTarget.name}'? This action cannot be undone.` : ''}
+        confirmText="Delete"
+        cancelText="Cancel"
+        loading={deleting}
+        onCancel={() => { setConfirmOpen(false); setDeleteTarget(null); }}
+        onConfirm={async () => {
+          if (!deleteTarget) return;
+          setDeleting(true);
+          try {
+            const jwt = localStorage.getItem("jwt_token");
+            const res = await fetch(`${API_BASE_URL}/api/admin/order-types/${deleteTarget.id}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: jwt ? `Bearer ${jwt}` : "",
+              },
+            });
+            if (!res.ok) throw new Error("Failed to delete order type");
+            showToast({ message: `Order type '${deleteTarget.name}' deleted successfully`, type: "success" });
+            setOrderTypes(orderTypes => orderTypes.filter(ot => ot.id !== deleteTarget.id));
+            setTotal(t => t - 1);
+            setConfirmOpen(false);
+            setDeleteTarget(null);
+          } catch (err) {
+            showToast({ message: err.message || "Failed to delete order type", type: "error" });
+          } finally {
+            setDeleting(false);
+          }
+        }}
+      />
     </Card>
   );
 };
