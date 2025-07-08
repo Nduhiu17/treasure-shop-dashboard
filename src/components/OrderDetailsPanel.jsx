@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useToast } from "./ui/toast";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function OrderDetailsPanel({ orderId, onClose }) {
+  const { showToast } = useToast();
   const [order, setOrder] = useState(null);
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -59,7 +61,7 @@ export default function OrderDetailsPanel({ orderId, onClose }) {
       if (!res.ok) throw new Error("Failed to approve order");
       setOrder(o => ({ ...o, status: "approved" }));
     } catch (err) {
-      alert(err.message || "Failed to approve order");
+      showToast({ type: "error", message: err.message || "Failed to approve order" });
     } finally {
       setActionLoading(false);
     }
@@ -102,9 +104,9 @@ export default function OrderDetailsPanel({ orderId, onClose }) {
       });
       if (!res.ok) throw new Error("Failed to submit feedback");
       setFeedbackOpen(null);
-      alert("Feedback submitted!");
+      showToast({ type: "success", message: "Feedback submitted!" });
     } catch (err) {
-      alert(err.message || "Failed to submit feedback");
+      showToast({ type: "error", message: err.message || "Failed to submit feedback" });
     } finally {
       setActionLoading(false);
     }

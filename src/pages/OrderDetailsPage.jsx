@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useToast } from "../components/ui/toast";
 import { useNavigate, useParams } from "react-router-dom";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
@@ -9,6 +10,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 
 function OrderDetailsPage() {
+  const { showToast } = useToast();
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
   const [submissions, setSubmissions] = useState([]);
@@ -93,7 +95,7 @@ function OrderDetailsPage() {
       if (!res.ok) throw new Error("Failed to approve order");
       setOrder(o => ({ ...o, status: "approved" }));
     } catch (err) {
-      alert(err.message || "Failed to approve order");
+      showToast({ type: "error", message: err.message || "Failed to approve order" });
     } finally {
       setActionLoading(false);
     }
@@ -138,9 +140,9 @@ function OrderDetailsPage() {
       });
       if (!res.ok) throw new Error("Failed to submit feedback");
       setFeedbackOpen(null);
-      alert("Feedback submitted!");
+      showToast({ type: "success", message: "Feedback submitted!" });
     } catch (err) {
-      alert(err.message || "Failed to submit feedback");
+      showToast({ type: "error", message: err.message || "Failed to submit feedback" });
     } finally {
       setActionLoading(false);
     }

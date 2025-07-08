@@ -350,7 +350,7 @@ const OrdersManagement = () => {
 																.catch((err) => setError(err.message || "Failed to fetch orders"))
 																.finally(() => setLoading(false));
 														} catch (err) {
-															alert(err.message || 'Failed to assign writer');
+															showToast({ type: "error", message: err.message || 'Failed to assign writer' });
 														}
 													}}
 												>
