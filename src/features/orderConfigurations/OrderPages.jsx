@@ -107,8 +107,25 @@ const OrderPages = () => {
                         <Button
                           variant="destructive"
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-                          title="Delete or Deactivate"
-                          onClick={() => showToast({ message: 'Delete/Deactivate not implemented', type: 'info' })}
+                          title="Delete Order Page"
+                          onClick={async () => {
+                            if (!window.confirm(`Are you sure you want to delete order page '${page.name}'? This action cannot be undone.`)) return;
+                            try {
+                              const jwt = localStorage.getItem("jwt_token");
+                              const res = await fetch(`${API_BASE_URL}/api/admin/order-pages/${page.id}`, {
+                                method: "DELETE",
+                                headers: {
+                                  "Content-Type": "application/json",
+                                  Authorization: jwt ? `Bearer ${jwt}` : "",
+                                },
+                              });
+                              if (!res.ok) throw new Error("Failed to delete order page");
+                              showToast({ message: `Order page '${page.name}' deleted successfully`, type: "success" });
+                              setOrderPages(orderPages => orderPages.filter(p => p.id !== page.id));
+                            } catch (err) {
+                              showToast({ message: err.message || "Failed to delete order page", type: "error" });
+                            }
+                          }}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                           Delete
