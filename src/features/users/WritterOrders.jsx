@@ -4,7 +4,6 @@ import Loader from "../../components/ui/Loader";
 import { useAuth } from "../auth/AuthProvider";
 import { Button } from "../../components/ui/button";
 import { Select } from "../../components/ui/select";
-import CreateOrder from "../orders/CreateOrder";
 import { WideDialog } from "../../components/ui/wide-dialog";
 // import PayPalModal from "../orders/PayPalModal"; // Removed: PayPal flow deprecated
 import AssignmentResponseButtons from "../../components/ui/AssignmentResponseButtons";
@@ -36,7 +35,6 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [total, setTotal] = useState(0);
 	const [activeStatus, setActiveStatus] = useState("");
-	const [createOrderModalOpen, setCreateOrderModalOpen] = useState(false);
 	const [payPalOrderId, setPayPalOrderId] = useState(null);
 	const [payPalAmount, setPayPalAmount] = useState(null);
 	const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
@@ -100,20 +98,6 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1));
 	const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
 
-	const handleOrderButton = (e) => {
-		e?.preventDefault?.();
-		setCreateOrderModalOpen(true);
-	};
-
-	const handleOrderCreated = (orderId, amount) => {
-		setCreateOrderModalOpen(false);
-		setTimeout(() => {
-			setPayPalOrderId(orderId);
-			setPayPalAmount(amount);
-// setPayPalModalOpen(true); // Removed: PayPal flow deprecated
-		}, 300);
-	};
-
 	const handleAssignmentResponse = async (orderId, accept) => {
 		const jwt = localStorage.getItem("jwt_token");
 		try {
@@ -146,12 +130,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 		<Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
 			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
 				<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">My Orders</h2>
-				<Button
-					className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150"
-					onClick={handleOrderButton}
-				>
-					+ Create Order
-				</Button>
+				{/* Removed Create Order button for writers */}
 			</div>
 			<div className="w-full sm:w-64 mb-4 xs:mb-6">
 				<label htmlFor="order-status-select" className="block text-blue-900 font-semibold mb-1 text-xs xs:text-sm">Filter by Status</label>
@@ -375,10 +354,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 							</Button>
 						</nav>
 					</div>
-					<WideDialog isOpen={createOrderModalOpen} onClose={() => setCreateOrderModalOpen(false)} title="Create Order">
-						<CreateOrder onClose={() => setCreateOrderModalOpen(false)} onOrderCreated={handleOrderCreated} />
-					</WideDialog>
-{/* PayPalModal removed: PayPal flow deprecated */}
+					{/* PayPalModal removed: PayPal flow deprecated */}
 					<OrderSubmitDialog
 						isOpen={submitDialogOpen}
 						onClose={() => setSubmitDialogOpen(false)}
