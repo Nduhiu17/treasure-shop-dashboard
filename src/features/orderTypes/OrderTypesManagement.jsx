@@ -107,15 +107,44 @@ const OrderTypesManagement = () => {
       ) : (
         <div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px]" style={{ height: '60vh' }}>
           <div className="overflow-x-auto h-full">
-            <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
-              <thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
+            <table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white">
+              <thead className="sticky top-0 bg-gradient-to-r from-blue-100 to-blue-50 z-10">
                 <tr>
-                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Name</th>
-                  <th className="px-4 py-3 w-2/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Description</th>
-                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Base Price/Page</th>
-                  <th className="px-4 py-3 w-1/5 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Description</th>
+                  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Base Price/Page</th>
+                  <th className="px-6 py-3 text-right text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Actions</th>
                 </tr>
               </thead>
+              <tbody className="divide-y divide-blue-100">
+                {orderTypes.length > 0 ? (
+                  orderTypes.map((type, idx) => (
+                    <tr key={type.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-blue-50'} hover:bg-blue-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 64, 175, 0.04)' }}>
+                      <td className="px-6 py-4 font-semibold text-blue-900 capitalize align-middle">{type.name}</td>
+                      <td className="px-6 py-4 text-gray-700 align-middle">{type.description}</td>
+                      <td className="px-6 py-4 text-gray-700 align-middle">{type.base_price_per_page?.toFixed(2)}</td>
+                      <td className="px-6 py-4 text-right align-middle">
+                        <Button
+                          variant="destructive"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+                          title="Delete Order Type"
+                          onClick={() => {
+                            setDeleteTarget(type);
+                            setConfirmOpen(true);
+                          }}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} className="text-center text-xs xs:text-sm sm:text-base px-4 py-1">No order types found.</td>
+                  </tr>
+                )}
+              </tbody>
             </table>
             <div className="overflow-y-auto" style={{ maxHeight: 'calc(60vh - 56px)' }}>
               <table className="w-full min-w-[800px] text-xs xs:text-sm sm:text-base table-fixed">
