@@ -94,48 +94,53 @@ const UsersManagement = ({ currentSubPage }) => {
 						<div className="text-center py-8 text-red-600">{error}</div>
 					) : (
 						<>
-							<div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px] overflow-x-hidden" style={{ height: '60vh' }}>
-								<div className="h-full">
-									<table className="w-full text-xs xs:text-sm sm:text-base table-fixed">
-										<thead className="sticky top-[56px] z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
-											<tr>
-												<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Email</th>
-												<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Username</th>
-												<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>First Name</th>
-												<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Last Name</th>
-												<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Roles</th>
-												<th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Actions</th>
-											</tr>
-										</thead>
-										<tbody>
-											{users.length > 0 ? (
-												users.map((user) => (
-													<tr key={user.id} className="hover:bg-blue-50">
-														<td className="max-w-[120px] truncate text-xs xs:text-sm sm:text-base px-4 py-2">{user.email}</td>
-														<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{user.username}</td>
-														<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{user.first_name}</td>
-														<td className="text-xs xs:text-sm sm:text-base px-4 py-2">{user.last_name}</td>
-														<td className="px-4 py-2">
-															<span className="inline-block px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs font-semibold">
-																{user.roles.join(", ")}
-															</span>
-														</td>
-														<td className="px-4 py-2">
-															<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-																<RoleDropdown userId={user.id} onAssign={role => handleAssignRole(user.id, role)} />
-															</div>
-														</td>
-													</tr>
-												))
-											) : (
-												<tr>
-													<td colSpan={6} className="text-center text-xs xs:text-sm sm:text-base">No users found.</td>
-												</tr>
-											)}
-										</tbody>
-									</table>
-								</div>
-							</div>
+<div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px] overflow-x-auto mt-8 md:mt-12" style={{ height: '60vh', paddingTop: '90px' }}>
+  <div className="h-full min-w-[700px]">
+	<table className="w-full text-xs xs:text-sm sm:text-base border border-red-400 bg-white">
+	  <thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
+		<tr>
+		  <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm min-w-[160px]" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Email</th>
+		  <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm min-w-[120px]" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Username</th>
+		  <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm min-w-[120px]" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>First Name</th>
+		  <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm min-w-[120px]" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Last Name</th>
+		  <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm min-w-[120px]" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Roles</th>
+		  <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm min-w-[120px]" style={{ letterSpacing: '0.04em', background: 'rgba(236,245,255,0.85)' }}>Actions</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		{users.length > 0 ? (
+		  users.map((user) => (
+			<tr key={user.id} className="hover:bg-blue-50 border-2 border-green-400 bg-yellow-50">
+			  <td className="truncate text-xs xs:text-sm sm:text-base px-4 py-2 max-w-[180px] whitespace-nowrap">{user.email}</td>
+			  <td className="truncate text-xs xs:text-sm sm:text-base px-4 py-2 max-w-[120px] whitespace-nowrap">{user.username}</td>
+			  <td className="truncate text-xs xs:text-sm sm:text-base px-4 py-2 max-w-[120px] whitespace-nowrap">{user.first_name}</td>
+			  <td className="truncate text-xs xs:text-sm sm:text-base px-4 py-2 max-w-[120px] whitespace-nowrap">{user.last_name}</td>
+			  <td className="px-4 py-2 max-w-[160px] whitespace-nowrap">
+				<span className="inline-block px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs font-semibold truncate max-w-[140px]">
+				  {user.roles.join(", ")}
+				</span>
+			  </td>
+			  <td className="px-4 py-2 min-w-[120px]">
+				<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+				  <RoleDropdown userId={user.id} onAssign={role => handleAssignRole(user.id, role)} />
+				</div>
+			  </td>
+			</tr>
+		  ))
+		) : (
+		  <tr>
+			<td colSpan={6} className="text-center text-xs xs:text-sm sm:text-base">No users found.</td>
+		  </tr>
+		)}
+	  </tbody>
+	</table>
+  </div>
+</div>
+							<div className="text-xs text-blue-500 mb-2">Debug: users.length = {users.length}, activeRole = {activeRole}, currentPage = {currentPage}</div>
+							{/* Debug: Print first user object */}
+							{users.length > 0 && (
+  <pre className="text-xs text-blue-700 bg-blue-50 rounded p-2 mb-2 overflow-x-auto">{JSON.stringify(users[0], null, 2)}</pre>
+)}
 							{/* Pagination */}
 							<div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
 								<nav
