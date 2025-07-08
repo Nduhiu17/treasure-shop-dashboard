@@ -125,8 +125,27 @@ const OrderTypesManagement = () => {
                         <Button
                           variant="destructive"
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-                          title="Delete or Deactivate"
-                          onClick={() => {/* TODO: implement delete/deactivate logic */ showToast({ message: 'Delete/Deactivate not implemented', type: 'info' }); }}
+                          title="Delete Order Type"
+                          onClick={async () => {
+                            if (!window.confirm(`Are you sure you want to delete order type '${type.name}'? This action cannot be undone.`)) return;
+                            try {
+                              const jwt = localStorage.getItem("jwt_token");
+                              const res = await fetch(`${API_BASE_URL}/api/admin/order-types/${type.id}`, {
+                                method: "DELETE",
+                                headers: {
+                                  "Content-Type": "application/json",
+                                  Authorization: jwt ? `Bearer ${jwt}` : "",
+                                },
+                              });
+                              if (!res.ok) throw new Error("Failed to delete order type");
+                              showToast({ message: `Order type '${type.name}' deleted successfully`, type: "success" });
+                              // Remove from UI
+                              setOrderTypes(orderTypes => orderTypes.filter(ot => ot.id !== type.id));
+                              setTotal(t => t - 1);
+                            } catch (err) {
+                              showToast({ message: err.message || "Failed to delete order type", type: "error" });
+                            }
+                          }}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                           Delete
