@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useToast } from "../../components/ui/toast";
+import ConfirmDialog from "../../components/ui/ConfirmDialog";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -12,6 +13,9 @@ const OrderLanguages = () => {
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
   const nameRef = useRef();
   const descRef = useRef();
 
@@ -99,29 +103,46 @@ const OrderLanguages = () => {
                           variant="destructive"
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
                           title="Delete Order Language"
-                          onClick={async () => {
-                            if (!window.confirm(`Are you sure you want to delete order language '${lang.name}'? This action cannot be undone.`)) return;
-                            try {
-                              const jwt = localStorage.getItem("jwt_token");
-                              const res = await fetch(`${API_BASE_URL}/api/admin/order-languages/${lang.id}`, {
-                                method: "DELETE",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                  Authorization: jwt ? `Bearer ${jwt}` : "",
-                                },
-                              });
-                              if (!res.ok) throw new Error("Failed to delete order language");
-                              showToast({ message: `Order language '${lang.name}' deleted successfully`, type: "success" });
-                              // Remove from UI
-                              setOrderLanguages(orderLanguages => orderLanguages.filter(l => l.id !== lang.id));
-                            } catch (err) {
-                              showToast({ message: err.message || "Failed to delete order language", type: "error" });
-                            }
+                          onClick={() => {
+                            setDeleteTarget(lang);
+                            setConfirmOpen(true);
                           }}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                           Delete
                         </Button>
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        title="Delete Order Language"
+        message={deleteTarget ? `Are you sure you want to delete order language '${deleteTarget.name}'? This action cannot be undone.` : ''}
+        confirmText="Delete"
+        cancelText="Cancel"
+        loading={deleting}
+        onCancel={() => { setConfirmOpen(false); setDeleteTarget(null); }}
+        onConfirm={async () => {
+          if (!deleteTarget) return;
+          setDeleting(true);
+          try {
+            const jwt = localStorage.getItem("jwt_token");
+            const res = await fetch(`${API_BASE_URL}/api/admin/order-languages/${deleteTarget.id}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: jwt ? `Bearer ${jwt}` : "",
+              },
+            });
+            if (!res.ok) throw new Error("Failed to delete order language");
+            showToast({ message: `Order language '${deleteTarget.name}' deleted successfully`, type: "success" });
+            setOrderLanguages(orderLanguages => orderLanguages.filter(l => l.id !== deleteTarget.id));
+            setConfirmOpen(false);
+            setDeleteTarget(null);
+          } catch (err) {
+            showToast({ message: err.message || "Failed to delete order language", type: "error" });
+          } finally {
+            setDeleting(false);
+          }
+        }}
+      />
                       </td>
                     </tr>
                   )) : (

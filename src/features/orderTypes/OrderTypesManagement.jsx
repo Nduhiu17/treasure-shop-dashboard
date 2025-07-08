@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useAuth } from "../auth/AuthProvider";
@@ -17,6 +18,9 @@ const OrderTypesManagement = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
   const [creating, setCreating] = useState(false);
   const nameRef = useRef();
   const descRef = useRef();
@@ -126,30 +130,47 @@ const OrderTypesManagement = () => {
                           variant="destructive"
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
                           title="Delete Order Type"
-                          onClick={async () => {
-                            if (!window.confirm(`Are you sure you want to delete order type '${type.name}'? This action cannot be undone.`)) return;
-                            try {
-                              const jwt = localStorage.getItem("jwt_token");
-                              const res = await fetch(`${API_BASE_URL}/api/admin/order-types/${type.id}`, {
-                                method: "DELETE",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                  Authorization: jwt ? `Bearer ${jwt}` : "",
-                                },
-                              });
-                              if (!res.ok) throw new Error("Failed to delete order type");
-                              showToast({ message: `Order type '${type.name}' deleted successfully`, type: "success" });
-                              // Remove from UI
-                              setOrderTypes(orderTypes => orderTypes.filter(ot => ot.id !== type.id));
-                              setTotal(t => t - 1);
-                            } catch (err) {
-                              showToast({ message: err.message || "Failed to delete order type", type: "error" });
-                            }
+                          onClick={() => {
+                            setDeleteTarget(type);
+                            setConfirmOpen(true);
                           }}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                           Delete
                         </Button>
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        title="Delete Order Type"
+        message={deleteTarget ? `Are you sure you want to delete order type '${deleteTarget.name}'? This action cannot be undone.` : ''}
+        confirmText="Delete"
+        cancelText="Cancel"
+        loading={deleting}
+        onCancel={() => { setConfirmOpen(false); setDeleteTarget(null); }}
+        onConfirm={async () => {
+          if (!deleteTarget) return;
+          setDeleting(true);
+          try {
+            const jwt = localStorage.getItem("jwt_token");
+            const res = await fetch(`${API_BASE_URL}/api/admin/order-types/${deleteTarget.id}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: jwt ? `Bearer ${jwt}` : "",
+              },
+            });
+            if (!res.ok) throw new Error("Failed to delete order type");
+            showToast({ message: `Order type '${deleteTarget.name}' deleted successfully`, type: "success" });
+            setOrderTypes(orderTypes => orderTypes.filter(ot => ot.id !== deleteTarget.id));
+            setTotal(t => t - 1);
+            setConfirmOpen(false);
+            setDeleteTarget(null);
+          } catch (err) {
+            showToast({ message: err.message || "Failed to delete order type", type: "error" });
+          } finally {
+            setDeleting(false);
+          }
+        }}
+      />
                       </td>
                     </tr>
                   )) : (
