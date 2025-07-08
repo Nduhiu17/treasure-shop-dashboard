@@ -96,7 +96,7 @@ const UsersManagement = ({ currentSubPage }) => {
 						<>
 <div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px] overflow-x-auto mt-8 md:mt-12" style={{ height: '60vh', paddingTop: '90px' }}>
   <div className="h-full min-w-[700px]">
-	<table className="w-full text-xs xs:text-sm sm:text-base border border-red-400 bg-white">
+	<table className="w-full text-xs xs:text-sm sm:text-base bg-white">
 	  <thead className="sticky top-0 z-20 bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100/80 shadow-md border-b-2 border-blue-200">
 		<tr>
 		  <th className="px-4 py-3 text-left font-extrabold text-blue-900 text-xs xs:text-sm sm:text-base tracking-wide uppercase bg-opacity-90 backdrop-blur-md border-r border-blue-100 last:border-r-0 whitespace-nowrap shadow-sm min-w-[160px]" style={{ letterSpacing: '0.04em', background: 'rgba(255,255,255,0.85)' }}>Email</th>
@@ -110,7 +110,7 @@ const UsersManagement = ({ currentSubPage }) => {
 	  <tbody>
 		{users.length > 0 ? (
 		  users.map((user) => (
-			<tr key={user.id} className="hover:bg-blue-50 border-2 border-green-400 bg-yellow-50">
+		<tr key={user.id} className="hover:bg-blue-50 bg-white">
 			  <td className="truncate text-xs xs:text-sm sm:text-base px-4 py-2 max-w-[180px] whitespace-nowrap">{user.email}</td>
 			  <td className="truncate text-xs xs:text-sm sm:text-base px-4 py-2 max-w-[120px] whitespace-nowrap">{user.username}</td>
 			  <td className="truncate text-xs xs:text-sm sm:text-base px-4 py-2 max-w-[120px] whitespace-nowrap">{user.first_name}</td>
@@ -136,11 +136,7 @@ const UsersManagement = ({ currentSubPage }) => {
 	</table>
   </div>
 </div>
-							<div className="text-xs text-blue-500 mb-2">Debug: users.length = {users.length}, activeRole = {activeRole}, currentPage = {currentPage}</div>
-							{/* Debug: Print first user object */}
-							{users.length > 0 && (
-  <pre className="text-xs text-blue-700 bg-blue-50 rounded p-2 mb-2 overflow-x-auto">{JSON.stringify(users[0], null, 2)}</pre>
-)}
+// ...debug info removed...
 							{/* Pagination */}
 							<div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
 								<nav
