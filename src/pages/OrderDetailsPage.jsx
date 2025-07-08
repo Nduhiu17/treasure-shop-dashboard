@@ -274,10 +274,15 @@ function OrderDetailsPage() {
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-between">
                         <div className="font-semibold text-slate-700">{sub.description}</div>
                         <div className="flex items-center gap-2 flex-wrap">
-                          {sub.file && sub.file.url && (
-                            <a href={sub.file.url} download className="px-3 py-1 rounded-lg bg-fuchsia-500 text-white font-bold text-xs hover:bg-fuchsia-600 transition-all flex items-center gap-1">
+                          {sub.submission_file && (
+                            <a
+                              href={sub.submission_file}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1 rounded-lg bg-fuchsia-500 text-white font-bold text-xs hover:bg-fuchsia-600 transition-all flex items-center gap-1"
+                            >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" /></svg>
-                              Download {sub.file.name}
+                              Download
                             </a>
                           )}
                           <span className="text-xs text-slate-400">{new Date(sub.submission_date).toLocaleString()}</span>
