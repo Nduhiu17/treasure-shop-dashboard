@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import OrderDetailsFetcher from "./OrderDetailsFetcher";
 import { Card } from "../../components/ui/card";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "../../components/ui/table";
 import { Button } from "../../components/ui/button";
@@ -8,6 +9,8 @@ import Loader from '../../components/ui/Loader';
 import AssignmentResponseButtons from "../../components/ui/AssignmentResponseButtons";
 import { useToast } from "../../components/ui/toast";
 import OrderSubmitDialog from "../../components/ui/OrderSubmitDialog";
+
+import WriterOrderSubmissionsAndReviewsTabs from "../users/WriterOrderSubmissionsAndReviewsTabs";
 import OrderSubmissionsDialog from "../../components/ui/OrderSubmissionsDialog";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -201,8 +204,8 @@ const OrdersManagement = () => {
 							   {expandedRow === order.id && (
 								   <tr>
 									   <td colSpan={6} className="py-0 px-2">
-										   <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-lg p-4 my-2 animate-fade-in-up">
-											   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+										   <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-lg p-4 my-2 animate-fade-in-up w-full">
+											   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg><span className="font-semibold text-blue-900">Writer Username:</span><span className="text-blue-800">{order.writer_username || '-'}</span></div>
 												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">Pages:</span><span className="text-blue-800">{order.order_pages_name}</span></div>
 												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">Urgency:</span><span className="text-blue-800">{order.order_urgency_name}</span></div>
@@ -218,35 +221,8 @@ const OrdersManagement = () => {
 												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg><span className="font-semibold text-blue-900">Top Writer:</span><span className="text-blue-800">{order.top_writer ? 'Yes' : 'No'}</span></div>
 												   <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-blue-900">Price:</span><span className="text-blue-800">${order.price?.toFixed(2)}</span></div>
 											   </div>
-											   <div className="mt-4 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-												   <AssignmentResponseButtons order={order} user={user} onRespond={handleAssignmentResponse} />
-												   {order.status === "assigned" && user.roles?.includes("writer") ? (
-													   <Button
-														   className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-														   onClick={() => { setSubmitOrderId(order.id); setSubmitDialogOpen(true); }}
-														   title="Submit Order"
-													   >
-														   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-														   Submit
-													   </Button>
-												   ) : null}
-												   {order.status === "submitted_for_review" && user.roles?.includes("user") ? (
-													   <Button
-														   className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold shadow hover:from-cyan-600 hover:to-blue-700 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-														   onClick={() => { setSubmissionsOrderId(order.id); setSubmissionsDialogOpen(true); }}
-														   title="View Submissions"
-													   >
-														   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-														   View Submissions
-													   </Button>
-												   ) : null}
-												   {!(order.status === "awaiting_asign_acceptance" && user.roles?.includes("writer")) && order.status !== "assigned" && order.status !== "submitted_for_review" && (
-													   <Button onClick={() => handleAssignClick(order)} disabled={!(order.status === 'paid' || order.status === 'feedback' || order.status === 'awaiting_assignment')} className="w-full sm:w-auto text-xs xs:text-sm sm:text-base bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-bold shadow hover:from-blue-700 hover:to-cyan-600 hover:to-green-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-blue-400">
-														   <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-														   Assign Writer
-													   </Button>
-												   )}
-											   </div>
+											   {/* Tabs Section */}
+											   <WriterOrderSubmissionsAndReviewsTabs orderId={order.id} />
 										   </div>
 									   </td>
 								   </tr>
