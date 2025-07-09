@@ -133,6 +133,7 @@ const OrderPages = () => {
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Name</th>
                 <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Description</th>
+                <th className="px-6 py-3 text-center text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200"># Pages</th>
                 <th className="px-6 py-3 text-right text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Actions</th>
               </tr>
             </thead>
@@ -141,6 +142,7 @@ const OrderPages = () => {
                 <tr key={page.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 41, 59, 0.04)' }}>
                   <td className="px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{page.name}</td>
                   <td className="px-6 py-4 text-gray-700 align-middle">{page.description}</td>
+                  <td className="px-6 py-4 text-center text-gray-800 align-middle font-mono">{page.number_of_pages}</td>
                   <td className="px-6 py-4 text-right align-middle">
                     <div className="flex items-center gap-2 justify-end">
                       <button
