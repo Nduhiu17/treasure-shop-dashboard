@@ -210,9 +210,7 @@ const Dashboard = () => {
               </svg>
               Go To Website
             </button>
-            <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white px-2 py-1 rounded-lg shadow font-bold text-xs xs:text-sm md:text-base mr-2 animate-gradient-x">
-              DASHBOARD
-            </span>
+    
             <span className="hidden xs:inline-block align-middle text-blue-900 font-extrabold tracking-tight drop-shadow-sm">Academic Codebase</span>
           </h1>
         </div>
