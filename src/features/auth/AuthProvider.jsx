@@ -74,21 +74,21 @@ export const AuthProvider = ({ children }) => {
   const apiWithAuth = React.useMemo(() => ({
     login,
     logout,
-    getAllOrders: (page = 1, pageSize = 10, status) => authFetcher(`/api/admin/orders?page=${page}&page_size=${pageSize}${status ? `&status=${status}` : ''}`),
-    getAllWriterOrders: (page = 1, pageSize = 10, writer_id) => authFetcher(`/api/writers/orders?writer_id=${String(writer_id)}&page=${page}&page_size=${pageSize}$}`),
+    getAllOrders: (page = 1, pageSize = 6, status) => authFetcher(`/api/admin/orders?page=${page}&page_size=${pageSize}${status ? `&status=${status}` : ''}`),
+    getAllWriterOrders: (page = 1, pageSize = 6, writer_id) => authFetcher(`/api/writers/orders?writer_id=${String(writer_id)}&page=${page}&page_size=${pageSize}$}`),
 
     assignOrder: (orderId, writerId) => authFetcher(`/api/admin/orders/${orderId}/assign`, {
       method: 'PUT',
       body: JSON.stringify({ writer_id: writerId }),
     }),
-    getUsersByRole: (role, page = 1, pageSize = 10) => {
+    getUsersByRole: (role, page = 1, pageSize = 6) => {
       let url = `/api/admin/users?page=${page}&page_size=${pageSize}`;
       if (role && role !== 'all') {
         url += `&role=${role}`;
       }
       return authFetcher(url);
     },
-    getOrderTypes: (page = 1, pageSize = 10) => authFetcher(`/api/order-types?page=${page}&page_size=${pageSize}`),
+    getOrderTypes: (page = 1, pageSize = 6) => authFetcher(`/api/order-types?page=${page}&page_size=${pageSize}`),
     getWriters: (page = 1, pageSize = 100) => authFetcher(`/api/writers?page=${page}&page_size=${pageSize}`),
   }), [authFetcher, login, logout]);
 

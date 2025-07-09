@@ -43,7 +43,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	const [submissionsDialogOpen, setSubmissionsDialogOpen] = useState(false);
 	const [submissionsOrderId, setSubmissionsOrderId] = useState(null);
 	const [expandedRow, setExpandedRow] = useState(null);
-	const PAGE_SIZE = 10;
+	const PAGE_SIZE = 6;
 	const navigate = useNavigate();
 
 	useEffect(() => {

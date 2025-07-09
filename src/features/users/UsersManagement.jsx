@@ -15,7 +15,7 @@ const ROLES = [
 	{ key: "writer", label: "Writer" },
 ];
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 6;
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 

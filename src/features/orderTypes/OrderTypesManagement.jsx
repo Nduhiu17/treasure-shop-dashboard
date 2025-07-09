@@ -6,7 +6,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { Dialog } from "../../components/ui/dialog";
 import { useToast } from "../../components/ui/toast";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 6;
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const OrderTypesManagement = () => {

@@ -27,7 +27,7 @@ const ORDER_STATUSES = [
   { key: "feedback", label: "Feedback" }
 ];
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 6;
 
 const OrdersManagement = () => {
 	const { api, user } = useAuth();
