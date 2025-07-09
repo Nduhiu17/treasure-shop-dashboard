@@ -292,39 +292,39 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	</div>
   </div>
 					{/* Pagination */}
-					<div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
-						<nav
-							className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-blue-100 px-2 xs:px-3 py-1 xs:py-2 gap-1"
-							aria-label="Pagination"
-						>
-							<Button
-								onClick={handlePrevPage}
-								disabled={currentPage === 1}
-								className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
-								aria-label="Previous page"
-							>
-								&lt;
-							</Button>
-							{Array.from({ length: totalPages }, (_, i) => (
-								<Button
-									key={i + 1}
-									onClick={() => setCurrentPage(i + 1)}
-									className={`rounded-full px-3 py-1 text-xs xs:text-sm sm:text-base font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 ${currentPage === i + 1 ? 'bg-blue-600 text-white shadow-md' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
-									aria-label={`Page ${i + 1}`}
-								>
-									{i + 1}
-								</Button>
-							))}
-							<Button
-								onClick={handleNextPage}
-								disabled={currentPage === totalPages}
-								className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-400 disabled:opacity-50 border-none shadow-none"
-								aria-label="Next page"
-							>
-								&gt;
-							</Button>
-						</nav>
-					</div>
+<div className="flex flex-col sm:flex-row justify-between items-center mt-4 xs:mt-6 gap-2">
+	<nav
+		className="flex items-center justify-center rounded-full bg-white/80 shadow-sm border border-gray-200 px-2 xs:px-3 py-1 xs:py-2 gap-1"
+		aria-label="Pagination"
+	>
+		<Button
+			onClick={handlePrevPage}
+			disabled={currentPage === 1}
+			className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 disabled:opacity-50 border-none shadow-none"
+			aria-label="Previous page"
+		>
+			&lt;
+		</Button>
+		{Array.from({ length: totalPages }, (_, i) => (
+			<Button
+				key={i + 1}
+				onClick={() => setCurrentPage(i + 1)}
+				className={`rounded-full px-3 py-1 text-xs xs:text-sm sm:text-base font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-400 ${currentPage === i + 1 ? 'bg-gray-900 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+				aria-label={`Page ${i + 1}`}
+			>
+				{i + 1}
+			</Button>
+		))}
+		<Button
+			onClick={handleNextPage}
+			disabled={currentPage === totalPages}
+			className="rounded-full px-2 xs:px-3 py-1 text-xs xs:text-sm sm:text-base font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 disabled:opacity-50 border-none shadow-none"
+			aria-label="Next page"
+		>
+			&gt;
+		</Button>
+	</nav>
+</div>
 					{/* PayPalModal removed: PayPal flow deprecated */}
 					<OrderSubmitDialog
 						isOpen={submitDialogOpen}
