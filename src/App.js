@@ -187,22 +187,22 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-white to-gray-100 text-gray-900 overflow-hidden">
       {/* Header */}
-      <header className="bg-white shadow-sm py-1 px-2 xs:px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50 w-full border-b border-blue-100">
+      <header className="bg-white shadow-sm py-1 px-2 xs:px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50 w-full border-b border-gray-200">
         <div className="flex items-center gap-2 w-full">
           {/* Mobile menu button */}
           <button
-            className="sm:hidden flex items-center justify-center p-2 rounded-lg text-blue-900 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400 mr-2"
+            className="sm:hidden flex items-center justify-center p-2 rounded-lg text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-2"
             onClick={() => setMobileMenuOpen(v => !v)}
             aria-label="Open menu"
           >
             <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
-          <h1 className="flex items-center gap-2 text-base xs:text-lg sm:text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight truncate whitespace-nowrap drop-shadow-sm px-2 py-1 rounded-xl bg-gradient-to-r from-blue-50 via-blue-100 to-cyan-100 border border-blue-200/60 shadow-md">
+          <h1 className="flex items-center gap-2 text-base xs:text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight truncate whitespace-nowrap drop-shadow-sm px-2 py-1 rounded-xl bg-gradient-to-r from-white via-gray-100 to-gray-200 border border-gray-200/60 shadow-md">
             <button
               onClick={() => window.location.href = '/'}
-              className="flex items-center gap-2 px-3 py-1 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-bold shadow hover:from-blue-700 hover:to-cyan-600 transition-all text-xs xs:text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="flex items-center gap-2 px-3 py-1 rounded-xl bg-gradient-to-r from-gray-800 via-gray-600 to-gray-400 text-white font-bold shadow hover:from-gray-900 hover:to-gray-700 transition-all text-xs xs:text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-gray-400"
               aria-label="Go back to main page"
             >
               <svg className="w-6 h-6 md:w-7 md:h-7 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -210,15 +210,14 @@ const Dashboard = () => {
               </svg>
               Go To Website
             </button>
-    
-            <span className="hidden xs:inline-block align-middle text-blue-900 font-extrabold tracking-tight drop-shadow-sm">Academic Codebase</span>
+            <span className="hidden xs:inline-block align-middle text-gray-900 font-extrabold tracking-tight drop-shadow-sm">Academic Codebase</span>
           </h1>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0 text-gray-900">
           <a
             href="/"
-            className="hidden xs:flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-bold shadow-lg hover:from-blue-700 hover:to-cyan-600 hover:to-green-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm xs:text-base md:text-lg"
-            style={{ letterSpacing: '0.01em', boxShadow: '0 4px 24px 0 rgba(30, 64, 175, 0.10)' }}
+            className="hidden xs:flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-gray-700 via-gray-500 to-gray-400 text-white font-bold shadow-lg hover:from-gray-800 hover:to-gray-600 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm xs:text-base md:text-lg"
+            style={{ letterSpacing: '0.01em', boxShadow: '0 4px 24px 0 rgba(30, 41, 59, 0.10)' }}
             aria-label="Go to Home"
           >
             <svg className="w-5 h-5 xs:w-6 xs:h-6 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -228,8 +227,8 @@ const Dashboard = () => {
           </a>
           <Button
             onClick={handleDashboardLogout}
-            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-red-500 via-pink-500 to-yellow-400 text-white font-bold shadow-lg hover:from-red-600 hover:to-pink-600 hover:to-yellow-500 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm xs:text-base md:text-lg"
-            style={{ letterSpacing: '0.01em', boxShadow: '0 4px 24px 0 rgba(220, 38, 38, 0.10)' }}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 text-white font-bold shadow-lg hover:from-gray-800 hover:to-gray-600 transition-all duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm xs:text-base md:text-lg"
+            style={{ letterSpacing: '0.01em', boxShadow: '0 4px 24px 0 rgba(30, 41, 59, 0.10)' }}
             aria-label="Logout"
           >
             <svg className="w-5 h-5 xs:w-6 xs:h-6 text-white drop-shadow" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -240,37 +239,37 @@ const Dashboard = () => {
         </div>
       </header>
       {/* Mobile Sidebar Drawer */}
-      <div className={`fixed inset-0 z-40 bg-black/30 transition-opacity duration-200 ${mobileMenuOpen ? 'block sm:hidden' : 'hidden'}`} onClick={() => setMobileMenuOpen(false)} />
-      <aside className={`fixed top-0 left-0 z-50 h-full w-64 bg-blue-900 text-white p-4 shadow-2xl transform transition-transform duration-200 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} sm:hidden`}> 
+      <div className={`fixed inset-0 z-40 bg-black/20 transition-opacity duration-200 ${mobileMenuOpen ? 'block sm:hidden' : 'hidden'}`} onClick={() => setMobileMenuOpen(false)} />
+      <aside className={`fixed top-0 left-0 z-50 h-full w-64 bg-white text-gray-900 p-4 shadow-2xl transform transition-transform duration-200 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} sm:hidden`}> 
         <nav aria-label="Mobile menu">
           <ul className="flex flex-col gap-2">
             {filteredMenuItems.map((item) => (
               <li key={item.key} className="relative group">
                 <Button
                   onClick={() => { setCurrentPage(item.key); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-blue-100 transition-all duration-200 text-left text-base font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900
-                    bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 shadow-sm
-                    ${currentPage === item.key ? 'ring-2 ring-blue-400 font-bold shadow-md' : ''}
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 transition-all duration-200 text-left text-base font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-white
+                    bg-white text-gray-900 hover:bg-gray-100 hover:text-gray-900 shadow-sm
+                    ${currentPage === item.key ? 'ring-2 ring-gray-700 font-bold shadow-md bg-gray-100' : ''}
                   `}
                   aria-current={currentPage === item.key ? 'page' : undefined}
                 >
-                  <span className="mr-1 flex items-center">{React.cloneElement(item.icon, { className: 'w-5 h-5 mr-1' })}</span>
+                  <span className="mr-1 flex items-center">{React.cloneElement(item.icon, { className: 'w-5 h-5 mr-1 text-gray-700' })}</span>
                   <span>{item.label}</span>
                 </Button>
                 {/* Dropdown submenu for mobile */}
                 {item.children && (
-                  <ul className="ml-4 mt-1 bg-white text-blue-900 rounded-xl shadow-lg border border-blue-100 py-1 px-0 animate-fade-in-down">
+                  <ul className="ml-4 mt-1 bg-white text-gray-900 rounded-xl shadow-lg border border-gray-200 py-1 px-0 animate-fade-in-down">
                     {item.children.map((child) => (
                       <li key={child.key}>
                         <Button
                           onClick={() => { setCurrentPage(child.key); setMobileMenuOpen(false); }}
-                          className={`w-full flex items-center gap-2 px-4 py-1 rounded-xl border border-transparent transition-all duration-200 text-left text-base font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-white
-                            bg-transparent text-blue-900 hover:bg-blue-100 hover:text-blue-900 hover:shadow-md
-                            ${currentPage === child.key ? 'ring-2 ring-blue-400 font-bold shadow-md bg-blue-100' : ''}
+                          className={`w-full flex items-center gap-2 px-4 py-1 rounded-xl border border-transparent transition-all duration-200 text-left text-base font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-white
+                            bg-transparent text-gray-900 hover:bg-gray-100 hover:text-gray-900 hover:shadow-md
+                            ${currentPage === child.key ? 'ring-2 ring-gray-700 font-bold shadow-md bg-gray-100' : ''}
                           `}
                           aria-current={currentPage === child.key ? 'page' : undefined}
                         >
-                          <span className="mr-1 flex items-center">{React.cloneElement(child.icon, { className: 'w-5 h-5 mr-1' })}</span>
+                          <span className="mr-1 flex items-center">{React.cloneElement(child.icon, { className: 'w-5 h-5 mr-1 text-gray-700' })}</span>
                           <span>{child.label}</span>
                         </Button>
                       </li>
@@ -283,9 +282,9 @@ const Dashboard = () => {
         </nav>
       </aside>
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col sm:flex-row h-[calc(100vh-64px)] w-full">
+      <div className="flex flex-1 flex-col sm:flex-row h-[calc(100vh-64px)] w-full bg-gradient-to-br from-white to-gray-100 text-gray-900">
         {/* Desktop Sidebar Navigation */}
-        <aside className="hidden sm:block w-full sm:w-56 md:w-64 bg-blue-900 text-white p-2 xs:p-4 sm:p-6 flex-shrink-0 h-screen z-30 overflow-hidden">
+        <aside className="hidden sm:block w-full sm:w-56 md:w-64 bg-gradient-to-br from-white to-gray-100 text-gray-900 p-2 xs:p-4 sm:p-6 flex-shrink-0 h-screen z-30 overflow-hidden border-r border-gray-200">
           <nav aria-label="Main menu">
             <ul className="flex flex-row sm:flex-col gap-1 xs:gap-2 w-full">
               {filteredMenuItems.map((item) => (
@@ -294,16 +293,16 @@ const Dashboard = () => {
                     onClick={() => setCurrentPage(item.key)}
                     onMouseEnter={() => setHoveredMenu(item.key)}
                     onMouseLeave={() => setHoveredMenu(null)}
-                    className={`w-full flex items-center gap-2 px-2 xs:px-3 py-2 rounded-lg border border-blue-100 transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900
-                      bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-900 shadow-sm
-                      ${currentPage === item.key ? 'ring-2 ring-blue-400 font-bold shadow-md' : ''}
+                    className={`w-full flex items-center gap-2 px-2 xs:px-3 py-2 rounded-lg border border-gray-200 transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-white
+                      bg-white text-gray-900 hover:bg-gray-100 hover:text-gray-900 shadow-sm
+                      ${currentPage === item.key ? 'ring-2 ring-gray-700 font-bold shadow-md bg-gray-100' : ''}
                     `}
                     aria-current={currentPage === item.key ? 'page' : undefined}
                   >
-                    <span className="mr-1 flex items-center">{React.cloneElement(item.icon, { className: 'w-4 h-4 xs:w-5 xs:h-5 mr-1' })}</span>
+                    <span className="mr-1 flex items-center">{React.cloneElement(item.icon, { className: 'w-4 h-4 xs:w-5 xs:h-5 mr-1 text-gray-700' })}</span>
                     <span>{item.label}</span>
                     {item.children && (
-                      <svg className="w-3 h-3 ml-auto text-blue-400 group-hover:text-blue-700 transition" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                      <svg className="w-3 h-3 ml-auto text-gray-400 group-hover:text-gray-700 transition" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                     )}
                   </Button>
                   {/* Dropdown submenu on hover */}
@@ -318,17 +317,17 @@ const Dashboard = () => {
                         <ul className="bg-white text-blue-900 rounded-2xl shadow-2xl border border-blue-100 py-1 px-0 animate-fade-in-down">
                           {item.children.map((child, idx) => (
                             <li key={child.key} className={idx !== item.children.length - 1 ? 'mb-1' : ''}>
-                              <Button
-                                onClick={() => setCurrentPage(child.key)}
-                                className={`w-full flex items-center gap-2 px-4 py-1 rounded-xl border border-transparent transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-white
-                                  bg-transparent text-blue-900 hover:bg-blue-100 hover:text-blue-900 hover:shadow-md
-                                  ${currentPage === child.key ? 'ring-2 ring-blue-400 font-bold shadow-md bg-blue-100' : ''}
-                                `}
-                                aria-current={currentPage === child.key ? 'page' : undefined}
-                              >
-                                <span className="mr-1 flex items-center">{React.cloneElement(child.icon, { className: 'w-4 h-4 mr-1' })}</span>
-                                <span>{child.label}</span>
-                              </Button>
+                          <Button
+                            onClick={() => setCurrentPage(child.key)}
+                            className={`w-full flex items-center gap-2 px-4 py-1 rounded-xl border border-transparent transition-all duration-200 text-left text-xs xs:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-white
+                              bg-transparent text-gray-900 hover:bg-gray-100 hover:text-gray-900 hover:shadow-md
+                              ${currentPage === child.key ? 'ring-2 ring-gray-700 font-bold shadow-md bg-gray-100' : ''}
+                            `}
+                            aria-current={currentPage === child.key ? 'page' : undefined}
+                          >
+                            <span className="mr-1 flex items-center">{React.cloneElement(child.icon, { className: 'w-4 h-4 mr-1 text-gray-700' })}</span>
+                            <span>{child.label}</span>
+                          </Button>
                             </li>
                           ))}
                         </ul>
@@ -341,7 +340,7 @@ const Dashboard = () => {
           </nav>
         </aside>
         {/* Content */}
-        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0 w-full overflow-x-hidden">
+        <main className="flex-1 p-1 xs:p-2 sm:p-6 min-w-0 w-full overflow-x-hidden bg-white/90 rounded-2xl shadow-xl border border-gray-200">
           {renderContent()}
         </main>
       </div>

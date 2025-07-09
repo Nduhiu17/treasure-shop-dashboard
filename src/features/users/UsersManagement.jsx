@@ -73,14 +73,14 @@ const UsersManagement = ({ currentSubPage }) => {
 			return (
 				<Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2 sticky top-0 z-30 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
-						<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">Users Management</h2>
+						<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-gray-900">Users Management</h2>
 						<div className="w-full sm:w-64">
-							<label htmlFor="user-role-select" className="block text-blue-900 font-semibold mb-1 text-xs xs:text-sm">Filter by Role</label>
+							<label htmlFor="user-role-select" className="block text-gray-900 font-semibold mb-1 text-xs xs:text-sm">Filter by Role</label>
 							<Select
 								id="user-role-select"
 								value={activeRole}
 								onChange={e => { setActiveRole(e.target.value); setCurrentPage(1); }}
-								className="bg-white border-blue-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-blue-900 font-medium shadow-sm transition-all duration-150"
+								className="bg-white border-gray-200 focus:ring-2 focus:ring-gray-400 focus:border-gray-400 text-gray-900 font-medium shadow-sm transition-all duration-150"
 							>
 								{ROLES.map(role => (
 									<option key={role.key} value={role.key}>{role.label}</option>
@@ -89,34 +89,34 @@ const UsersManagement = ({ currentSubPage }) => {
 						</div>
 					</div>
 					{loading ? (
-						<div className="text-center py-8 text-blue-700">Loading users...</div>
+						<div className="text-center py-8 text-gray-500">Loading users...</div>
 					) : error ? (
 						<div className="text-center py-8 text-red-600">{error}</div>
 					) : (
 						<>
-<div className="rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full min-h-[320px] overflow-x-auto mt-8 md:mt-12" style={{ height: '60vh'}}>
+<div className="rounded-2xl border border-gray-200 bg-white/90 shadow-lg w-full min-h-[320px] overflow-x-auto mt-8 md:mt-12" style={{ height: '60vh'}}>
   <div className="h-full min-w-[700px]">
 	<table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white">
-	  <thead className="sticky top-0 bg-gradient-to-r from-blue-100 to-blue-50 z-10">
+	  <thead className="sticky top-0 bg-gradient-to-r from-gray-100 to-gray-50 z-10">
 		<tr>
-		  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200 min-w-[160px]">Email</th>
-		  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200 min-w-[120px]">Username</th>
-		  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200 min-w-[120px]">First Name</th>
-		  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200 min-w-[120px]">Last Name</th>
-		  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200 min-w-[160px]">Roles</th>
-		  <th className="px-6 py-3 text-right text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200 min-w-[120px]">Actions</th>
+		  <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 min-w-[160px]">Email</th>
+		  <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 min-w-[120px]">Username</th>
+		  <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 min-w-[120px]">First Name</th>
+		  <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 min-w-[120px]">Last Name</th>
+		  <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 min-w-[160px]">Roles</th>
+		  <th className="px-6 py-3 text-right text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 min-w-[120px]">Actions</th>
 		</tr>
 	  </thead>
-	  <tbody className="divide-y divide-blue-100">
+	  <tbody className="divide-y divide-gray-100">
 		{users.length > 0 ? (
 		  users.map((user, idx) => (
-			<tr key={user.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-blue-50'} hover:bg-blue-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 64, 175, 0.04)' }}>
+			<tr key={user.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 41, 59, 0.04)' }}>
 			  <td className="truncate text-xs xs:text-sm sm:text-base px-6 py-4 max-w-[180px] whitespace-nowrap">{user.email}</td>
 			  <td className="truncate text-xs xs:text-sm sm:text-base px-6 py-4 max-w-[120px] whitespace-nowrap">{user.username}</td>
 			  <td className="truncate text-xs xs:text-sm sm:text-base px-6 py-4 max-w-[120px] whitespace-nowrap">{user.first_name}</td>
 			  <td className="truncate text-xs xs:text-sm sm:text-base px-6 py-4 max-w-[120px] whitespace-nowrap">{user.last_name}</td>
 			  <td className="px-6 py-4 max-w-[160px] whitespace-nowrap">
-				<span className="inline-block px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs font-semibold truncate max-w-[140px]">
+				<span className="inline-block px-2 py-1 rounded bg-gray-100 text-gray-700 text-xs font-semibold truncate max-w-[140px]">
 				  {user.roles.join(", ")}
 				</span>
 			  </td>

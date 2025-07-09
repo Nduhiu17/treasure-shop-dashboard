@@ -107,32 +107,32 @@ const OrderStyles = () => {
       />
       <Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-          <h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">Order Styles Management</h2>
+          <h2 className="text-base xs:text-lg sm:text-xl font-semibold text-gray-900">Order Styles Management</h2>
           <Button
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold shadow hover:from-blue-700 hover:to-cyan-600 transition-all duration-150"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-gray-700 via-gray-500 to-gray-400 text-white font-bold shadow hover:from-gray-800 hover:to-gray-600 transition-all duration-150"
             onClick={() => setDialogOpen(true)}
           >
             + Create Order Style
           </Button>
         </div>
         {loading ? (
-          <div className="text-center py-8 text-blue-700">Loading order styles...</div>
+          <div className="text-center py-8 text-gray-500">Loading order styles...</div>
         ) : error ? (
           <div className="text-center py-8 text-red-600">{error}</div>
         ) : (
           <div className="overflow-x-auto w-full">
             <table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white">
-              <thead className="sticky top-0 bg-gradient-to-r from-blue-100 to-blue-50 z-10">
+              <thead className="sticky top-0 bg-gradient-to-r from-gray-100 to-gray-50 z-10">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Description</th>
-                  <th className="px-6 py-3 text-right text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Description</th>
+                  <th className="px-6 py-3 text-right text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-blue-100">
+              <tbody className="divide-y divide-gray-100">
                 {orderStyles.length > 0 ? orderStyles.map((style, idx) => (
-                  <tr key={style.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-blue-50'} hover:bg-blue-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 64, 175, 0.04)' }}>
-                    <td className="px-6 py-4 font-semibold text-blue-900 capitalize align-middle">{style.name}</td>
+                  <tr key={style.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 41, 59, 0.04)' }}>
+                    <td className="px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{style.name}</td>
                     <td className="px-6 py-4 text-gray-700 align-middle">{style.description}</td>
                     <td className="px-6 py-4 text-right align-middle">
                       <div className="flex items-center gap-2 justify-end">
