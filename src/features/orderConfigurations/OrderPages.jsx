@@ -12,6 +12,10 @@ const OrderPages = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [editTarget, setEditTarget] = useState(null);
+  const [editForm, setEditForm] = useState({ name: '', description: '', numberOfPages: '' });
   const [creating, setCreating] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -102,18 +106,127 @@ const OrderPages = () => {
                   <td className="px-6 py-4 font-semibold text-blue-900 capitalize align-middle">{page.name}</td>
                   <td className="px-6 py-4 text-gray-700 align-middle">{page.description}</td>
                   <td className="px-6 py-4 text-right align-middle">
-                    <Button
-                      variant="destructive"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
-                      title="Delete Order Page"
-                      onClick={() => {
-                        setDeleteTarget(page);
-                        setConfirmOpen(true);
-                      }}
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                      Delete
-                    </Button>
+                    <div className="flex items-center gap-2 justify-end">
+                      <button
+                        className="p-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-600 hover:text-blue-800 focus:outline-none shadow-sm transition"
+                        title="Edit order page"
+                        onClick={e => {
+                          e.preventDefault();
+                          setEditTarget(page);
+                          setEditForm({ name: page.name, description: page.description || '', numberOfPages: page.number_of_pages });
+                          setEditOpen(true);
+                        }}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17v4h4l10.293-10.293a1 1 0 0 0 0-1.414l-3.586-3.586a1 1 0 0 0-1.414 0L3 17z" />
+                        </svg>
+                      </button>
+                      <Button
+                        variant="destructive"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all duration-150 text-xs xs:text-sm sm:text-base"
+                        title="Delete Order Page"
+                        onClick={() => {
+                          setDeleteTarget(page);
+                          setConfirmOpen(true);
+                        }}
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        Delete
+                      </Button>
+                    </div>
+      {/* Edit Order Page Dialog */}
+      {editOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md mx-auto">
+            <h3 className="text-lg font-bold mb-4 text-blue-900">Edit Order Page</h3>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (!editTarget) return;
+                setEditing(true);
+                try {
+                  const jwt = localStorage.getItem("jwt_token");
+                  const res = await fetch(`${API_BASE_URL}/api/admin/order-pages/${editTarget.id}`, {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: jwt ? `Bearer ${jwt}` : "",
+                    },
+                    body: JSON.stringify({ name: editForm.name, description: editForm.description, number_of_pages: parseInt(editForm.numberOfPages, 10) }),
+                  });
+                  if (!res.ok) throw new Error("Failed to update order page");
+                  showToast({ message: "Order page updated successfully", type: "success" });
+                  setEditOpen(false);
+                  setEditTarget(null);
+                  fetchOrderPages();
+                } catch (err) {
+                  showToast({ message: err.message || "Failed to update order page", type: "error" });
+                } finally {
+                  setEditing(false);
+                }
+              }}
+              className="flex flex-col gap-6 p-4 w-full max-w-lg mx-auto bg-white rounded-2xl shadow-xl border border-blue-100"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+                  Name
+                  <input
+                    type="text"
+                    className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm"
+                    placeholder="e.g. 1 Page"
+                    required
+                    value={editForm.name}
+                    onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))}
+                    disabled={editing}
+                  />
+                </label>
+                <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+                  Number of Pages
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm"
+                    placeholder="e.g. 1"
+                    required
+                    value={editForm.numberOfPages}
+                    onChange={e => setEditForm(f => ({ ...f, numberOfPages: e.target.value }))}
+                    disabled={editing}
+                  />
+                </label>
+              </div>
+              <label className="font-semibold text-blue-900 text-sm sm:text-base flex flex-col gap-1">
+                Description
+                <textarea
+                  className="rounded-lg border border-blue-200 px-3 py-2 text-blue-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm min-h-[60px] resize-y"
+                  placeholder="e.g. Single page document"
+                  value={editForm.description}
+                  onChange={e => setEditForm(f => ({ ...f, description: e.target.value }))}
+                  disabled={editing}
+                />
+              </label>
+              <div className="flex flex-row justify-end gap-2 mt-2">
+                <Button
+                  type="button"
+                  className="px-4 py-2 rounded-lg bg-gray-200 text-blue-900 font-semibold shadow hover:bg-gray-300 transition-all duration-150"
+                  onClick={() => setEditOpen(false)}
+                  disabled={editing}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="px-6 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold shadow hover:from-blue-700 hover:to-cyan-600 transition-all duration-150 flex items-center gap-2"
+                  disabled={editing}
+                >
+                  {editing && <span className="loader border-white border-t-blue-400 mr-2 w-4 h-4 rounded-full border-2 border-solid animate-spin"></span>}
+                  Update
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
                   </td>
                 </tr>
               )) : (
