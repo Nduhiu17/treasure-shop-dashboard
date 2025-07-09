@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
-// import OrderDetailsPanel from "../components/OrderDetailsPanel";
+import Loader from "../components/ui/Loader";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
+import { useToast } from "../components/ui/toast";
 
 
 
@@ -12,6 +14,12 @@ export default function CustomerProfilePage() {
   const [orders, setOrders] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  // Workaround: force re-mount ConfirmDialog when editMode changes to avoid stale state
+  const confirmDialogKey = editMode ? 'edit' : 'view';
+  const { showToast } = useToast();
 
   // Filtering & Pagination state
   const [statusFilter, setStatusFilter] = useState("all");
@@ -90,10 +98,17 @@ export default function CustomerProfilePage() {
 
   const handleEdit = () => {
     setEditMode(true);
-    setForm(user);
+    setForm({ ...user });
   };
   const handleCancel = () => setEditMode(false);
-  const handleSave = async () => {
+  const handleSave = (e) => {
+    if (e) e.preventDefault();
+    setShowConfirm(true);
+  };
+
+  const handleConfirmSave = async () => {
+    setShowConfirm(false);
+    setLoading(true);
     try {
       const token = localStorage.getItem("jwt_token");
       const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "localhost:8080";
@@ -109,15 +124,22 @@ export default function CustomerProfilePage() {
       const updated = await res.json();
       setUser(updated.user || updated);
       setEditMode(false);
+      showToast({ message: "Profile updated successfully!", type: "success" });
     } catch (err) {
-      // Optionally handle error
+      showToast({ message: "Failed to update profile.", type: "error" });
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleCancelSave = () => {
+    setShowConfirm(false);
   };
 
   if (!user || !form) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-        <div className="text-xl text-fuchsia-700 font-bold">Loading profile...</div>
+        <Loader text="Loading profile..." />
       </div>
     );
   }
@@ -172,11 +194,42 @@ export default function CustomerProfilePage() {
                 )}
               </div>
               {editMode && (
-                <div className="flex gap-2 mt-2">
-                  <button className="px-4 py-1 rounded-lg bg-fuchsia-500 text-white font-bold hover:bg-fuchsia-600 transition-all" onClick={handleSave}>Save</button>
-                  <button className="px-4 py-1 rounded-lg bg-slate-100 text-slate-700 font-bold border border-slate-200 hover:bg-slate-200 transition-all" onClick={handleCancel}>Cancel</button>
-                </div>
+                <React.Fragment>
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      type="button"
+                      className="px-4 py-1 rounded-lg bg-fuchsia-500 text-white font-bold hover:bg-fuchsia-600 transition-all"
+                      onClick={() => {
+                        // Debug: force update state and log
+                        setShowConfirm(true);
+                        // eslint-disable-next-line no-console
+                        console.log('Save clicked, showConfirm set to true');
+                      }}
+                      disabled={loading}
+                    >
+                      Save
+                    </button>
+                    <button type="button" className="px-4 py-1 rounded-lg bg-slate-100 text-slate-700 font-bold border border-slate-200 hover:bg-slate-200 transition-all" onClick={handleCancel} disabled={loading}>Cancel</button>
+                  </div>
+                  <ConfirmDialog
+                    key={confirmDialogKey}
+                    isOpen={showConfirm}
+                    title="Confirm Profile Update"
+                    message="Are you sure you want to save these changes to your profile?"
+                    onConfirm={handleConfirmSave}
+                    onCancel={handleCancelSave}
+                    confirmText="Yes, Save"
+                    cancelText="Cancel"
+                    loading={loading}
+                  />
+                </React.Fragment>
               )}
+      {/* ConfirmDialog is now rendered only in editMode above */}
+      {loading && (
+        <div className="flex justify-center items-center py-4">
+          <Loader text="Processing..." />
+        </div>
+      )}
             </div>
           </div>
 
