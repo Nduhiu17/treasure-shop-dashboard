@@ -68,8 +68,43 @@ const OrderStyles = () => {
     }
   };
 
+  // Delete Order Style
+  const handleDeleteOrderStyle = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const jwt = localStorage.getItem("jwt_token");
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-styles/${deleteTarget.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: jwt ? `Bearer ${jwt}` : "",
+        },
+      });
+      if (!res.ok) throw new Error("Failed to delete order style");
+      showToast({ message: `Order style '${deleteTarget.name}' deleted successfully`, type: "success" });
+      setOrderStyles(orderStyles => orderStyles.filter(os => os.id !== deleteTarget.id));
+      setConfirmOpen(false);
+      setDeleteTarget(null);
+    } catch (err) {
+      showToast({ message: err.message || "Failed to delete order style", type: "error" });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <>
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        title="Delete Order Style"
+        message={deleteTarget ? `Are you sure you want to delete order style '${deleteTarget.name}'? This action cannot be undone.` : ''}
+        confirmText={deleting ? "Deleting..." : "Delete"}
+        cancelText="Cancel"
+        loading={deleting}
+        onCancel={() => { setConfirmOpen(false); setDeleteTarget(null); }}
+        onConfirm={handleDeleteOrderStyle}
+      />
       <Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
           <h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">Order Styles Management</h2>
