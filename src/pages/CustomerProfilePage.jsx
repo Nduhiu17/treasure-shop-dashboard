@@ -96,7 +96,8 @@ export default function CustomerProfilePage() {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("jwt_token");
-      const res = await fetch(`/api/users/${user.id}`, {
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "localhost:8080";
+      const res = await fetch(`${API_BASE_URL}/api/users/${user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
