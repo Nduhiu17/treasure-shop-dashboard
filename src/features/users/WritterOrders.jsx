@@ -259,6 +259,26 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 					<td colSpan={6} className="py-0 px-2">
 					  <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white via-gray-50 to-gray-100 shadow-lg p-4 my-2 animate-fade-in-up w-full">
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+						  {/* Assignment Acceptance (writer) */}
+						  {user && ((Array.isArray(user.roles) ? user.roles.includes('writer') : user.role === 'writer')) && order.status === 'awaiting_asign_acceptance' && (
+							<div className="my-4 flex flex-col items-end col-span-2">
+							  <div className="mb-2 text-sm font-semibold text-gray-700">This order has been assigned to you. Do you accept?</div>
+							  <div className="flex gap-2">
+								<button
+								  className="px-4 py-1.5 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition-all shadow"
+								  onClick={() => handleAssignmentResponse(order.id, true)}
+								>
+								  Accept
+								</button>
+								<button
+								  className="px-4 py-1.5 rounded-lg bg-red-500 text-white font-bold hover:bg-red-600 transition-all shadow"
+								  onClick={() => handleAssignmentResponse(order.id, false)}
+								>
+								  Reject
+								</button>
+							  </div>
+							</div>
+						  )}
 						  <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg><span className="font-semibold text-gray-900">Writer Username:</span><span className="text-gray-700">{order.writer_username || '-'}</span></div>
 						  <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-gray-900">Pages:</span><span className="text-gray-700">{order.order_pages_name}</span></div>
 						  <div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-gray-900">Urgency:</span><span className="text-gray-700">{order.order_urgency_name}</span></div>
