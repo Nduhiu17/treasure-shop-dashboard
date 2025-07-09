@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
+import { useNavigate } from "react-router-dom";
 import LandingFooter from "../components/LandingFooter";
 import Loader from "../components/ui/Loader";
 import ConfirmDialog from "../components/ui/ConfirmDialog";
@@ -10,6 +11,7 @@ import { useToast } from "../components/ui/toast";
 
 
 export default function CustomerProfilePage() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [editMode, setEditMode] = useState(false);
@@ -144,9 +146,15 @@ export default function CustomerProfilePage() {
     );
   }
 
+  const handleLogout = () => {
+    localStorage.clear();
+    setUser(null);
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
-      <LandingNavbar user={user} />
+      <LandingNavbar user={user} onLogout={handleLogout} />
       <main className="flex-1 w-full max-w-2xl mx-auto px-2 sm:px-4 py-6 sm:py-10 animate-fade-in">
         <div className="bg-white/90 rounded-3xl shadow-2xl border-2 border-fuchsia-100 p-4 sm:p-8 flex flex-col gap-8">
           {/* Profile header */}
