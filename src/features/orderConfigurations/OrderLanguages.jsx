@@ -68,8 +68,48 @@ const OrderLanguages = () => {
     }
   };
 
+  // Delete Order Language
+  const handleDeleteOrderLanguage = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const jwt = localStorage.getItem("jwt_token");
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-languages/${deleteTarget.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: jwt ? `Bearer ${jwt}` : "",
+        },
+      });
+      if (!res.ok) throw new Error("Failed to delete order language");
+      showToast({ message: "Order language deleted successfully", type: "success" });
+      setConfirmOpen(false);
+      setDeleteTarget(null);
+      fetchOrderLanguages();
+    } catch (err) {
+      showToast({ message: err.message || "Failed to delete order language", type: "error" });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
-    <Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
+    <React.Fragment>
+      {/* Confirm Delete Dialog */}
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        title="Delete Order Language"
+        message={`Are you sure you want to delete \"${deleteTarget?.name}\"? This action cannot be undone.`}
+        confirmText={deleting ? "Deleting..." : "Delete"}
+        cancelText="Cancel"
+        onCancel={() => {
+          setConfirmOpen(false);
+          setDeleteTarget(null);
+        }}
+        onConfirm={handleDeleteOrderLanguage}
+        loading={deleting}
+      />
+      <Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
         <h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">Order Languages Management</h2>
         <Button
@@ -260,6 +300,7 @@ const OrderLanguages = () => {
         </div>
       )}
     </Card>
+    </React.Fragment>
   );
 };
 

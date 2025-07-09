@@ -75,8 +75,48 @@ const OrderUrgency = () => {
     }
   };
 
+  // Delete Order Urgency
+  const handleDeleteOrderUrgency = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const jwt = localStorage.getItem("jwt_token");
+      const res = await fetch(`${API_BASE_URL}/api/admin/order-urgency/${deleteTarget.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: jwt ? `Bearer ${jwt}` : "",
+        },
+      });
+      if (!res.ok) throw new Error("Failed to delete order urgency");
+      showToast({ message: "Order urgency deleted successfully", type: "success" });
+      setConfirmOpen(false);
+      setDeleteTarget(null);
+      fetchOrderUrgency();
+    } catch (err) {
+      showToast({ message: err.message || "Failed to delete order urgency", type: "error" });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
-    <Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
+    <React.Fragment>
+      {/* Confirm Delete Dialog */}
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        title="Delete Order Urgency"
+        message={`Are you sure you want to delete \"${deleteTarget?.name}\"? This action cannot be undone.`}
+        confirmText={deleting ? "Deleting..." : "Delete"}
+        cancelText="Cancel"
+        onCancel={() => {
+          setConfirmOpen(false);
+          setDeleteTarget(null);
+        }}
+        onConfirm={handleDeleteOrderUrgency}
+        loading={deleting}
+      />
+      <Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
         <h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">Order Urgency Management</h2>
         <Button
@@ -302,6 +342,7 @@ const OrderUrgency = () => {
         </div>
       )}
     </Card>
+    </React.Fragment>
   );
 };
 
