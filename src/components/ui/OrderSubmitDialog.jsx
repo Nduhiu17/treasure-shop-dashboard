@@ -1,5 +1,7 @@
+
 import React, { useState } from "react";
 import { Button } from "./button";
+import Loader from "./Loader";
 import { useToast } from "./toast";
 import { FaUpload, FaFileAlt, FaPaperPlane } from "react-icons/fa";
 
@@ -66,10 +68,10 @@ export default function OrderSubmitDialog({ isOpen, onClose, orderId, onSubmitte
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center min-h-screen bg-black bg-opacity-50 px-2 sm:px-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-4 sm:p-8 relative flex flex-col animate-fade-in-up">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl sm:text-2xl font-bold text-blue-900 flex items-center gap-2">
-            <FaFileAlt className="text-blue-500" /> Submit Order
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-0 sm:p-0 relative flex flex-col animate-fade-in-up border border-gray-200">
+        <div className="flex items-center justify-between px-6 pt-6 pb-2 border-b border-gray-100 bg-gradient-to-r from-gray-50 via-white to-gray-100 rounded-t-2xl">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <FaFileAlt className="text-fuchsia-500" /> Submit Work
           </h2>
           <button
             className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
@@ -79,26 +81,26 @@ export default function OrderSubmitDialog({ isOpen, onClose, orderId, onSubmitte
             ×
           </button>
         </div>
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-6 px-6 py-6" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-blue-900 font-semibold mb-2 text-sm sm:text-base flex items-center gap-2">
-              <FaUpload className="text-blue-400" /> Upload File
+            <label className="block text-gray-900 font-semibold mb-2 text-sm sm:text-base flex items-center gap-2">
+              <FaUpload className="text-fuchsia-400" /> Upload File
             </label>
             <input
               type="file"
               accept=".pdf,.doc,.docx,.txt,.zip,.rar,.xlsx,.csv,.ppt,.pptx,.jpg,.png,.jpeg,.gif,.svg,.mp4,.mp3,.wav,.avi,.mov,.mkv"
-              className="block w-full border border-blue-200 rounded-lg px-3 py-2 text-blue-900 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm bg-white"
+              className="block w-full border border-fuchsia-200 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-fuchsia-400 focus:border-fuchsia-400 transition-all duration-150 shadow-sm bg-white"
               onChange={handleFileChange}
               required
               disabled={uploading}
             />
           </div>
           <div>
-            <label className="block text-blue-900 font-semibold mb-2 text-sm sm:text-base flex items-center gap-2">
-              <FaPaperPlane className="text-blue-400" /> Description
+            <label className="block text-gray-900 font-semibold mb-2 text-sm sm:text-base flex items-center gap-2">
+              <FaPaperPlane className="text-fuchsia-400" /> Description
             </label>
             <textarea
-              className="block w-full border border-blue-200 rounded-lg px-3 py-2 text-blue-900 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-150 shadow-sm bg-white min-h-[80px] resize-vertical"
+              className="block w-full border border-fuchsia-200 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-fuchsia-400 focus:border-fuchsia-400 transition-all duration-150 shadow-sm bg-white min-h-[80px] resize-vertical"
               value={description}
               onChange={e => setDescription(e.target.value)}
               placeholder="Describe your submission..."
@@ -108,13 +110,23 @@ export default function OrderSubmitDialog({ isOpen, onClose, orderId, onSubmitte
           </div>
           <Button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow hover:from-green-600 hover:to-green-700 transition-all duration-150 text-base sm:text-lg"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-fuchsia-500 to-fuchsia-600 text-white font-bold shadow hover:from-fuchsia-600 hover:to-fuchsia-700 transition-all duration-150 text-base sm:text-lg"
             disabled={uploading}
           >
             <FaUpload className="text-lg" />
-            {uploading ? "Submitting..." : "Submit"}
+            {uploading ? (
+              <>
+                <Loader size={20} className="mr-2" />
+                Submitting...
+              </>
+            ) : "Submit"}
           </Button>
         </form>
+        {uploading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 rounded-2xl z-10">
+            <Loader size={40} />
+          </div>
+        )}
       </div>
     </div>
   );
