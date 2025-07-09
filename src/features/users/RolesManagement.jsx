@@ -77,10 +77,10 @@ const RolesManagement = () => {
   };
 
   return (
-    <Card className="w-full p-4">
+    <Card className="w-full p-4 bg-white/90 border border-gray-200 shadow-lg rounded-2xl">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">
-        <h2 className="text-lg font-bold text-blue-900">Roles Management</h2>
-        <Button onClick={() => setCreateOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <h2 className="text-lg font-bold text-gray-900">Roles Management</h2>
+        <Button onClick={() => setCreateOpen(true)} className="bg-gradient-to-r from-gray-700 via-gray-500 to-gray-400 hover:from-gray-800 hover:to-gray-600 text-white font-semibold px-4 py-2 rounded-lg shadow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-400">
           Create Role
         </Button>
       </div>
@@ -89,22 +89,22 @@ const RolesManagement = () => {
       ) : (
         <div className="overflow-x-auto w-full">
           <table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white">
-            <thead className="sticky top-0 bg-gradient-to-r from-blue-100 to-blue-50 z-10">
+            <thead className="sticky top-0 bg-gradient-to-r from-gray-100 to-gray-50 z-10">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Description</th>
-                <th className="px-6 py-3 text-right text-xs font-bold text-blue-800 uppercase tracking-wider border-b border-blue-200">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Description</th>
+                <th className="px-6 py-3 text-right text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-blue-100">
+            <tbody className="divide-y divide-gray-100">
               {roles.map((role, idx) => (
-                <tr key={role.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-blue-50'} hover:bg-blue-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 64, 175, 0.04)' }}>
-                  <td className="px-6 py-4 font-semibold text-blue-900 capitalize align-middle">{role.name}</td>
+                <tr key={role.id} className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`} style={{ boxShadow: '0 1px 4px 0 rgba(30, 41, 59, 0.04)' }}>
+                  <td className="px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{role.name}</td>
                   <td className="px-6 py-4 text-gray-700 align-middle">{role.description}</td>
                   <td className="px-6 py-4 text-right align-middle">
                     <div className="flex items-center gap-2 justify-end">
                       <button
-                        className="p-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-600 hover:text-blue-800 focus:outline-none shadow-sm transition"
+                        className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900 focus:outline-none shadow-sm transition"
                         title="Edit role"
                         onClick={e => {
                           e.preventDefault();

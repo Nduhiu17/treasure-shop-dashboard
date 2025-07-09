@@ -130,16 +130,16 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	return (
 		<Card className="m-1 xs:m-2 sm:m-4 p-1 xs:p-2 sm:p-6 shadow-lg border-0 w-full max-w-none">
 			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-				<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-blue-900">My Orders</h2>
+				<h2 className="text-base xs:text-lg sm:text-xl font-semibold text-gray-900">My Orders</h2>
 				{/* Removed Create Order button for writers */}
 			</div>
 			<div className="w-full sm:w-64 mb-4 xs:mb-6">
-				<label htmlFor="order-status-select" className="block text-blue-900 font-semibold mb-1 text-xs xs:text-sm">Filter by Status</label>
+				<label htmlFor="order-status-select" className="block text-gray-900 font-semibold mb-1 text-xs xs:text-sm">Filter by Status</label>
 				<Select
 					id="order-status-select"
 					value={activeStatus}
 					onChange={e => { setActiveStatus(e.target.value); setCurrentPage(1); }}
-					className="bg-white border-blue-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-blue-900 font-medium shadow-sm transition-all duration-150"
+					className="bg-white border-gray-200 focus:ring-2 focus:ring-gray-400 focus:border-gray-400 text-gray-900 font-medium shadow-sm transition-all duration-150"
 				>
 					{ORDER_STATUSES.map(status => (
 						<option key={status.key} value={status.key}>{status.label}</option>
@@ -147,7 +147,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 				</Select>
 			</div>
 			{loading ? (
-				<div className="text-center py-8 text-blue-700">
+				<div className="text-center py-8 text-gray-500">
 					<Loader />
 				</div>
 			) : error ? (
@@ -157,12 +157,12 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 					{/* Mobile Card View */}
 					<div className="block md:hidden space-y-4">
 						{orders.length > 0 ? orders.map(order => (
-							<div key={order.id} className="rounded-xl border border-blue-100 bg-white/90 shadow p-4 flex flex-col gap-2">
+							<div key={order.id} className="rounded-xl border border-gray-200 bg-white/90 shadow p-4 flex flex-col gap-2">
 								<div className="flex justify-between items-center mb-1">
-									<span className="font-bold text-blue-900 text-base truncate">{order.title}</span>
+									<span className="font-bold text-gray-900 text-base truncate">{order.title}</span>
 									<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-blue-100 text-blue-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-purple-100 text-purple-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-cyan-100 text-cyan-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
 								</div>
-								<div className="text-xs text-blue-800 truncate mb-1">{order.description}</div>
+								<div className="text-xs text-gray-700 truncate mb-1">{order.description}</div>
 								<div className="flex flex-wrap gap-2 text-xs">
 									<span><b>Writer:</b> {order.writer_username || '-'}</span>
 									<span><b>Level:</b> {order.level_name}</span>
@@ -174,7 +174,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 								</div>
 								<div className="flex gap-2 mt-2">
 									{order.original_order_file ? (
-										<a href={order.original_order_file} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow hover:from-blue-600 hover:to-blue-800 transition-all duration-150 border border-blue-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400" title="Open file in new tab">
+									<a href={order.original_order_file} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center p-2 rounded-full bg-gradient-to-r from-gray-700 via-gray-500 to-gray-400 text-white shadow hover:from-gray-800 hover:to-gray-600 transition-all duration-150 border border-gray-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-400" title="Open file in new tab">
 											<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
 												<path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
 											</svg>
@@ -182,7 +182,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 									) : (
 										<span className="text-gray-400 italic">No file</span>
 									)}
-									<span className="text-blue-700 font-semibold">View</span>
+									<span className="text-gray-700 font-semibold">View</span>
 								</div>
 							</div>
 						)) : (
@@ -196,7 +196,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 			)}
 		  </div>
 		  {/* Desktop Table View - Unified Modern Style */}
-		  <div className="hidden md:block rounded-2xl border border-blue-100 bg-white/90 shadow-lg w-full" style={{ height: 'auto' }}>
+		  <div className="hidden md:block rounded-2xl border border-gray-200 bg-white/90 shadow-lg w-full" style={{ height: 'auto' }}>
 			<div className="overflow-x-auto h-full">
 			  <table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white min-w-[1200px]">
 				<thead className="sticky top-0 bg-gradient-to-r from-blue-100 to-blue-50 z-10">
