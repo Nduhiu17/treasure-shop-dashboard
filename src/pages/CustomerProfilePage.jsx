@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +7,25 @@ import Loader from "../components/ui/Loader";
 import ConfirmDialog from "../components/ui/ConfirmDialog";
 import { useToast } from "../components/ui/toast";
 import OrderDetailsPanelModal from "../components/OrderDetailsPanelModal";
+
+// ExpandableText component for truncating and expanding text with ellipsis
+function ExpandableText({ text, maxLength = 32 }) {
+  const [expanded, setExpanded] = React.useState(false);
+  if (!text) return null;
+  if (text.length <= maxLength) return <span>{text}</span>;
+  return (
+    <span>
+      {expanded ? text : text.slice(0, maxLength) + '...'}
+      <button
+        type="button"
+        className="ml-1 text-xs text-blue-600 underline cursor-pointer focus:outline-none"
+        onClick={() => setExpanded(e => !e)}
+      >
+        {expanded ? 'Show less' : 'Show more'}
+      </button>
+    </span>
+  );
+}
 
 export default function CustomerProfilePage() {
   const navigate = useNavigate();
@@ -385,7 +405,9 @@ export default function CustomerProfilePage() {
                   {filteredOrders.map(order => (
                     <tr key={order.id} className="hover:bg-fuchsia-50 transition">
                       <td className="px-4 py-2 font-mono text-xs text-slate-600">{order.order_number}</td>
-                      <td className="px-4 py-2 font-semibold text-slate-800">{order.title}</td>
+                      <td className="px-4 py-2 font-semibold text-slate-800">
+                        <ExpandableText text={order.title} maxLength={32} />
+                      </td>
                       <td className="px-4 py-2">
                         <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${
                           order.status === "approved"

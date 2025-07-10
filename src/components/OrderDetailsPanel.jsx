@@ -1,5 +1,25 @@
+
 import React, { useState } from "react";
 import { useToast } from "./ui/toast";
+
+// ExpandableText component for truncating and expanding text with ellipsis
+function ExpandableText({ text, maxLength = 32 }) {
+  const [expanded, setExpanded] = useState(false);
+  if (!text) return null;
+  if (text.length <= maxLength) return <span>{text}</span>;
+  return (
+    <span>
+      {expanded ? text : text.slice(0, maxLength) + '...'}
+      <button
+        type="button"
+        className="ml-1 text-xs text-blue-600 underline cursor-pointer focus:outline-none"
+        onClick={() => setExpanded(e => !e)}
+      >
+        {expanded ? 'Show less' : 'Show more'}
+      </button>
+    </span>
+  );
+}
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -102,11 +122,15 @@ export default function OrderDetailsPanel({ order, submissions = [], reviews = [
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-bold text-slate-700">Title:</span>
-              <span className="mb-2 text-lg font-semibold text-fuchsia-700">{localOrder.title}</span>
+              <span className="mb-2 text-lg font-semibold text-fuchsia-700">
+                <ExpandableText text={localOrder.title} maxLength={32} />
+              </span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-bold text-slate-700">Description:</span>
-              <span className="mb-2 text-slate-700">{localOrder.description}</span>
+              <span className="mb-2 text-slate-700">
+                <ExpandableText text={localOrder.description} maxLength={64} />
+              </span>
             </div>
             <div className="flex flex-wrap gap-4 mt-2">
               <div>
