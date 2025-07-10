@@ -228,7 +228,7 @@ export default function LandingPage({ user, onLogout }) {
         {/* UNIVERSITIES SECTION */}
         <section className="w-full px-4 mb-20 animate-fade-in-up">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-cyan-700 mb-10 text-center tracking-tight">Trusted by Students from Top Universities</h2>
-          <div className="flex flex-wrap justify-center items-center gap-8">
+          <div className="w-full max-w-5xl mx-auto flex flex-wrap justify-center items-center gap-8">
             <img src={require("../images/universities/havard.jpeg")} alt="Harvard" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
             <img src={require("../images/universities/oxford.png")} alt="Oxford" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
             <img src={require("../images/universities/mit.png")} alt="MIT" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
@@ -236,7 +236,7 @@ export default function LandingPage({ user, onLogout }) {
             <img src={require("../images/universities/cambridge.png")} alt="Cambridge" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
             <img src={require("../images/universities/bekerly.png")} alt="Berkeley" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
             <img src={require("../images/universities/columbia.png")} alt="Columbia" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
-            <img src={require("../images/universities/toronto.jpg")} alt="Toronto" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
+            <img src={require("../images/universities/toronto.png")} alt="Toronto" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
           </div>
         </section>
         {/* WRITERS SECTION */}
