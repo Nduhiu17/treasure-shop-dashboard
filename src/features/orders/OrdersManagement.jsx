@@ -147,57 +147,59 @@ const OrdersManagement = () => {
 							<div className="overflow-x-auto h-full">
 								{/* ...existing code for table, tbody, expandable rows... */}
 								<table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white min-w-[1200px]">
-									<thead className="sticky top-0 bg-gradient-to-r from-gray-100 to-gray-50 z-10">
-										<tr>
-											<th className="px-4 py-3"></th>
-											<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Title</th>
-											<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Description</th>
-											<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Status</th>
-											<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Level</th>
-											<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order File</th>
-											{/* Add more headers as needed */}
-										</tr>
-									</thead>
+<thead className="sticky top-0 bg-gradient-to-r from-gray-100 to-gray-50 z-10">
+  <tr>
+	<th className="px-4 py-3"></th>
+	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Number</th>
+	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Title</th>
+	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Description</th>
+	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Status</th>
+	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Level</th>
+	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order File</th>
+	{/* Add more headers as needed */}
+  </tr>
+</thead>
 									<tbody className="divide-y divide-gray-100">
 										{orders.length > 0 ? (
 											orders.map((order, idx) => (
 												<React.Fragment key={order.id}>
-													<tr
-														className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`}
-														style={{ boxShadow: '0 1px 4px 0 rgba(30, 41, 59, 0.04)' }}
-													>
-														<td className="px-4 py-4 text-center">
-															<button
-																onClick={() => setExpandedRow(expandedRow === order.id ? null : order.id)}
-																className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900 focus:outline-none shadow-sm transition"
-																title={expandedRow === order.id ? 'Collapse' : 'Expand'}
-															>
-																{expandedRow === order.id ? (
-																	<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
-																) : (
-																	<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-																)}
-															</button>
-														</td>
-														<td className="max-w-[120px] truncate px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{order.title}</td>
-														<td className="max-w-[200px] truncate px-6 py-4 text-gray-700 align-middle">{order.description}</td>
-														<td className="px-6 py-4 align-middle">
-															<span className={`px-2 py-1 rounded text-xs font-semibold
-																${order.status === 'approved' ? 'bg-gray-200 text-gray-900 border border-gray-300' :
-																order.status === 'feedback' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-																order.status === 'pending_payment' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-																order.status === 'paid' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-																order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-																order.status === 'assigned' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-																order.status === 'in_progress' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-																order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-																order.status === 'completed' ? 'bg-gray-300 text-gray-900 border border-gray-400' :
-																'bg-gray-100 text-gray-700 border border-gray-200'}
-															`}>{order.status}</span>
-														</td>
-														<td className="px-6 py-4 text-xs xs:text-sm sm:text-base align-middle">{order.level_name}</td>
-														<td className="px-6 py-4 align-middle">
-															{order.original_order_file ? (
+				<tr
+				  className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`}
+				  style={{ boxShadow: '0 1px 4px 0 rgba(30, 41, 59, 0.04)' }}
+				>
+				  <td className="px-4 py-4 text-center">
+					<button
+					  onClick={() => setExpandedRow(expandedRow === order.id ? null : order.id)}
+					  className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900 focus:outline-none shadow-sm transition"
+					  title={expandedRow === order.id ? 'Collapse' : 'Expand'}
+					>
+					  {expandedRow === order.id ? (
+						<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
+					  ) : (
+						<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+					  )}
+					</button>
+				  </td>
+				  <td className="px-6 py-4 font-mono text-xs text-gray-600 align-middle">{order.order_number}</td>
+				  <td className="max-w-[120px] truncate px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{order.title}</td>
+				  <td className="max-w-[200px] truncate px-6 py-4 text-gray-700 align-middle">{order.description}</td>
+				  <td className="px-6 py-4 align-middle">
+					<span className={`px-2 py-1 rounded text-xs font-semibold
+					  ${order.status === 'approved' ? 'bg-gray-200 text-gray-900 border border-gray-300' :
+					  order.status === 'feedback' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+					  order.status === 'pending_payment' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+					  order.status === 'paid' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+					  order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+					  order.status === 'assigned' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+					  order.status === 'in_progress' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+					  order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+					  order.status === 'completed' ? 'bg-gray-300 text-gray-900 border border-gray-400' :
+					  'bg-gray-100 text-gray-700 border border-gray-200'}
+					`}>{order.status}</span>
+				  </td>
+				  <td className="px-6 py-4 text-xs xs:text-sm sm:text-base align-middle">{order.level_name}</td>
+				  <td className="px-6 py-4 align-middle">
+					{order.original_order_file ? (
 																<a
 																	href={order.original_order_file}
 																	target="_blank"
