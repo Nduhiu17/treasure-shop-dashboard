@@ -234,7 +234,16 @@ export default function NewOrderPage() {
                       {/* ...existing code for step 1... */}
                       <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                         <span className="flex items-center gap-2"><FaFileAlt className="text-blue-400" /> Order Title</span>
-                        <Input className="bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full" placeholder="Enter a descriptive title" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))} />
+                        <Input
+                          className="bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full"
+                          placeholder="Enter a descriptive title (max 162 characters)"
+                          value={form.title}
+                          maxLength={162}
+                          onChange={e => {
+                            const value = e.target.value.slice(0, 162);
+                            setForm(f => ({ ...f, title: value }));
+                          }}
+                        />
                       </label>
                       {/* ...other fields for step 1... */}
                       <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
@@ -285,7 +294,16 @@ export default function NewOrderPage() {
                       {/* ...existing code for step 2... */}
                       <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
                         <span className="flex items-center gap-2"><FaFileAlt className="text-blue-400" /> Order Description</span>
-                        <textarea className="bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full min-h-[120px] sm:min-h-[160px]" placeholder="Describe your order in detail..." value={form.description} onChange={e=>setForm(f=>({...f,description:e.target.value}))} />
+                        <textarea
+                          className="bg-fuchsia-50 border-2 border-fuchsia-200 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 text-fuchsia-800 font-bold placeholder-slate-400 rounded-xl shadow px-4 py-3 transition-all duration-150 w-full min-h-[120px] sm:min-h-[160px]"
+                          placeholder="Describe your order in detail (max 260 characters)..."
+                          value={form.description}
+                          maxLength={260}
+                          onChange={e => {
+                            const value = e.target.value.slice(0, 260);
+                            setForm(f => ({ ...f, description: value }));
+                          }}
+                        />
                       </label>
                       {/* ...other fields for step 2... */}
                       <label className="flex flex-col gap-1 font-bold text-fuchsia-700 tracking-wide">
