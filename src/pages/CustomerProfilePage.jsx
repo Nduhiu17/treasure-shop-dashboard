@@ -438,7 +438,7 @@ export default function CustomerProfilePage() {
                           {order.status.replace(/_/g, " ")}
                         </span>
                       </td>
-                      <td className="px-4 py-2 text-xs text-slate-500">{order.date}</td>
+                      <td className="px-4 py-2 text-xs text-slate-500">{order.created_at}</td>
                       <td className="px-4 py-2 text-blue-700 font-bold">${order.price.toFixed(2)}</td>
                       {/* Description column for desktop */}
                       <td className="px-4 py-2 text-slate-700 text-xs align-top">
