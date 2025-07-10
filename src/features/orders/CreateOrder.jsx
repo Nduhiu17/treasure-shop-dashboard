@@ -290,8 +290,9 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections, hideTitle }) 
                 value={form.title}
                 onChange={handleChange}
                 required
+                maxLength={103}
                 className="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium"
-                placeholder="Order Title"
+                placeholder="Order Title (max 103 characters)"
               />
               <label className="block text-blue-900 font-semibold mb-1">Preferred Writer Number</label>
               <input
@@ -308,9 +309,10 @@ const CreateOrder = ({ onClose, onOrderCreated, initialSelections, hideTitle }) 
                 value={form.description}
                 onChange={handleChange}
                 required
+                maxLength={234}
                 rows={4}
                 className="w-full px-4 py-2 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none bg-white text-blue-900 font-medium"
-                placeholder="Describe your order..."
+                placeholder="Describe your order... (max 234 characters)"
               />
               <div className="mb-4 w-full">
                 <label className="block text-blue-900 font-semibold mb-1">Number of Sources <span className='text-red-500'>*</span></label>

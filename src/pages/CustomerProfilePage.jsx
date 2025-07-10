@@ -201,8 +201,8 @@ export default function CustomerProfilePage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
       <LandingNavbar user={user} onLogout={handleLogout} />
-      <main className="flex-1 w-full max-w-2xl mx-auto px-2 sm:px-4 py-6 sm:py-10 animate-fade-in">
-        <div className="bg-white/90 rounded-3xl shadow-2xl border-2 border-fuchsia-100 p-4 sm:p-8 flex flex-col gap-8">
+      <main className="flex-1 w-full max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-1 sm:px-4 py-4 sm:py-10 animate-fade-in">
+        <div className="bg-white/90 rounded-3xl shadow-2xl border-2 border-fuchsia-100 p-2 sm:p-8 flex flex-col gap-8">
           {/* Profile header */}
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
             <div className="flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br from-fuchsia-200 via-cyan-100 to-yellow-100 flex items-center justify-center text-4xl font-bold text-fuchsia-700 shadow-lg border-2 border-fuchsia-200">
