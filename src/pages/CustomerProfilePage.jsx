@@ -373,7 +373,14 @@ export default function CustomerProfilePage() {
                       {order.status.replace(/_/g, " ")}
                     </span>
                   </div>
-                  <div className="font-semibold text-slate-800 truncate" title={order.title}>{order.title}</div>
+                  <div className="font-semibold text-slate-800" style={{ wordBreak: 'break-word', whiteSpace: 'normal', maxWidth: '16rem' }}>
+                    <ExpandableText text={order.title} maxLength={32} />
+                  </div>
+                  <div className="text-slate-700 text-xs mb-1" style={{ wordBreak: 'break-word', whiteSpace: 'normal', maxWidth: '16rem' }}>
+                    {order.description && (
+                      <ExpandableText text={order.description} maxLength={64} />
+                    )}
+                  </div>
                   <div className="flex items-center justify-between text-xs text-slate-500">
                     <span>{order.date}</span>
                     <span className="text-blue-700 font-bold">${order.price.toFixed(2)}</span>
