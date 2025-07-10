@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import { useNavigate } from "react-router-dom";
@@ -405,6 +404,7 @@ export default function CustomerProfilePage() {
                     <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Status</th>
                     <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Date</th>
                     <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Price</th>
+                    <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Description</th>
                     <th className="px-4 py-2 text-left text-xs font-bold text-fuchsia-700">Actions</th>
                   </tr>
                 </thead>
