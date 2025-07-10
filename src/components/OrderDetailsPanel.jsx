@@ -122,14 +122,18 @@ export default function OrderDetailsPanel({ order, submissions = [], reviews = [
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-bold text-slate-700">Title:</span>
-              <span className="mb-2 text-lg font-semibold text-fuchsia-700">
-                <ExpandableText text={localOrder.title} maxLength={32} />
+              <span className="mb-2 text-lg font-semibold text-fuchsia-700 max-w-xs truncate block">
+                <div className="max-w-xs truncate">
+                  <ExpandableText text={localOrder.title} maxLength={32} />
+                </div>
               </span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-bold text-slate-700">Description:</span>
-              <span className="mb-2 text-slate-700">
-                <ExpandableText text={localOrder.description} maxLength={64} />
+              <span className="mb-2 text-slate-700 max-w-md truncate block">
+                <div className="max-w-md truncate">
+                  <ExpandableText text={localOrder.description} maxLength={64} />
+                </div>
               </span>
             </div>
             <div className="flex flex-wrap gap-4 mt-2">

@@ -405,8 +405,10 @@ export default function CustomerProfilePage() {
                   {filteredOrders.map(order => (
                     <tr key={order.id} className="hover:bg-fuchsia-50 transition">
                       <td className="px-4 py-2 font-mono text-xs text-slate-600">{order.order_number}</td>
-                      <td className="px-4 py-2 font-semibold text-slate-800">
-                        <ExpandableText text={order.title} maxLength={32} />
+                      <td className="px-4 py-2 font-semibold text-slate-800 max-w-xs truncate align-top">
+                        <div className="max-w-xs truncate">
+                          <ExpandableText text={order.title} maxLength={32} />
+                        </div>
                       </td>
                       <td className="px-4 py-2">
                         <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${
