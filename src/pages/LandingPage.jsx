@@ -61,14 +61,14 @@ export default function LandingPage({ user, onLogout }) {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-50 via-slate-50 to-cyan-100">
       <LandingNavbar user={authUser} onLogout={onLogout} />
-      <main className="flex-1 flex flex-col items-center justify-center px-0 sm:px-4 py-0 sm:py-0">
+      <main className="flex-1 flex flex-col items-center justify-center px-2 sm:px-4 py-0 sm:py-0">
         {/* HERO SECTION */}
-        <section className="w-full bg-gradient-to-br from-fuchsia-100 via-white to-cyan-50 py-12 sm:py-20 px-4 flex flex-col items-center relative overflow-hidden shadow-lg border-b border-fuchsia-100 animate-fade-in">
+        <section className="w-full bg-gradient-to-br from-fuchsia-100 via-white to-cyan-50 py-10 sm:py-20 px-4 flex flex-col items-center relative overflow-hidden shadow-lg border-b border-fuchsia-100 animate-fade-in">
           <div className="max-w-5xl w-full flex flex-col md:flex-row items-center justify-between text-center md:text-left z-10 gap-8">
             <div className="flex-[2] min-w-0 flex flex-col items-center md:items-start">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-fuchsia-700 mb-4 leading-tight drop-shadow-lg">Custom argumentative essay writing service</h1>
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-fuchsia-700 mb-4 leading-tight drop-shadow-lg">Custom argumentative essay writing service</h2>
               <div className="text-lg sm:text-2xl text-slate-700 mb-6 max-w-2xl">Struggling with your argumentative essay? Our subject matter experts can tailor a high-quality, AI-free paper to your needs, instructions, and deadline at an affordable price.</div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center mb-6">
+              {/* <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center mb-2">
                 <Button
                   onClick={() => {
                     if (user) {
@@ -82,7 +82,7 @@ export default function LandingPage({ user, onLogout }) {
                 >
                   Order Now
                 </Button>
-              </div>
+              </div> */}
                  {/* FEATURED WRITTERS*/}
                   <section className="w-full mt-10 mb-10 px-0 animate-fade-in-up">
                     <div className="w-full bg-white rounded-3xl shadow-xl p-6 flex flex-col items-center text-center border border-cyan-100 mx-auto max-w-7xl">
@@ -140,7 +140,7 @@ export default function LandingPage({ user, onLogout }) {
                   </section>
             </div>
             {/* Well-positioned OrderPriceCalculator (not sticky, not overlay) */}
-            <div className="flex-[1] min-w-0 flex flex-col items-center justify-center w-full md:w-auto mt-10 md:mt-0 h-full">
+            <div className="flex-[1] min-w-0 flex flex-col items-center justify-center w-full md:w-auto mt-0 md:mt-0 h-full">
               <div className="w-full h-full min-h-[420px] bg-gradient-to-br from-fuchsia-100 via-white to-cyan-100 rounded-3xl shadow-2xl border-2 border-fuchsia-200 p-0 animate-fade-in-up flex">
                 <OrderPriceCalculator
                   onProceed={handleCalculatorProceed}
