@@ -412,8 +412,8 @@ export default function CustomerProfilePage() {
                   {filteredOrders.map(order => (
                     <tr key={order.id} className="hover:bg-fuchsia-50 transition">
                       <td className="px-4 py-2 font-mono text-xs text-slate-600">{order.order_number}</td>
-                      <td className="px-4 py-2 font-semibold text-slate-800 max-w-xs truncate align-top">
-                        <div className="max-w-xs truncate">
+                      <td className="px-4 py-2 font-semibold text-slate-800 align-top">
+                        <div style={{ wordBreak: 'break-word', whiteSpace: 'normal', maxWidth: '16rem' }}>
                           <ExpandableText text={order.title} maxLength={32} />
                         </div>
                       </td>
@@ -440,6 +440,14 @@ export default function CustomerProfilePage() {
                       </td>
                       <td className="px-4 py-2 text-xs text-slate-500">{order.date}</td>
                       <td className="px-4 py-2 text-blue-700 font-bold">${order.price.toFixed(2)}</td>
+                      {/* Description column for desktop */}
+                      <td className="px-4 py-2 text-slate-700 text-xs align-top">
+                        <div style={{ wordBreak: 'break-word', whiteSpace: 'normal', maxWidth: '16rem' }}>
+                          {order.description && (
+                            <ExpandableText text={order.description} maxLength={64} />
+                          )}
+                        </div>
+                      </td>
                       <td className="px-4 py-2">
                         <button
                           type="button"
