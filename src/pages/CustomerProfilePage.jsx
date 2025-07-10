@@ -5,10 +5,7 @@ import LandingFooter from "../components/LandingFooter";
 import Loader from "../components/ui/Loader";
 import ConfirmDialog from "../components/ui/ConfirmDialog";
 import { useToast } from "../components/ui/toast";
-
-
-
-
+import OrderDetailsPanelModal from "../components/OrderDetailsPanelModal";
 
 export default function CustomerProfilePage() {
   const navigate = useNavigate();
@@ -18,18 +15,67 @@ export default function CustomerProfilePage() {
   const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [selectedOrderSubmissions, setSelectedOrderSubmissions] = useState([]);
+  const [selectedOrderReviews, setSelectedOrderReviews] = useState([]);
+  const [submissionsLoading, setSubmissionsLoading] = useState(false);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
 
   // Workaround: force re-mount ConfirmDialog when editMode changes to avoid stale state
   const confirmDialogKey = editMode ? 'edit' : 'view';
   const { showToast } = useToast();
+  // Fetch submissions and reviews when selectedOrderId changes
+  React.useEffect(() => {
+    const fetchOrderExtras = async () => {
+      if (!selectedOrderId) {
+        setSelectedOrderSubmissions([]);
+        setSelectedOrderReviews([]);
+        return;
+      }
+      setSubmissionsLoading(true);
+      setReviewsLoading(true);
+      const token = localStorage.getItem("jwt_token");
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "";
+      try {
+        // Submissions
+        const submissionsRes = await fetch(`${API_BASE_URL}/api/orders/${selectedOrderId}/submissions`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (submissionsRes.ok) {
+          const submissionsData = await submissionsRes.json();
+          setSelectedOrderSubmissions(submissionsData.submissions || submissionsData || []);
+        } else {
+          setSelectedOrderSubmissions([]);
+        }
+      } catch {
+        setSelectedOrderSubmissions([]);
+      } finally {
+        setSubmissionsLoading(false);
+      }
+      try {
+        // Reviews (feedbacks)
+        const reviewsRes = await fetch(`${API_BASE_URL}/api/orders/${selectedOrderId}/feedbacks`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (reviewsRes.ok) {
+          const reviewsData = await reviewsRes.json();
+          setSelectedOrderReviews(reviewsData.feedbacks || []);
+        } else {
+          setSelectedOrderReviews([]);
+        }
+      } catch {
+        setSelectedOrderReviews([]);
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
+    fetchOrderExtras();
+  }, [selectedOrderId]);
 
   // Filtering & Pagination state
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 4; // Mobile-first: fewer per page
-
-  // Order details panel state
-  // const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   // Fetch user and orders on mount and when page/status changes
   React.useEffect(() => {
@@ -312,12 +358,13 @@ export default function CustomerProfilePage() {
                     <span>{order.date}</span>
                     <span className="text-blue-700 font-bold">${order.price.toFixed(2)}</span>
                   </div>
-                  <a
-                    href={`/order/${order.id}`}
+                  <button
+                    type="button"
                     className="mt-2 inline-block px-3 py-1 rounded-lg bg-cyan-500 text-white font-bold text-xs hover:bg-cyan-600 transition-all shadow text-center"
+                    onClick={() => setSelectedOrderId(order.id)}
                   >
                     View Details
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>
@@ -363,12 +410,13 @@ export default function CustomerProfilePage() {
                       <td className="px-4 py-2 text-xs text-slate-500">{order.date}</td>
                       <td className="px-4 py-2 text-blue-700 font-bold">${order.price.toFixed(2)}</td>
                       <td className="px-4 py-2">
-                        <a
-                          href={`/order/${order.id}`}
+                        <button
+                          type="button"
                           className="inline-block px-3 py-1 rounded-lg bg-cyan-500 text-white font-bold text-xs hover:bg-cyan-600 transition-all shadow"
+                          onClick={() => setSelectedOrderId(order.id)}
                         >
                           View Details
-                        </a>
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -376,7 +424,17 @@ export default function CustomerProfilePage() {
               </table>
             </div>
           {/* Order Details Panel (modal style overlay) */}
-          {/* (removed by undo) */}
+          {selectedOrderId && (
+            <OrderDetailsPanelModal
+              order={orders.find(o => String(o.id) === String(selectedOrderId))}
+              submissions={selectedOrderSubmissions}
+              reviews={selectedOrderReviews}
+              submissionsLoading={submissionsLoading}
+              reviewsLoading={reviewsLoading}
+              isOpen={!!selectedOrderId}
+              onClose={() => setSelectedOrderId(null)}
+            />
+          )}
             {/* Pagination */}
             <div className="flex justify-center items-center gap-2 mt-4">
               <button
