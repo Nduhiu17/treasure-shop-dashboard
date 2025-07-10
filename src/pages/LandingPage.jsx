@@ -228,17 +228,45 @@ export default function LandingPage({ user, onLogout }) {
         {/* UNIVERSITIES SECTION */}
         <section className="w-full px-4 mb-20 animate-fade-in-up">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-cyan-700 mb-10 text-center tracking-tight">Trusted by Students from Top Universities</h2>
-          <div className="w-full max-w-5xl mx-auto flex flex-wrap justify-center items-center gap-8">
-            <img src={require("../images/universities/havard.jpeg")} alt="Harvard" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
-            <img src={require("../images/universities/oxford.png")} alt="Oxford" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
-            <img src={require("../images/universities/mit.png")} alt="MIT" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
-            <img src={require("../images/universities/stanford.jpeg")} alt="Stanford" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
-            <img src={require("../images/universities/cambridge.png")} alt="Cambridge" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
-            <img src={require("../images/universities/bekerly.png")} alt="Berkeley" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
-            <img src={require("../images/universities/columbia.png")} alt="Columbia" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
-            <img src={require("../images/universities/toronto.png")} alt="Toronto" className="h-10 grayscale hover:grayscale-0 transition duration-200" />
+          <div className="w-full max-w-5xl mx-auto overflow-hidden relative">
+            <div
+              className="flex items-center gap-12 animate-universities-scroll"
+              style={{
+                width: 'max-content',
+                animation: 'universities-scroll 30s linear infinite',
+              }}
+            >
+              {[require("../images/universities/havard.jpeg"), require("../images/universities/oxford.png"), require("../images/universities/mit.png"), require("../images/universities/stanford.jpeg"), require("../images/universities/cambridge.png"), require("../images/universities/bekerly.png"), require("../images/universities/columbia.png"), require("../images/universities/toronto.png")].map((src, idx) => (
+                <img
+                  key={idx}
+                  src={src}
+                  alt="University Logo"
+                  className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300 rounded-xl shadow-md border border-slate-100 bg-white px-2 py-1 mx-2"
+                  style={{ minWidth: 80 }}
+                />
+              ))}
+              {/* Duplicate for seamless loop */}
+              {[require("../images/universities/havard.jpeg"), require("../images/universities/oxford.png"), require("../images/universities/mit.png"), require("../images/universities/stanford.jpeg"), require("../images/universities/cambridge.png"), require("../images/universities/bekerly.png"), require("../images/universities/columbia.png"), require("../images/universities/toronto.png")].map((src, idx) => (
+                <img
+                  key={idx + 100}
+                  src={src}
+                  alt="University Logo"
+                  className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300 rounded-xl shadow-md border border-slate-100 bg-white px-2 py-1 mx-2"
+                  style={{ minWidth: 80 }}
+                />
+              ))}
+            </div>
           </div>
         </section>
+        <style>{`
+          @keyframes universities-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-universities-scroll {
+            animation: universities-scroll 30s linear infinite;
+          }
+        `}</style>
         {/* WRITERS SECTION */}
         <section className="w-full px-4 mb-20 animate-fade-in-up">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-fuchsia-700 mb-10 text-center tracking-tight">Meet Some of Our Top Writers</h2>
