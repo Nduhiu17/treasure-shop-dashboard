@@ -141,11 +141,118 @@ export default function LandingPage({ user, onLogout }) {
             </div>
             {/* Well-positioned OrderPriceCalculator (not sticky, not overlay) */}
             <div className="flex-[1] min-w-0 flex flex-col items-center justify-center w-full md:w-auto mt-0 md:mt-0 h-full">
-              <div className="w-full h-full min-h-[420px] bg-gradient-to-br from-fuchsia-100 via-white to-cyan-100 rounded-3xl shadow-2xl border-2 border-fuchsia-200 p-0 animate-fade-in-up flex">
+              <div
+                className="w-full h-full flex flex-col justify-stretch min-h-[420px] md:min-h-[600px] bg-gradient-to-br from-fuchsia-100 via-white to-cyan-100 rounded-3xl shadow-2xl border-2 border-fuchsia-200 p-0 animate-fade-in-up"
+                style={{ marginTop: '-2.5rem' }}
+              >
                 <OrderPriceCalculator
                   onProceed={handleCalculatorProceed}
-                  className="w-full h-full flex-1 !min-h-[420px] !rounded-3xl bg-transparent"
+                  className="w-full h-full flex-1 !min-h-[420px] md:!min-h-[600px] !rounded-3xl bg-transparent"
                 />
+                {/* Marketing carousel below calculator */}
+                <div className="flex-1 flex flex-col items-center justify-end pb-6 pt-2">
+                  <div className="relative w-full flex-1 flex items-end justify-center min-h-[100px]">
+                    <div className="w-full max-w-xl overflow-hidden rounded-2xl shadow-lg border border-fuchsia-100 bg-white">
+                      <div
+                        className="flex items-center gap-8 carousel-track"
+                        style={{
+                          width: 'max-content',
+                          animation: 'carousel-slide 32s linear infinite',
+                        }}
+                      >
+                        {/* Marketing slides (repeat for seamless loop) */}
+                        {[
+                          {
+                            img: require('../images/reviews-io.jpeg'),
+                            alt: '5-Star Service',
+                            headline: '5-Star Rated by Students',
+                            text: 'Thousands of students trust us for fast, reliable, and original essays.'
+                          },
+                          {
+                            img: require('../images/writers/writer1.png'),
+                            alt: 'Expert Writers',
+                            headline: 'Expert Writers, Real Results',
+                            text: 'Work with top academic writers with advanced degrees and proven track records.'
+                          },
+                          {
+                            img: require('../images/writers/writer-emily.png'),
+                            alt: 'Personalized Support',
+                            headline: 'Personalized Support',
+                            text: 'Get 1-on-1 help and direct communication with your writer.'
+                          },
+                          {
+                            img: require('../images/trust-pilot-logo.png'),
+                            alt: 'Trusted Platform',
+                            headline: 'Trusted by Students Worldwide',
+                            text: 'Our platform is rated excellent on Trustpilot and other review sites.'
+                          },
+                          {
+                            img: require('../images/google-logo.png'),
+                            alt: 'Confidential & Secure',
+                            headline: 'Confidential & Secure',
+                            text: 'Your privacy is protected by advanced security and strict confidentiality.'
+                          },
+                        ].concat([
+                          {
+                            img: require('../images/reviews-io.jpeg'),
+                            alt: '5-Star Service',
+                            headline: '5-Star Rated by Students',
+                            text: 'Thousands of students trust us for fast, reliable, and original essays.'
+                          },
+                          {
+                            img: require('../images/writers/writer1.png'),
+                            alt: 'Expert Writers',
+                            headline: 'Expert Writers, Real Results',
+                            text: 'Work with top academic writers with advanced degrees and proven track records.'
+                          },
+                          {
+                            img: require('../images/writers/writer-emily.png'),
+                            alt: 'Personalized Support',
+                            headline: 'Personalized Support',
+                            text: 'Get 1-on-1 help and direct communication with your writer.'
+                          },
+                          {
+                            img: require('../images/trust-pilot-logo.png'),
+                            alt: 'Trusted Platform',
+                            headline: 'Trusted by Students Worldwide',
+                            text: 'Our platform is rated excellent on Trustpilot and other review sites.'
+                          },
+                          {
+                            img: require('../images/google-logo.png'),
+                            alt: 'Confidential & Secure',
+                            headline: 'Confidential & Secure',
+                            text: 'Your privacy is protected by advanced security and strict confidentiality.'
+                          },
+                        ])
+                        .map((slide, idx) => (
+                          <div
+                            key={idx}
+                            className="flex flex-col md:flex-row items-center gap-4 min-w-[260px] md:min-w-[340px] px-4 py-4"
+                          >
+                            <img
+                              src={slide.img}
+                              alt={slide.alt}
+                              className="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow border border-slate-100 bg-white"
+                            />
+                            <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                              <div className="font-bold text-fuchsia-700 text-base md:text-lg mb-1">{slide.headline}</div>
+                              <div className="text-slate-700 text-xs md:text-base">{slide.text}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <style>{`
+                    @keyframes carousel-slide {
+                      0% { transform: translateX(0); }
+                      100% { transform: translateX(-50%); }
+                    }
+                    .carousel-track {
+                      animation: carousel-slide 32s linear infinite;
+                    }
+                  `}</style>
+                </div>
               </div>
             </div>
           </div>
