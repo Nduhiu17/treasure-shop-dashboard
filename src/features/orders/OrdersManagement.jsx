@@ -152,7 +152,7 @@ const OrdersManagement = () => {
 	<th className="px-4 py-3"></th>
 	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Number</th>
 	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Title</th>
-	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Description</th>
+	{/* Removed Description column */}
 	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Status</th>
 	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Level</th>
 	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order File</th>
@@ -182,7 +182,7 @@ const OrdersManagement = () => {
 				  </td>
 				  <td className="px-6 py-4 font-mono text-xs text-gray-600 align-middle">{order.order_number}</td>
 				  <td className="max-w-[120px] truncate px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{order.title}</td>
-				  <td className="max-w-[200px] truncate px-6 py-4 text-gray-700 align-middle">{order.description}</td>
+	{/* Removed Description cell */}
 				  <td className="px-6 py-4 align-middle">
 					<span className={`px-2 py-1 rounded text-xs font-semibold
 					  ${order.status === 'approved' ? 'bg-gray-200 text-gray-900 border border-gray-300' :
@@ -221,6 +221,17 @@ const OrdersManagement = () => {
 														<tr>
 															<td colSpan={6} className="py-0 px-2">
 																<div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white via-gray-50 to-gray-100 shadow-lg p-4 my-2 animate-fade-in-up w-full">
+																	{/* Title and Description at the top */}
+																	<div className="mb-4">
+																	  <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+																		<span className="font-bold text-gray-900 text-base sm:text-lg">Title:</span>
+																		<span className="text-gray-800 text-base sm:text-lg">{order.title}</span>
+																	  </div>
+																	  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+																		<span className="font-bold text-gray-900 text-base sm:text-lg">Description:</span>
+																		<span className="text-gray-700 text-base sm:text-lg">{order.description}</span>
+																	  </div>
+																	</div>
 																	<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 																		<div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg><span className="font-semibold text-gray-900">Writer Username:</span><span className="text-gray-800">{order.writer_username || '-'}</span></div>
 																		<div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-gray-900">Pages:</span><span className="text-gray-800">{order.order_pages_name}</span></div>
