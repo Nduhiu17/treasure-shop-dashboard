@@ -2,7 +2,7 @@ import React from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { Button } from "../components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 
 const GUARANTEES = [
@@ -34,6 +34,15 @@ const GUARANTEES = [
 
 export default function GuaranteesPage() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleOrderClick = (e) => {
+	e.preventDefault();
+	if (user) {
+	  navigate("/order/new");
+	} else {
+	  navigate("/login?redirect=/order/new");
+	}
+  };
   return (
 	<div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-50 via-white to-cyan-50 overflow-x-hidden">
 	  <LandingNavbar user={user} onLogout={logout} />
@@ -91,8 +100,7 @@ export default function GuaranteesPage() {
 		  <h2 className="text-2xl font-bold text-fuchsia-700 mb-4">Ready to see our guarantees in action?</h2>
 		  <p className="text-slate-700 text-base mb-6">Let us match you with the perfect writer for your needs. Experience top-quality, plagiarism-free writing from a qualified expert—risk free!</p>
 		  <Button
-			as={Link}
-			to="/create-order"
+			onClick={handleOrderClick}
 			className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-8 py-3 text-lg rounded-xl"
 		  >
 			Go to Order Form

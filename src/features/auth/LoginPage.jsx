@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { useAuth } from './AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import RegisterPage from './RegisterPage';
 
 const LoginPage = ({ asModal = false, onSuccess, open, onClose, onOpenRegister }) => {
@@ -14,6 +14,7 @@ const LoginPage = ({ asModal = false, onSuccess, open, onClose, onOpenRegister }
   // Only track modalType if not asModal (standalone page/modal switching)
   const [modalType, setModalType] = useState(!asModal && (open) ? 'login' : null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +23,13 @@ const LoginPage = ({ asModal = false, onSuccess, open, onClose, onOpenRegister }
     try {
       await login(email, password);
       if (onSuccess) onSuccess();
-      else navigate("/");
+      else {
+        // Check for redirect param
+        const params = new URLSearchParams(location.search);
+        const redirect = params.get('redirect');
+        if (redirect) navigate(redirect, { replace: true });
+        else navigate("/");
+      }
     } catch (err) {
       setError(err.message || "Login failed");
     }
