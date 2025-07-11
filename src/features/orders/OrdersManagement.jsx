@@ -150,14 +150,14 @@ const OrdersManagement = () => {
 								<table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white min-w-[1200px]">
 <thead className="sticky top-0 bg-gradient-to-r from-gray-100 to-gray-50 z-10">
   <tr>
-	<th className="px-4 py-3"></th>
-	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Number</th>
-	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Title</th>
-	{/* Removed Description column */}
-	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Status</th>
-	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Level</th>
-	<th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order File</th>
-	{/* Add more headers as needed */}
+   <th className="px-4 py-3"></th>
+   <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Number</th>
+   <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Title</th>
+   <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Date</th>
+   <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Status</th>
+   <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Level</th>
+   <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order File</th>
+   {/* Add more headers as needed */}
   </tr>
 </thead>
 									<tbody className="divide-y divide-gray-100">
@@ -181,26 +181,26 @@ const OrdersManagement = () => {
 					  )}
 					</button>
 				  </td>
-				  <td className="px-6 py-4 font-mono text-xs text-gray-600 align-middle">{order.order_number}</td>
-				  <td className="max-w-[120px] truncate px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{order.title}</td>
-	{/* Removed Description cell */}
-				  <td className="px-6 py-4 align-middle">
-					<span className={`px-2 py-1 rounded text-xs font-semibold
-					  ${order.status === 'approved' ? 'bg-gray-200 text-gray-900 border border-gray-300' :
-					  order.status === 'feedback' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-					  order.status === 'pending_payment' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-					  order.status === 'paid' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-					  order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-					  order.status === 'assigned' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-					  order.status === 'in_progress' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-					  order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
-					  order.status === 'completed' ? 'bg-gray-300 text-gray-900 border border-gray-400' :
-					  'bg-gray-100 text-gray-700 border border-gray-200'}
-					`}>{order.status}</span>
-				  </td>
-				  <td className="px-6 py-4 text-xs xs:text-sm sm:text-base align-middle">{order.level_name}</td>
-				  <td className="px-6 py-4 align-middle">
-					{order.original_order_file ? (
+		  <td className="px-6 py-4 font-mono text-xs text-gray-600 align-middle">{order.order_number}</td>
+		  <td className="max-w-[120px] truncate px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{order.title}</td>
+		  <td className="px-6 py-4 text-xs xs:text-sm sm:text-base align-middle text-gray-700">{order.created_at ? new Date(order.created_at).toLocaleDateString() : '-'}</td>
+		  <td className="px-6 py-4 align-middle">
+		   <span className={`px-2 py-1 rounded text-xs font-semibold
+			 ${order.status === 'approved' ? 'bg-gray-200 text-gray-900 border border-gray-300' :
+			 order.status === 'feedback' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+			 order.status === 'pending_payment' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+			 order.status === 'paid' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+			 order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+			 order.status === 'assigned' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+			 order.status === 'in_progress' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+			 order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700 border border-gray-200' :
+			 order.status === 'completed' ? 'bg-gray-300 text-gray-900 border border-gray-400' :
+			 'bg-gray-100 text-gray-700 border border-gray-200'}
+		   `}>{order.status}</span>
+		  </td>
+		  <td className="px-6 py-4 text-xs xs:text-sm sm:text-base align-middle">{order.level_name}</td>
+		  <td className="px-6 py-4 align-middle">
+		   {order.original_order_file ? (
 																<a
 																	href={order.original_order_file}
 																	target="_blank"
