@@ -1,3 +1,4 @@
+import { ExpandableText } from "../../components/OrderDetailsPanel.jsx";
 import React, { useEffect, useState } from "react";
 import OrderDetailsFetcher from "./OrderDetailsFetcher";
 import { Card } from "../../components/ui/card";
@@ -217,21 +218,33 @@ const OrdersManagement = () => {
 														</td>
 														{/* Add more cells as needed */}
 													</tr>
-													{expandedRow === order.id && (
-														<tr>
-															<td colSpan={6} className="py-0 px-2">
-																<div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white via-gray-50 to-gray-100 shadow-lg p-4 my-2 animate-fade-in-up w-full">
-																	{/* Title and Description at the top */}
-																	<div className="mb-4">
-																	  <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-																		<span className="font-bold text-gray-900 text-base sm:text-lg">Title:</span>
-																		<span className="text-gray-800 text-base sm:text-lg">{order.title}</span>
-																	  </div>
-																	  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-																		<span className="font-bold text-gray-900 text-base sm:text-lg">Description:</span>
-																		<span className="text-gray-700 text-base sm:text-lg">{order.description}</span>
-																	  </div>
-																	</div>
+			  {expandedRow === order.id && (
+				<tr>
+				  <td colSpan={6} className="py-0 px-2">
+					<div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white via-fuchsia-50 to-gray-100 shadow-lg p-4 my-2 animate-fade-in-up">
+					  {/* Title and Description at the top, always visible */}
+			<div className="mb-4 flex flex-col xs:flex-row gap-4 w-full max-w-full">
+			  <div className="flex-1 min-w-0">
+				<span className="font-bold text-fuchsia-700 text-base sm:text-lg mb-1 block">Title:</span>
+<div className="text-gray-900 text-base sm:text-lg whitespace-pre-line break-words w-full min-h-[1.5em]">
+  {order.title ? (
+	<ExpandableText text={order.title} maxLength={48} />
+  ) : (
+	<span className="italic text-gray-400">No title provided.</span>
+  )}
+</div>
+			  </div>
+			  <div className="flex-1 min-w-0">
+				<span className="font-bold text-fuchsia-700 text-base sm:text-lg mb-1 block">Description:</span>
+				<div className="text-gray-700 text-base sm:text-lg break-words max-w-full min-h-[1.5em]">
+		  {order.description ? (
+			<ExpandableText text={order.description} maxLength={96} />
+		  ) : (
+			<span className="italic text-gray-400">No description provided.</span>
+		  )}
+				</div>
+			  </div>
+			</div>
 																	<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 																		<div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg><span className="font-semibold text-gray-900">Writer Username:</span><span className="text-gray-800">{order.writer_username || '-'}</span></div>
 																		<div className="flex items-center gap-2 mb-2"><svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg><span className="font-semibold text-gray-900">Pages:</span><span className="text-gray-800">{order.order_pages_name}</span></div>

@@ -1,28 +1,41 @@
-
 import React, { useState } from "react";
 import { useToast } from "./ui/toast";
 
-// ExpandableText component for truncating and expanding text with ellipsis
-function ExpandableText({ text, maxLength = 32 }) {
+/**
+ * ExpandableText
+ * @param {string} text - The text to display
+ * @param {number} maxLength - The max length before truncation (default: 100)
+ * @param {string} [className] - Optional className for styling
+ */
+
+// Exported as named export only
+export function ExpandableText({ text = "", maxLength = 100, className = "" }) {
   const [expanded, setExpanded] = useState(false);
   if (!text) return null;
-  if (text.length <= maxLength) return <span>{text}</span>;
+  const isLong = text.length > maxLength;
+  const displayText = !expanded && isLong ? text.slice(0, maxLength) + "..." : text;
   return (
-    <span>
-      {expanded ? text : text.slice(0, maxLength) + '...'}
-      <button
-        type="button"
-        className="ml-1 text-xs text-blue-600 underline cursor-pointer focus:outline-none"
-        onClick={() => setExpanded(e => !e)}
-      >
-        {expanded ? 'Show less' : 'Show more'}
-      </button>
+    <span className={className}>
+      {displayText}
+      {isLong && (
+        <button
+          type="button"
+          className="ml-2 text-xs text-fuchsia-700 underline hover:text-fuchsia-900 focus:outline-none"
+          onClick={() => setExpanded((v) => !v)}
+        >
+          {expanded ? "Show less" : "Show more"}
+        </button>
+      )}
     </span>
   );
+
+
 }
+
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+// Default export for the main panel
 export default function OrderDetailsPanel({ order, submissions = [], reviews = [], submissionsLoading = false, reviewsLoading = false, onClose }) {
   const { showToast } = useToast();
   const [localOrder, setLocalOrder] = useState(order);
