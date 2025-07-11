@@ -6,9 +6,13 @@ import { useAuth } from "../features/auth/AuthProvider";
 export default function AboutPage() {
   const { user, logout } = useAuth();
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-50 via-white to-cyan-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-50 via-white to-cyan-50 overflow-x-hidden">
       <LandingNavbar user={user} onLogout={logout} />
-      <main className="flex-1 px-4 py-12 max-w-5xl mx-auto animate-fade-in">
+      <main className="flex-1 px-4 py-12 max-w-5xl mx-auto animate-fade-in relative">
+        {/* Animated background shapes */}
+        <div className="absolute -top-10 -left-10 w-40 h-40 bg-fuchsia-200 opacity-30 rounded-full blur-2xl animate-pulse-slow z-0" />
+        <div className="absolute top-1/2 right-0 w-32 h-32 bg-cyan-200 opacity-20 rounded-full blur-2xl animate-float z-0" />
+        <div className="absolute bottom-0 left-1/2 w-28 h-28 bg-yellow-200 opacity-20 rounded-full blur-2xl animate-float-reverse z-0" />
         {/* <h1 className="text-4xl sm:text-5xl font-extrabold text-fuchsia-700 mb-8 text-center drop-shadow-lg">About Treasure Shop</h1> */}
 
         {/* Who We Are */}
@@ -19,7 +23,7 @@ export default function AboutPage() {
         </section>
 
         {/* Our Numbers & Other Facts */}
-        <section className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in-up delay-100">
           <div className="bg-white rounded-3xl shadow-lg p-8 border border-cyan-100 flex flex-col items-center text-center">
             <h3 className="font-bold text-cyan-700 mb-3 text-xl">Our Numbers</h3>
             <ul className="text-cyan-900 space-y-2 text-base">
@@ -46,7 +50,7 @@ export default function AboutPage() {
         </section>
 
         {/* What We Do */}
-        <section className="mb-12 bg-white/80 rounded-3xl shadow-xl p-8 border border-cyan-100">
+        <section className="mb-12 bg-white/80 rounded-3xl shadow-xl p-8 border border-cyan-100 animate-fade-in-up delay-200">
           <h2 className="text-2xl font-bold text-fuchsia-700 mb-4">What We Do</h2>
           <p className="text-slate-700 text-base mb-4">We provide custom academic help for all types of assignments. Our services cover a wide range of subjects and formats, all tailored to your needs. You can find the full list of services on our order form.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
@@ -75,7 +79,7 @@ export default function AboutPage() {
         </section>
 
         {/* What We Offer / Guarantees */}
-        <section className="mb-12 bg-white/80 rounded-3xl shadow-xl p-8 border border-yellow-100">
+        <section className="mb-12 bg-white/80 rounded-3xl shadow-xl p-8 border border-yellow-100 animate-fade-in-up delay-300">
           <h2 className="text-2xl font-bold text-yellow-600 mb-4">What We Offer</h2>
           <ul className="list-decimal pl-6 text-yellow-700 text-lg space-y-2 mb-4">
             <li>All writing and editing is done from scratch, following your instructions to the letter.</li>
@@ -90,12 +94,39 @@ export default function AboutPage() {
         </section>
 
         {/* Sneak Peek / Reviews */}
-        <section className="mb-10">
+        <section className="mb-10 animate-fade-in-up delay-400">
           <h2 className="text-2xl font-bold text-cyan-700 mb-2">Want a Sneak Peek?</h2>
           <p className="text-slate-700 text-base">See what our customers say—visit our <a href="/reviews" className="text-fuchsia-600 underline hover:text-fuchsia-800">reviews</a> page to discover why students trust us for their most important assignments.</p>
         </section>
       </main>
       <LandingFooter />
+      {/* Tailwind custom keyframes for AboutPage animations */}
+      <style jsx global>{`
+        @keyframes fade-in-up {
+          0% { opacity: 0; transform: translateY(40px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 1s cubic-bezier(0.4,0,0.2,1) both; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.6; }
+        }
+        .animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-20px); }
+        }
+        .animate-float { animation: float 4s ease-in-out infinite; }
+        @keyframes float-reverse {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(20px); }
+        }
+        .animate-float-reverse { animation: float-reverse 4s ease-in-out infinite; }
+      `}</style>
     </div>
   );
 }
