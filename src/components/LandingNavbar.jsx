@@ -187,7 +187,7 @@ export default function LandingNavbar({ user, onLogout }) {
 		<ul className="hidden md:flex items-center gap-1 md:gap-1.5 lg:gap-3 px-1 md:px-2 lg:px-4 uppercase font-bold tracking-wide text-xs xs:text-sm sm:text-base flex-nowrap whitespace-nowrap min-w-0">
 			<li className="relative navbar-dropdown">
 			  <button
-				className="flex items-center gap-2 font-bold text-fuchsia-700 hover:text-cyan-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 px-5 py-2 rounded-2xl bg-gradient-to-r from-fuchsia-50 to-cyan-50 shadow border-2 border-fuchsia-100 hover:shadow-xl hover:from-fuchsia-100 hover:to-cyan-100"
+				className="flex items-center gap-2 font-bold text-fuchsia-700 hover:text-cyan-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 px-5 py-2  hover:shadow-xl hover:from-fuchsia-100 hover:to-cyan-100"
 				onMouseEnter={() => setServicesDropdownOpen(true)}
 				onMouseLeave={() => setServicesDropdownOpen(false)}
 				onClick={() => setServicesDropdownOpen((v) => !v)}
@@ -384,7 +384,7 @@ export default function LandingNavbar({ user, onLogout }) {
 			  }
 			}}
 		  >
-			Order Now
+			Order
 		  </button>
 	  <button
 		className="w-full rounded-xl bg-gradient-to-br from-blue-50 via-cyan-50 to-yellow-50 shadow border border-blue-100 px-3 py-2 text-blue-700 hover:text-blue-900 transition-colors text-left min-w-0"
@@ -427,75 +427,75 @@ export default function LandingNavbar({ user, onLogout }) {
 			   )}
 				{/* Order/Login/Profile Buttons */}
 			   {/* Hide Order and My Profile on navbar for small screens, only show on md+ */}
-	  <div className="hidden md:flex items-center gap-1 xs:gap-1.5 flex-nowrap min-w-0">
-	   <Button
-		   onClick={() => {
-			 if (user) {
-			   navigate('/order/new');
-			 } else {
-			   setPendingOrder(true);
-			   setLoginModalOpen(true);
-			 }
-		   }}
-		   className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm rounded-xl min-w-0"
-	   >
-		   Order Now
-	   </Button>
-				   {user ? (
-					   <div className="relative">
-		 <Button
-			 ref={profileButtonRef}
-			 className="bg-blue-50 text-blue-900 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-blue-100 hover:bg-blue-100 flex items-center gap-1.5 min-w-0 text-xs md:text-sm"
-			 onClick={() => setProfileOpen((v) => !v)}
-			 aria-haspopup="true"
-			 aria-expanded={profileOpen}
-		 >
-							   <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-							   My Profile
-							   <svg className={`w-4 h-4 ml-1 transition-transform ${profileOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-						   </Button>
-						   {profileOpen && (
-		   <div ref={profileDropdownRef} className="absolute right-0 mt-2 w-56 md:w-64 bg-white rounded-2xl shadow-2xl border border-blue-100 py-3 px-3 md:py-4 md:px-5 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl min-w-0">
-								   <div className="mb-2 flex items-center gap-3">
-									   <svg className="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M6 20v-2a4 4 0 014-4h0a4 4 0 014 4v2" /></svg>
-									   <div>
-										   <div className="font-bold text-blue-900 text-lg">{user.first_name || user.username || user.email}</div>
-										   <div className="text-blue-700 text-sm">{user.email}</div>
-									   </div>
-								   </div>
-   <Button
-	 className="w-full bg-blue-50 text-blue-900 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2 min-w-0 text-xs md:text-sm"
-	 onClick={() => {
-	   setProfileOpen(false);
-	   if (user && user.roles) {
-		 const roles = user.roles;
-		 // Robust role check: if any admin, super_admin, or writer, go to /admin/dashboard
-		 if (roles.includes('admin') || roles.includes('super_admin') || roles.includes('writer')) {
-		   navigate('/admin/dashboard');
-		 } else {
-		   navigate('/profile');
-		 }
-	   } else {
-		 navigate('/');
-	   }
-	 }}
-   >
-	 My Orders
-   </Button>
-								   <hr className="my-2 border-blue-100" />
-		   <Button className="w-full bg-red-50 text-red-700 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2 min-w-0 text-xs md:text-sm" onClick={() => { setProfileOpen(false); if (onLogout) onLogout(); navigate('/'); }}>Logout</Button>
-							   </div>
-						   )}
-					   </div>
-				   ) : (
-					   <Button
-						   className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100"
-						   onClick={() => setLoginModalOpen(true)}
-					   >
-						   Login
-					   </Button>
-				   )}
-			   </div>
+	  <div className="hidden md:flex items-center gap-1 xs:gap-1.5 flex-nowrap min-w-0" style={{background: 'none', border: 'none', boxShadow: 'none', padding: 0}}>
+		{user ? (
+		  <div className="relative">
+			<Button
+			  ref={profileButtonRef}
+			  className="text-blue-900  px-2 md:px-3 py-1.5 md:py-2 rounded-md  hover:bg-blue-100 flex items-center gap-1.5 min-w-0 text-xs md:text-sm"
+			  onClick={() => setProfileOpen((v) => !v)}
+			  aria-haspopup="true"
+			  aria-expanded={profileOpen}
+			>
+			  <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+			  Profile
+			  <svg className={`w-4 h-4 ml-1 transition-transform ${profileOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+			</Button>
+			{profileOpen && (
+			  <div ref={profileDropdownRef} className="absolute right-0 mt-2 w-56 md:w-64 bg-white rounded-2xl shadow-2xl border border-blue-100 py-3 px-3 md:py-4 md:px-5 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl min-w-0">
+				<div className="mb-2 flex items-center gap-3">
+				  <svg className="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M6 20v-2a4 4 0 014-4h0a4 4 0 014 4v2" /></svg>
+				  <div>
+					<div className="font-bold text-blue-900 text-lg">{user.first_name || user.username || user.email}</div>
+					<div className="text-blue-700 text-sm">{user.email}</div>
+				  </div>
+				</div>
+				<Button
+				  className="w-full bg-blue-50 text-blue-900 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-blue-100 hover:bg-blue-100 mt-2 min-w-0 text-xs md:text-sm"
+				  onClick={() => {
+					setProfileOpen(false);
+					if (user && user.roles) {
+					  const roles = user.roles;
+					  // Robust role check: if any admin, super_admin, or writer, go to /admin/dashboard
+					  if (roles.includes('admin') || roles.includes('super_admin') || roles.includes('writer')) {
+						navigate('/admin/dashboard');
+					  } else {
+						navigate('/profile');
+					  }
+					} else {
+					  navigate('/');
+					}
+				  }}
+				>
+				  My Orders
+				</Button>
+				<hr className="my-2 border-blue-100" />
+				<Button className="w-full bg-red-50 text-red-700 font-semibold px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-red-100 hover:bg-red-100 mt-2 min-w-0 text-xs md:text-sm" onClick={() => { setProfileOpen(false); if (onLogout) onLogout(); navigate('/'); }}>Logout</Button>
+			  </div>
+			)}
+		  </div>
+		) : (
+		  <Button
+			className="bg-blue-50 text-blue-900 font-semibold px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100"
+			onClick={() => setLoginModalOpen(true)}
+		  >
+			Login
+		  </Button>
+		)}
+			<Button
+		  onClick={() => {
+			if (user) {
+			  navigate('/order/new');
+			} else {
+			  setPendingOrder(true);
+			  setLoginModalOpen(true);
+			}
+		  }}
+		  className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold shadow-lg hover:from-green-600 hover:to-green-700 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm rounded-md min-w-0"
+		>
+		  Order
+		</Button>
+	  </div>
 			</nav>
 			{/* Login Modal */}
 			{loginModalOpen && (
