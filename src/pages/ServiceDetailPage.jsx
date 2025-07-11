@@ -269,13 +269,74 @@ export default function ServiceDetailPage() {
 
         {/* ORDER PRICE CALCULATOR - Modern placement */}
         {showCalculator && (
-          <div className="w-full flex justify-center mt-10 mb-16 px-2 md:px-0">
+          <div className="w-full flex flex-col items-center mt-10 mb-8 px-2 md:px-0 animate-fade-in-up">
             <div className="shadow-2xl rounded-3xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-blue-50 border border-blue-100 p-6 md:p-8 w-full max-w-md">
               <h3 className="text-xl font-bold text-fuchsia-700 mb-4 text-center">Get an Instant Price Quote</h3>
               <OrderPriceCalculator onProceed={handleCalculatorProceed} />
             </div>
+            <button
+              className="mt-8 bg-gradient-to-r from-fuchsia-500 via-cyan-500 to-blue-500 text-white font-bold shadow-lg hover:from-fuchsia-600 hover:to-blue-700 px-10 py-4 text-lg rounded-2xl transition-all duration-200"
+              onClick={() => {
+                if (user) {
+                  navigate('/order/new');
+                } else {
+                  navigate('/login?redirect=/order/new');
+                }
+              }}
+            >
+              Order Now
+            </button>
           </div>
         )}
+
+        {/* HOW IT WORKS SECTION */}
+        <section className="mb-14 animate-fade-in-up">
+          <h2 className="text-2xl font-bold text-cyan-700 mb-8 text-center">How It Works</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
+            <div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-fuchsia-200">
+              <svg className="w-10 h-10 text-fuchsia-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M8 12l2 2 4-4" /></svg>
+              <div className="font-bold text-blue-900 mb-1">1. Fill Out the Calculator</div>
+              <div className="text-blue-700 text-sm">Choose your service, deadline, and details to get an instant quote.</div>
+            </div>
+            <div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-cyan-200">
+              <svg className="w-10 h-10 text-cyan-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4" /><path d="M8 12h8M12 8v8" /></svg>
+              <div className="font-bold text-blue-900 mb-1">2. Place Your Order</div>
+              <div className="text-blue-700 text-sm">Proceed to the order form and provide your assignment instructions.</div>
+            </div>
+            <div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-blue-200">
+              <svg className="w-10 h-10 text-blue-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
+              <div className="font-bold text-blue-900 mb-1">3. Get Your Paper</div>
+              <div className="text-blue-700 text-sm">Relax while an expert completes your order. Download your finished work on time.</div>
+            </div>
+          </div>
+        </section>
+
+        {/* WHY CHOOSE US SECTION */}
+        <section className="mb-20 animate-fade-in-up">
+          <h2 className="text-2xl font-bold text-fuchsia-700 mb-8 text-center">Why Choose Us?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-fuchsia-400">
+              <svg className="w-10 h-10 text-fuchsia-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+              <div className="font-bold text-blue-900 mb-1">Expert Writers</div>
+              <div className="text-blue-700 text-sm">All assignments are handled by qualified, experienced professionals.</div>
+            </div>
+            <div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-cyan-400">
+              <svg className="w-10 h-10 text-cyan-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 12l2 2l4-4" /><circle cx="12" cy="12" r="10" /></svg>
+              <div className="font-bold text-blue-900 mb-1">Plagiarism-Free</div>
+              <div className="text-blue-700 text-sm">Every order is original and checked for plagiarism before delivery.</div>
+            </div>
+            <div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-blue-400">
+              <svg className="w-10 h-10 text-blue-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3" /><circle cx="12" cy="12" r="10" /></svg>
+              <div className="font-bold text-blue-900 mb-1">On-Time Delivery</div>
+              <div className="text-blue-700 text-sm">We guarantee your paper will be delivered by your deadline, every time.</div>
+            </div>
+            <div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-yellow-400">
+              <svg className="w-10 h-10 text-yellow-500 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+              <div className="font-bold text-blue-900 mb-1">24/7 Support</div>
+              <div className="text-blue-700 text-sm">Our support team is always available to help you with any questions.</div>
+            </div>
+          </div>
+        </section>
       </main>
       <LandingFooter />
     </div>
