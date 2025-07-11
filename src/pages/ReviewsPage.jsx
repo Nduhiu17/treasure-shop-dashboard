@@ -262,43 +262,28 @@ export default function ReviewsPage() {
 
 			{/* WHY CHOOSE US */}
 
-				{/* TESTIMONIALS SECTION */}
-				<section className="mb-12">
-					<h2 className="text-2xl font-bold text-blue-800 mb-6 text-center">Latest Client Testimonials</h2>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-						{/* Example testimonials, replace with real data as needed */}
-						<div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col gap-2 border-t-4 border-fuchsia-400 animate-fade-in">
-							<div className="flex items-center gap-2">
-								<span className="font-bold text-blue-900">Sarah K.</span>
-								<span className="text-xs text-blue-500">(UK)</span>
-							</div>
-							<p className="text-blue-800">“Absolutely amazing service! My essay was delivered ahead of time and exceeded my expectations.”</p>
-							<div className="flex gap-1 mt-1">
-								{Array(5).fill(0).map((_,i) => <span key={i} className="text-yellow-400">★</span>)}
-							</div>
+				{/* TESTIMONIALS SECTION - Modernized */}
+				<section className="mb-14">
+				  <h2 className="text-3xl font-extrabold text-fuchsia-700 mb-8 text-center tracking-tight animate-fade-in-up">Latest Client Testimonials</h2>
+				  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+					{REVIEWS.slice(0, 6).map((r, i) => (
+					  <div
+						key={i}
+						className={`relative bg-gradient-to-br from-white via-fuchsia-50 to-cyan-50 rounded-3xl shadow-xl p-8 border-t-4 ${i%3===0 ? 'border-fuchsia-400' : i%3===1 ? 'border-cyan-400' : 'border-blue-400'} flex flex-col gap-3 animate-fade-in-up delay-${i*50}`}
+					  >
+						<div className="flex items-center gap-2 mb-1">
+						  <span className="font-bold text-blue-900 text-lg">{r.name}</span>
+						  <span className="text-xs text-blue-500">({r.location})</span>
 						</div>
-						<div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col gap-2 border-t-4 border-cyan-400 animate-fade-in delay-100">
-							<div className="flex items-center gap-2">
-								<span className="font-bold text-blue-900">James L.</span>
-								<span className="text-xs text-blue-500">(USA)</span>
-							</div>
-							<p className="text-blue-800">“The writer followed all my instructions perfectly. I got an A+ on my assignment!”</p>
-							<div className="flex gap-1 mt-1">
-								{Array(5).fill(0).map((_,i) => <span key={i} className="text-yellow-400">★</span>)}
-							</div>
+						<div className="flex gap-1 mb-2">
+						  {Array(r.rating).fill(0).map((_,i) => <span key={i} className="text-yellow-400 text-lg">★</span>)}
+						  {Array(5-r.rating).fill(0).map((_,i) => <span key={i} className="text-blue-200 text-lg">★</span>)}
 						</div>
-						<div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col gap-2 border-t-4 border-blue-400 animate-fade-in delay-200">
-							<div className="flex items-center gap-2">
-								<span className="font-bold text-blue-900">Priya S.</span>
-								<span className="text-xs text-blue-500">(India)</span>
-							</div>
-							<p className="text-blue-800">“Customer support was super helpful and my paper was flawless. Highly recommend!”</p>
-							<div className="flex gap-1 mt-1">
-								{Array(5).fill(0).map((_,i) => <span key={i} className="text-yellow-400">★</span>)}
-							</div>
-						</div>
-						{/* Add more testimonials as needed */}
-					</div>
+						<p className="text-blue-800 italic">“{r.text}”</p>
+						<div className="text-blue-700 text-sm mt-2">{r.type} &mdash; {r.subject}</div>
+					  </div>
+					))}
+				  </div>
 				</section>
 				<section className="mb-10">
 					<div className="flex flex-col md:flex-row gap-4 mb-4">
@@ -438,71 +423,73 @@ export default function ReviewsPage() {
 					</div>
 				  </div>
 				</section>
-				{/* OUR GLOBAL REACH - Improved Design */}
+				{/* OUR GLOBAL REACH - Modernized */}
 				<section className="mb-16">
-				  <div className="bg-gradient-to-r from-blue-100 via-cyan-100 to-fuchsia-100 rounded-3xl shadow-xl p-8 md:p-12 border border-blue-200">
-					<h2 className="text-2xl sm:text-3xl font-extrabold text-cyan-700 mb-8 flex items-center gap-2">
-					  <svg className="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-						<path d="M2 12h20M12 2v20" stroke="currentColor" strokeWidth="2" fill="none" />
-					  </svg>
-					  Our Global Reach
-					</h2>
-					<div className="flex flex-col md:flex-row gap-8 items-center">
-					  <img
-						src="https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg"
-						alt="Global Map"
-						className="rounded-2xl shadow-lg border border-blue-100 w-full max-w-md bg-white"
-					  />
-					  <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-6">
-						<div className="bg-white rounded-2xl shadow p-6 border border-blue-100 text-center flex flex-col items-center">
-						  <span className="text-3xl font-extrabold text-fuchsia-600 mb-1">10,000+</span>
-						  <span className="text-blue-800 text-base">Total Clients</span>
+				  <div className="bg-gradient-to-r from-blue-100 via-cyan-100 to-fuchsia-100 rounded-3xl shadow-2xl p-10 md:p-16 border border-blue-200 flex flex-col md:flex-row items-center gap-10">
+					<div className="flex-1 flex flex-col gap-8">
+					  <h2 className="text-3xl sm:text-4xl font-extrabold text-cyan-700 mb-4 flex items-center gap-2 animate-fade-in-up">
+						<svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+						  <path d="M2 12h20M12 2v20" stroke="currentColor" strokeWidth="2" fill="none" />
+						</svg>
+						Our Global Reach
+					  </h2>
+					  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+						<div className="bg-white rounded-2xl shadow p-8 border-t-4 border-fuchsia-400 text-center flex flex-col items-center hover:scale-105 transition-transform duration-200">
+						  <span className="text-4xl font-extrabold text-fuchsia-600 mb-1">10,000+</span>
+						  <span className="text-blue-800 text-lg">Total Clients</span>
 						  <span className="text-blue-500 text-xs mt-1">Students and professionals worldwide</span>
 						</div>
-						<div className="bg-white rounded-2xl shadow p-6 border border-blue-100 text-center flex flex-col items-center">
-						  <span className="text-3xl font-extrabold text-cyan-600 mb-1">50+</span>
-						  <span className="text-blue-800 text-base">Total Countries</span>
+						<div className="bg-white rounded-2xl shadow p-8 border-t-4 border-cyan-400 text-center flex flex-col items-center hover:scale-105 transition-transform duration-200">
+						  <span className="text-4xl font-extrabold text-cyan-600 mb-1">50+</span>
+						  <span className="text-blue-800 text-lg">Total Countries</span>
 						  <span className="text-blue-500 text-xs mt-1">Clients from every continent</span>
 						</div>
-						<div className="bg-white rounded-2xl shadow p-6 border border-blue-100 text-center flex flex-col items-center">
-						  <span className="text-3xl font-extrabold text-yellow-500 mb-1">30+</span>
-						  <span className="text-blue-800 text-base">New Clients Daily</span>
+						<div className="bg-white rounded-2xl shadow p-8 border-t-4 border-blue-400 text-center flex flex-col items-center hover:scale-105 transition-transform duration-200">
+						  <span className="text-4xl font-extrabold text-yellow-500 mb-1">30+</span>
+						  <span className="text-blue-800 text-lg">New Clients Daily</span>
 						  <span className="text-blue-500 text-xs mt-1">Join our growing community</span>
 						</div>
 					  </div>
 					</div>
+					<div className="flex-1 flex justify-center">
+					  <img
+						src="https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg"
+						alt="Global Map"
+						className="rounded-2xl shadow-lg border border-blue-100 w-full max-w-md bg-white animate-fade-in-up"
+					  />
+					</div>
 				  </div>
 				</section>
-				{/* FAQ - Improved Design */}
+				{/* FAQ - Modernized */}
 				<section className="mb-16">
-				  <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-blue-100 p-8">
-					<h2 className="text-2xl sm:text-3xl font-extrabold text-blue-800 mb-8 text-center">Frequently Asked Questions</h2>
+				  <div className="max-w-3xl mx-auto bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-blue-50 rounded-3xl shadow-2xl border border-blue-100 p-10">
+					<h2 className="text-3xl sm:text-4xl font-extrabold text-blue-800 mb-10 text-center animate-fade-in-up">Frequently Asked Questions</h2>
 					<div className="space-y-6">
-					  <details className="group border-b border-blue-100 pb-4">
-						<summary className="flex items-center justify-between cursor-pointer text-lg font-semibold text-blue-900 group-open:text-fuchsia-600 transition-colors">
+					  <details className="group border-b-2 border-blue-100 pb-4 bg-white/70 rounded-xl shadow-sm px-4 transition-all">
+						<summary className="flex items-center justify-between cursor-pointer text-lg font-semibold text-blue-900 group-open:text-fuchsia-600 transition-colors py-3">
 						  <span>Is my information confidential?</span>
-						  <span className="ml-2 text-fuchsia-500">&#9660;</span>
+						  <span className="ml-2 text-fuchsia-500 transition-transform group-open:rotate-180">&#9660;</span>
 						</summary>
 						<div className="mt-2 text-blue-700">Yes, we guarantee complete privacy and confidentiality for all clients and orders.</div>
 					  </details>
-					  <details className="group border-b border-blue-100 pb-4">
-						<summary className="flex items-center justify-between cursor-pointer text-lg font-semibold text-blue-900 group-open:text-fuchsia-600 transition-colors">
+					  <details className="group border-b-2 border-blue-100 pb-4 bg-white/70 rounded-xl shadow-sm px-4 transition-all">
+						<summary className="flex items-center justify-between cursor-pointer text-lg font-semibold text-blue-900 group-open:text-fuchsia-600 transition-colors py-3">
 						  <span>Can I communicate with my writer?</span>
-						  <span className="ml-2 text-fuchsia-500">&#9660;</span>
+						  <span className="ml-2 text-fuchsia-500 transition-transform group-open:rotate-180">&#9660;</span>
 						</summary>
 						<div className="mt-2 text-blue-700">Absolutely! You can message your writer directly through our secure platform.</div>
 					  </details>
-					  <details className="group border-b border-blue-100 pb-4">
-						<summary className="flex items-center justify-between cursor-pointer text-lg font-semibold text-blue-900 group-open:text-fuchsia-600 transition-colors">
+					  <details className="group border-b-2 border-blue-100 pb-4 bg-white/70 rounded-xl shadow-sm px-4 transition-all">
+						<summary className="flex items-center justify-between cursor-pointer text-lg font-semibold text-blue-900 group-open:text-fuchsia-600 transition-colors py-3">
 						  <span>What if I need revisions?</span>
-						  <span className="ml-2 text-fuchsia-500">&#9660;</span>
+						  <span className="ml-2 text-fuchsia-500 transition-transform group-open:rotate-180">&#9660;</span>
 						</summary>
 						<div className="mt-2 text-blue-700">We offer unlimited free revisions until you are fully satisfied with your order.</div>
 					  </details>
-					  <details className="group border-b border-blue-100 pb-4">
-						<summary className="flex items-center justify-between cursor-pointer text-lg font-semibold text-blue-900 group-open:text-fuchsia-600 transition-colors">
+					  <details className="group border-b-2 border-blue-100 pb-4 bg-white/70 rounded-xl shadow-sm px-4 transition-all">
+						<summary className="flex items-center justify-between cursor-pointer text-lg font-semibold text-blue-900 group-open:text-fuchsia-600 transition-colors py-3">
 						  <span>How do I pay?</span>
-						  <span className="ml-2 text-fuchsia-500">&#9660;</span>
+						  <span className="ml-2 text-fuchsia-500 transition-transform group-open:rotate-180">&#9660;</span>
 						</summary>
 						<div className="mt-2 text-blue-700">We accept all major credit cards and secure payment methods for your convenience.</div>
 					  </details>
