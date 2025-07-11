@@ -270,12 +270,38 @@ export default function ServiceDetailPage() {
         {/* ORDER PRICE CALCULATOR - Modern placement */}
         {showCalculator && (
           <div className="w-full flex flex-col items-center mt-10 mb-8 px-2 md:px-0 animate-fade-in-up">
-            <div className="shadow-2xl rounded-3xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-blue-50 border border-blue-100 p-6 md:p-8 w-full max-w-md">
-              <h3 className="text-xl font-bold text-fuchsia-700 mb-4 text-center">Get an Instant Price Quote</h3>
+            <div className="shadow-2xl rounded-3xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-blue-50 border border-blue-100 p-6 md:p-8 w-full max-w-md relative overflow-hidden">
+              <h3 className="text-xl font-bold text-fuchsia-700 mb-4 text-center flex items-center justify-center gap-2">
+                <svg className="w-7 h-7 text-cyan-500 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3" /><circle cx="12" cy="12" r="10" /></svg>
+                Get an Instant Price Quote
+                <svg className="w-7 h-7 text-fuchsia-500 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4" /><path d="M8 12h8M12 8v8" /></svg>
+              </h3>
               <OrderPriceCalculator onProceed={handleCalculatorProceed} />
+              <div className="mt-6 grid grid-cols-1 gap-3 text-blue-900 text-sm">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-fuchsia-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 12l2 2l4-4" /><circle cx="12" cy="12" r="10" /></svg>
+                  <span>No hidden fees – what you see is what you pay.</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4" /><path d="M8 12h8M12 8v8" /></svg>
+                  <span>Instant calculation – get your quote in seconds.</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3" /><circle cx="12" cy="12" r="10" /></svg>
+                  <span>Secure & confidential – your data is always protected.</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+                  <span>24/7 support – help is always available.</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
+                  <span>Instant order confirmation & progress tracking.</span>
+                </div>
+              </div>
             </div>
             <button
-              className="mt-8 bg-gradient-to-r from-fuchsia-500 via-cyan-500 to-blue-500 text-white font-bold shadow-lg hover:from-fuchsia-600 hover:to-blue-700 px-10 py-4 text-lg rounded-2xl transition-all duration-200"
+              className="mt-8 bg-gradient-to-r from-fuchsia-500 via-cyan-500 to-blue-500 text-white font-bold shadow-lg hover:from-fuchsia-600 hover:to-blue-700 px-10 py-4 text-lg rounded-2xl transition-all duration-200 flex items-center gap-3"
               onClick={() => {
                 if (user) {
                   navigate('/order/new');
@@ -284,6 +310,7 @@ export default function ServiceDetailPage() {
                 }
               }}
             >
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3" /><circle cx="12" cy="12" r="10" /></svg>
               Order Now
             </button>
           </div>
