@@ -222,7 +222,7 @@ export default function ServiceDetailPage() {
   // (removed all legacy state and handlers for order form/payment)
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-100 via-cyan-100 to-blue-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-100 via-cyan-100 to-blue-100 overflow-x-hidden">
       <LandingNavbar user={user} onLogout={logout} />
       <main className="flex-1 px-4 py-12 max-w-3xl mx-auto animate-fade-in">
         {/* HERO SECTION */}
