@@ -9,6 +9,7 @@ import sitejabberLogo from "../images/sitejabber-logo.png";
 import reviewsIoLogo from "../images/reviews-io.jpeg";
 import trustpilotLogo from "../images/trust-pilot-logo.png";
 import googleLogo from "../images/google-logo.png";
+import customerExperienceImage from "../images/customer-experience.jpg"
 
 const REVIEWS = [
 	{
@@ -429,8 +430,8 @@ export default function ReviewsPage() {
 						Get Started
 					  </Button>
 					</div>
-					<div className="flex-1 flex justify-center">
-					  <img src="https://cdn.pixabay.com/photo/2017/01/31/13/14/analysis-2025601_1280.png" alt="Customer Satisfaction" className="max-h-60 w-auto rounded-2xl shadow-lg border border-blue-100 bg-white" />
+					<div className="flex-3 flex justify-center">
+					  <img src={customerExperienceImage} alt="Customer Satisfaction" className="max-h-60 w-auto rounded-2xl shadow-lg border border-blue-100 bg-white" />
 					</div>
 				  </div>
 				</section>
