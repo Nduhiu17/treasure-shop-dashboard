@@ -203,6 +203,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	<thead className="sticky top-0 bg-gradient-to-r from-white via-gray-100 to-gray-200 z-10">
 	  <tr>
 		<th className="px-4 py-3"></th>
+		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Title</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Status</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Level</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Order File</th>
@@ -228,6 +229,14 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 					<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
 				  )}
 				</button>
+			  </td>
+			  {/* Restored Title field */}
+			  <td className="px-6 py-4 align-middle max-w-xs whitespace-pre-line break-words">
+				{order.title ? (
+				  <span className="text-gray-900 text-sm sm:text-base w-full block">{order.title}</span>
+				) : (
+				  <span className="italic text-gray-400">No title provided.</span>
+				)}
 			  </td>
 			  <td className="px-6 py-4 align-middle">
 				<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-gray-200 text-gray-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-gray-200 text-gray-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
