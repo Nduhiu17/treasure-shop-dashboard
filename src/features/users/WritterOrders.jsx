@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { ExpandableText } from "../../components/OrderDetailsPanel.jsx";
 import { Card } from "../../components/ui/card";
 import Loader from "../../components/ui/Loader";
 import { useAuth } from "../auth/AuthProvider";
@@ -198,67 +199,86 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 		  {/* Desktop Table View - Unified Modern Style */}
   <div className="hidden md:block rounded-2xl border border-gray-200 bg-white/90 shadow-lg w-full" style={{ height: 'auto' }}>
 	<div className="overflow-x-auto h-full">
-	  <table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white min-w-[1200px]">
-		<thead className="sticky top-0 bg-gradient-to-r from-white via-gray-100 to-gray-200 z-10">
-		  <tr>
-			<th className="px-4 py-3"></th>
-			<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Title</th>
-			<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Description</th>
-			<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Status</th>
-			<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Level</th>
-			<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Order File</th>
-		  </tr>
-		</thead>
-		<tbody className="divide-y divide-gray-100">
-		  {orders.length > 0 ? (
-			orders.map((order, idx) => (
-			  <React.Fragment key={order.id}>
-				<tr
-				  className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`}
-				  style={{ boxShadow: '0 1px 4px 0 rgba(30, 41, 59, 0.04)' }}
+  <table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white min-w-[1200px]">
+	<thead className="sticky top-0 bg-gradient-to-r from-white via-gray-100 to-gray-200 z-10">
+	  <tr>
+		<th className="px-4 py-3"></th>
+		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Status</th>
+		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Level</th>
+		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Order File</th>
+	  </tr>
+	</thead>
+	<tbody className="divide-y divide-gray-100">
+	  {orders.length > 0 ? (
+		orders.map((order, idx) => (
+		  <React.Fragment key={order.id}>
+			<tr
+			  className={`transition group ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`}
+			  style={{ boxShadow: '0 1px 4px 0 rgba(30, 41, 59, 0.04)' }}
+			>
+			  <td className="px-4 py-4 text-center">
+				<button
+				  onClick={() => setExpandedRow(expandedRow === order.id ? null : order.id)}
+				  className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900 focus:outline-none shadow-sm transition"
+				  title={expandedRow === order.id ? 'Collapse' : 'Expand'}
 				>
-				  <td className="px-4 py-4 text-center">
-					<button
-					  onClick={() => setExpandedRow(expandedRow === order.id ? null : order.id)}
-					  className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900 focus:outline-none shadow-sm transition"
-					  title={expandedRow === order.id ? 'Collapse' : 'Expand'}
-					>
-					  {expandedRow === order.id ? (
-						<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
-					  ) : (
-						<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-					  )}
-					</button>
-				  </td>
-				  <td className="max-w-[120px] truncate px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{order.title}</td>
-				  <td className="max-w-[200px] truncate px-6 py-4 text-gray-700 align-middle">{order.description}</td>
-				  <td className="px-6 py-4 align-middle">
-					<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-gray-200 text-gray-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-gray-200 text-gray-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
-				  </td>
-				  <td className="px-6 py-4 text-xs xs:text-sm sm:text-base align-middle">{order.level_name}</td>
-				  <td className="px-6 py-4 align-middle">
-					{order.original_order_file ? (
-					  <a
-						href={order.original_order_file}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="inline-flex items-center justify-center p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900 shadow-sm transition border border-gray-200"
-						title="Open file in new tab"
-					  >
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-						  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
-						</svg>
-					  </a>
-					) : (
-					  <span className="text-gray-400 italic">No file</span>
-					)}
-				  </td>
-				</tr>
-				{expandedRow === order.id && (
-				  <tr>
-					<td colSpan={6} className="py-0 px-2">
-					  <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white via-gray-50 to-gray-100 shadow-lg p-4 my-2 animate-fade-in-up w-full">
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+				  {expandedRow === order.id ? (
+					<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
+				  ) : (
+					<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+				  )}
+				</button>
+			  </td>
+			  <td className="px-6 py-4 align-middle">
+				<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-gray-200 text-gray-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-gray-200 text-gray-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
+			  </td>
+			  <td className="px-6 py-4 text-xs xs:text-sm sm:text-base align-middle">{order.level_name}</td>
+			  <td className="px-6 py-4 align-middle">
+				{order.original_order_file ? (
+				  <a
+					href={order.original_order_file}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="inline-flex items-center justify-center p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900 shadow-sm transition border border-gray-200"
+					title="Open file in new tab"
+				  >
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+					  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+					</svg>
+				  </a>
+				) : (
+				  <span className="text-gray-400 italic">No file</span>
+				)}
+			  </td>
+			</tr>
+			{expandedRow === order.id && (
+			  <tr>
+				<td colSpan={4} className="py-0 px-2">
+				  <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white via-gray-50 to-gray-100 shadow-lg p-4 my-2 animate-fade-in-up w-full">
+					{/* Title and Description in expanded row */}
+					<div className="mb-4 flex flex-col xs:flex-row gap-4 w-full max-w-full">
+					  <div className="flex-1 min-w-0">
+						<span className="font-bold text-fuchsia-700 text-base sm:text-lg mb-1 block">Title:</span>
+						<div className="text-gray-900 text-base sm:text-lg whitespace-pre-line break-words w-full min-h-[1.5em]">
+						  {order.title ? (
+							<ExpandableText text={order.title} maxLength={48} />
+						  ) : (
+							<span className="italic text-gray-400">No title provided.</span>
+						  )}
+						</div>
+					  </div>
+					  <div className="flex-1 min-w-0">
+						<span className="font-bold text-fuchsia-700 text-base sm:text-lg mb-1 block">Description:</span>
+						<div className="text-gray-700 text-base sm:text-lg whitespace-pre-line break-words w-full min-h-[1.5em]">
+						  {order.description ? (
+							<ExpandableText text={order.description} maxLength={96} />
+						  ) : (
+							<span className="italic text-gray-400">No description provided.</span>
+						  )}
+						</div>
+					  </div>
+					</div>
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 						  {/* Assignment Acceptance (writer) */}
 						  {user && ((Array.isArray(user.roles) ? user.roles.includes('writer') : user.role === 'writer')) && order.status === 'awaiting_asign_acceptance' && (
 							<div className="my-4 flex flex-col items-end col-span-2">
