@@ -222,22 +222,41 @@ export default function ServiceDetailPage() {
   // (removed all legacy state and handlers for order form/payment)
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-100 via-cyan-100 to-blue-100">
       <LandingNavbar user={user} onLogout={logout} />
       <main className="flex-1 px-4 py-12 max-w-3xl mx-auto animate-fade-in">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-4">{service.title}</h1>
-        <p className="text-blue-900 mb-6 text-lg">{service.description}</p>
-        <section className="mb-8">
-          <h2 className="text-xl font-bold text-blue-800 mb-2">What We Guarantee</h2>
-          <ul className="list-disc pl-6 text-blue-900">
-            {service.guarantees.length ? service.guarantees.map((g, i) => <li key={i}>{g}</li>) : <li>Quality, originality, and on-time delivery.</li>}
+        {/* HERO SECTION */}
+        <section className="mb-10 text-center relative">
+          <div className="absolute inset-0 pointer-events-none z-0">
+            <div className="w-full h-40 bg-gradient-to-r from-fuchsia-300 via-cyan-200 to-blue-200 blur-2xl opacity-60 animate-gradient-x" />
+          </div>
+          <h1 className="relative z-10 text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-600 via-cyan-600 to-blue-700 mb-4 drop-shadow-lg">
+            {service.title}
+          </h1>
+          <p className="relative z-10 text-lg sm:text-xl text-blue-900 max-w-2xl mx-auto mb-6">
+            {service.description}
+          </p>
+        </section>
+
+        {/* GUARANTEES SECTION */}
+        <section className="mb-10">
+          <h2 className="text-2xl font-bold text-cyan-700 mb-4 text-center">What We Guarantee</h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            {service.guarantees.length ? service.guarantees.map((g, i) => (
+              <li key={i} className="bg-white/90 rounded-2xl shadow-lg p-5 border-t-4 border-cyan-200 text-blue-900 text-base flex items-center gap-3">
+                <svg className="w-6 h-6 text-fuchsia-500 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" /><path d="M8 12l2 2 4-4" stroke="currentColor" strokeWidth="2" fill="none" /></svg>
+                <span>{g}</span>
+              </li>
+            )) : <li className="bg-white/90 rounded-2xl shadow-lg p-5 border-t-4 border-cyan-200 text-blue-900 text-base flex items-center gap-3">Quality, originality, and on-time delivery.</li>}
           </ul>
         </section>
-        <section className="mb-8">
-          <h2 className="text-xl font-bold text-blue-800 mb-2">Customer Reviews</h2>
-          <div className="space-y-4">
+
+        {/* CUSTOMER REVIEWS SECTION */}
+        <section className="mb-10">
+          <h2 className="text-2xl font-bold text-fuchsia-700 mb-4 text-center">Customer Reviews</h2>
+          <div className="space-y-4 max-w-2xl mx-auto">
             {service.reviews.length ? service.reviews.map((r, i) => (
-              <div key={i} className="bg-white rounded-xl shadow p-4 border border-blue-100">
+              <div key={i} className="bg-white/90 rounded-2xl shadow-lg p-5 border-t-4 border-fuchsia-200">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-bold text-blue-900">{r.name}</span>
                   <span className="text-yellow-500">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
@@ -247,10 +266,12 @@ export default function ServiceDetailPage() {
             )) : <div className="text-blue-700">No reviews yet for this service.</div>}
           </div>
         </section>
-        {/* Order Price Calculator below the Order button, normal flow */}
+
+        {/* ORDER PRICE CALCULATOR - Modern placement */}
         {showCalculator && (
-          <div className="fixed z-40 right-2 md:right-8 top-1/2 w-[95vw] max-w-xs md:max-w-sm lg:max-w-xs px-2 md:px-0" style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-            <div className="pointer-events-auto shadow-2xl rounded-2xl bg-white/95 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-blue-100 border border-blue-100">
+          <div className="w-full flex justify-center mt-10 mb-16 px-2 md:px-0">
+            <div className="shadow-2xl rounded-3xl bg-gradient-to-br from-fuchsia-50 via-cyan-50 to-blue-50 border border-blue-100 p-6 md:p-8 w-full max-w-md">
+              <h3 className="text-xl font-bold text-fuchsia-700 mb-4 text-center">Get an Instant Price Quote</h3>
               <OrderPriceCalculator onProceed={handleCalculatorProceed} />
             </div>
           </div>
