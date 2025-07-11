@@ -413,10 +413,19 @@ export default function ReviewsPage() {
 						  </span>
 						  <span><span className="font-bold">Focus on results:</span> We care about your success and offer unlimited free revisions until you are satisfied.</span>
 						</li>
-					  </ul>
-					  <Button className="bg-gradient-to-r from-fuchsia-500 via-cyan-500 to-blue-500 text-white font-bold shadow-lg hover:from-fuchsia-600 hover:to-blue-700 px-10 py-4 text-lg rounded-2xl mt-8 transition-all duration-200">
-						Get Started
-					  </Button>
+					<Button
+					className="bg-gradient-to-r from-fuchsia-500 via-cyan-500 to-blue-500 text-white font-bold shadow-lg hover:from-fuchsia-600 hover:to-blue-700 px-10 py-4 text-lg rounded-2xl mt-8 transition-all duration-200"
+					onClick={() => {
+					  if (user) {
+						window.location.href = '/order/new';
+					  } else {
+						window.location.href = '/login?redirect=/order/new';
+					  }
+					}}
+				>
+					Get Started
+				</Button> 	  </ul>
+		
 					</div>
 					<div className="flex-3 flex justify-center">
 					  <img src={customerExperienceImage} alt="Customer Satisfaction" className="max-h-60 w-auto rounded-2xl shadow-lg border border-blue-100 bg-white" />
