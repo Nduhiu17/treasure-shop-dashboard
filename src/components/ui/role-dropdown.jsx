@@ -33,7 +33,7 @@ export default function RoleDropdown({ userId, onAssign }) {
   }, [open]);
 
   return (
-    <div className="relative inline-block" ref={ref}>
+    <div ref={ref}>
       <button
         type="button"
         className="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -42,7 +42,7 @@ export default function RoleDropdown({ userId, onAssign }) {
         Assign a Role
       </button>
       {open && (
-        <ul className="absolute right-0 mt-2 w-44 bg-white border border-blue-200 rounded-xl shadow-2xl z-50 py-1 animate-fade-in-down">
+        <ul className="absolute mt-2 w-44 bg-white border border-blue-200 rounded-xl shadow-2xl z-50 py-1 animate-fade-in-down">
           {loading ? (
             <li className="px-4 py-2 text-blue-700 text-sm">Loading...</li>
           ) : roles.length === 0 ? (
@@ -56,34 +56,7 @@ export default function RoleDropdown({ userId, onAssign }) {
                 >
                   {role.name}
                 </button>
-                <button
-                  className="ml-2 p-1 rounded hover:bg-red-50 text-red-500 hover:text-red-700 focus:outline-none opacity-70 group-hover:opacity-100 transition"
-                  title="Delete role"
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    let confirmed = window.confirm(`Are you sure you want to delete the role '${role.name}'? This cannot be undone.`);
-                    if (!confirmed) return;
-                    try {
-                      const res = await fetch(`${API_BASE_URL}/api/admin/roles/${role.id}`, {
-                        method: 'DELETE',
-                        headers: {
-                          'Content-Type': 'application/json',
-                          Authorization: localStorage.getItem("jwt_token") ? `Bearer ${localStorage.getItem("jwt_token")}` : ""
-                        }
-                      });
-                      if (!res.ok) throw new Error("Failed to delete role");
-                      showToast({ type: "success", message: `Role '${role.name}' deleted successfully` });
-                      // Refresh roles
-                      setRoles(roles => roles.filter(r => r.id !== role.id));
-                    } catch (err) {
-                      showToast({ type: "error", message: err.message || "Failed to delete role" });
-                    }
-                  }}
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+             
               </li>
             ))
           )}
