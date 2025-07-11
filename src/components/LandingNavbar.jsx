@@ -96,17 +96,29 @@ export default function LandingNavbar({ user, onLogout }) {
 		return () => drawer.removeEventListener('keydown', handleKeyDown);
 	}, [mobileMenuOpen]);
 
-	// Close dropdowns on outside click (desktop only)
-	React.useEffect(() => {
-		function handleClick(e) {
-			if (!e.target.closest('.navbar-dropdown')) {
-				setServicesDropdownOpen(false);
-				setProfileOpen(false);
-			}
-		}
-		document.addEventListener('mousedown', handleClick);
-		return () => document.removeEventListener('mousedown', handleClick);
-	}, []);
+  // Close dropdowns on outside click (desktop only)
+  React.useEffect(() => {
+	function handleClick(e) {
+	  if (!e.target.closest('.navbar-dropdown')) {
+		setServicesDropdownOpen(false);
+		setProfileOpen(false);
+	  }
+	}
+	function handleScroll() {
+	  setServicesDropdownOpen(false);
+	}
+	function handleEscape(e) {
+	  if (e.key === 'Escape') setServicesDropdownOpen(false);
+	}
+	document.addEventListener('mousedown', handleClick);
+	window.addEventListener('scroll', handleScroll, true);
+	document.addEventListener('keydown', handleEscape);
+	return () => {
+	  document.removeEventListener('mousedown', handleClick);
+	  window.removeEventListener('scroll', handleScroll, true);
+	  document.removeEventListener('keydown', handleEscape);
+	};
+  }, []);
 
 	// Close profile dropdown on outside click
 	React.useEffect(() => {
@@ -188,11 +200,23 @@ export default function LandingNavbar({ user, onLogout }) {
 			<li className="relative navbar-dropdown">
 			  <button
 				className="flex items-center gap-2 font-bold text-fuchsia-700 hover:text-cyan-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 px-5 py-2  hover:shadow-xl hover:from-fuchsia-100 hover:to-cyan-100"
-				onMouseEnter={() => setServicesDropdownOpen(true)}
-				onMouseLeave={() => setServicesDropdownOpen(false)}
+				  // onMouseEnter handled below
+				onFocus={() => setServicesDropdownOpen(true)}
+				onBlur={e => {
+				  // Only close if focus moves outside the dropdown
+				  if (!e.relatedTarget || !e.relatedTarget.closest('.navbar-dropdown')) {
+					setServicesDropdownOpen(false);
+				  }
+				}}
+				onMouseLeave={() => {
+				  // Use a persistent timer to prevent race conditions
+				  if (window.__servicesDropdownTimer) clearTimeout(window.__servicesDropdownTimer);
+				  window.__servicesDropdownTimer = setTimeout(() => setServicesDropdownOpen(false), 900);
+				}}
 				onClick={() => setServicesDropdownOpen((v) => !v)}
 				aria-haspopup="true"
 				aria-expanded={servicesDropdownOpen}
+				tabIndex={0}
 			  >
 				Services
 				<svg
@@ -212,8 +236,21 @@ export default function LandingNavbar({ user, onLogout }) {
 			  {servicesDropdownOpen && (
 				<div
 				  className="absolute left-0 mt-2 w-[95vw] max-w-2xl sm:max-w-3xl bg-white/95 rounded-2xl shadow-2xl border-2 border-fuchsia-100 py-6 px-4 z-50 animate-fade-in navbar-dropdown backdrop-blur-xl"
-				  onMouseEnter={() => setServicesDropdownOpen(true)}
-				  onMouseLeave={() => setServicesDropdownOpen(false)}
+				  onMouseLeave={() => {
+					if (window.__servicesDropdownTimer) clearTimeout(window.__servicesDropdownTimer);
+					window.__servicesDropdownTimer = setTimeout(() => setServicesDropdownOpen(false), 900);
+				  }}
+				  onMouseEnter={() => {
+					if (window.__servicesDropdownTimer) clearTimeout(window.__servicesDropdownTimer);
+					setServicesDropdownOpen(true);
+				  }}
+				  tabIndex={-1}
+				  onFocus={() => setServicesDropdownOpen(true)}
+				  onBlur={e => {
+					if (!e.relatedTarget || !e.relatedTarget.closest('.navbar-dropdown')) {
+					  setServicesDropdownOpen(false);
+					}
+				  }}
 				>
 				  <h4 className="text-lg font-bold text-fuchsia-700 mb-4 px-2">Our Services</h4>
 				  <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
