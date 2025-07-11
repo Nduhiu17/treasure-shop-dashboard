@@ -63,8 +63,8 @@ export default function LandingPage({ user, onLogout }) {
       <LandingNavbar user={authUser} onLogout={onLogout} />
       <main className="flex-1 flex flex-col items-center justify-center px-2 sm:px-4 py-0 sm:py-0">
         {/* HERO SECTION */}
-        <section className="w-full bg-gradient-to-br from-fuchsia-100 via-white to-cyan-50 py-10 sm:py-20 px-4 flex flex-col items-center relative overflow-hidden shadow-lg border-b border-fuchsia-100 animate-fade-in">
-          <div className="max-w-5xl w-full flex flex-col md:flex-row items-center justify-between text-center md:text-left z-10 gap-8">
+        <section className="w-full bg-gradient-to-br from-fuchsia-100 via-white to-cyan-50 py-10 sm:py-20 px-2 sm:px-8 flex flex-col items-center relative overflow-hidden shadow-lg border-b border-fuchsia-100 animate-fade-in">
+          <div className="max-w-7xl w-full flex flex-col md:flex-row items-center justify-between text-center md:text-left z-10 gap-12">
             <div className="flex-[2] min-w-0 flex flex-col items-center md:items-start">
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-fuchsia-700 mb-4 leading-tight drop-shadow-lg">Custom argumentative essay writing service</h2>
               <div className="text-lg sm:text-2xl text-slate-700 mb-6 max-w-2xl">Struggling with your argumentative essay? Our subject matter experts can tailor a high-quality, AI-free paper to your needs, instructions, and deadline at an affordable price.</div>
