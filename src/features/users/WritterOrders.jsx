@@ -203,7 +203,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	<thead className="sticky top-0 bg-gradient-to-r from-white via-gray-100 to-gray-200 z-10">
 	  <tr>
 		<th className="px-4 py-3"></th>
-		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Order #</th>
+		<th className="px-2 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Order #</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Title</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Status</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Level</th>

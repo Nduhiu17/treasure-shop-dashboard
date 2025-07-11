@@ -150,8 +150,8 @@ const OrdersManagement = () => {
 								<table className="w-full border-separate border-spacing-y-0 rounded-2xl overflow-hidden shadow-xl bg-white min-w-[1200px]">
 <thead className="sticky top-0 bg-gradient-to-r from-gray-100 to-gray-50 z-10">
   <tr>
-   <th className="px-4 py-3"></th>
-   <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Number</th>
+   <th className="px-2 py-3"></th>
+   <th className="px-2 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Number</th>
    <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Title</th>
    <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Date</th>
    <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Status</th>
