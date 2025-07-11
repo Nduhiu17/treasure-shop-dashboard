@@ -235,13 +235,7 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 			  {/* Order Number */}
 			  <td className="px-6 py-4 align-middle text-xs xs:text-sm sm:text-base text-gray-700 font-mono">{order.order_number || order.id}</td>
 			  {/* Title field */}
-			  <td className="px-6 py-4 align-middle max-w-xs whitespace-pre-line break-words">
-				{order.title ? (
-				  <span className="text-gray-900 text-sm sm:text-base w-full block">{order.title}</span>
-				) : (
-				  <span className="italic text-gray-400">No title provided.</span>
-				)}
-			  </td>
+			<td className="max-w-[120px] truncate px-6 py-4 font-semibold text-gray-900 capitalize align-middle">{order.title}</td>
 			  <td className="px-6 py-4 align-middle">
 				<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-gray-200 text-gray-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-gray-200 text-gray-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
 			  </td>

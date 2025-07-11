@@ -152,7 +152,7 @@ const OrdersManagement = () => {
   <tr>
    <th className="px-2 py-3"></th>
    <th className="px-2 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Number</th>
-   <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Title</th>
+    <th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Title</th>
    <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Order Date</th>
    <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Status</th>
    <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200">Level</th>
