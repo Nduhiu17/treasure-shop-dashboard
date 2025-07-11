@@ -214,47 +214,50 @@ export default function ReviewsPage() {
 	  <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-100 via-cyan-100 to-blue-100">
 		<LandingNavbar user={user} onLogout={logout} />
 		<main className="flex-1 px-4 py-12 max-w-7xl mx-auto animate-fade-in">
-			{/* HERO SECTION */}
-			<section className="mb-10 text-center relative">
-				<div className="absolute inset-0 pointer-events-none z-0">
-					<div className="w-full h-40 bg-gradient-to-r from-fuchsia-300 via-cyan-200 to-blue-200 blur-2xl opacity-60 animate-gradient-x" />
+			{/* HERO SECTION - Enhanced */}
+			<section className="mb-14 text-center relative overflow-hidden">
+			  {/* Animated gradient background */}
+			  <div className="absolute inset-0 pointer-events-none z-0">
+				<div className="w-full h-64 bg-gradient-to-br from-fuchsia-400 via-cyan-300 to-blue-300 blur-3xl opacity-70 animate-gradient-x" />
+				<div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120vw] h-40 bg-gradient-to-r from-fuchsia-200 via-cyan-100 to-blue-200 opacity-40 rounded-full blur-2xl animate-pulse" />
+			  </div>
+			  <h1 className="relative z-10 text-5xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-700 via-cyan-700 to-blue-800 mb-5 drop-shadow-2xl tracking-tight animate-fade-in-up">
+				Real Stories. Real Results.
+			  </h1>
+			  <p className="relative z-10 text-xl sm:text-2xl text-blue-900 max-w-3xl mx-auto mb-8 animate-fade-in-up delay-100">
+				Discover why thousands of students and professionals trust us to help them succeed. Our commitment to quality and satisfaction is reflected in every review.
+			  </p>
+			  {/* Ratings Section - Modernized */}
+			  <div className="flex flex-wrap justify-center gap-8 mt-8 relative z-10 animate-fade-in-up delay-200">
+				<div className="bg-white/90 rounded-3xl shadow-xl p-8 border-t-4 border-fuchsia-400 min-w-[200px] flex flex-col items-center hover:scale-105 transition-transform duration-200">
+				  <div className="text-3xl font-extrabold text-fuchsia-600 mb-1">45,000+</div>
+				  <div className="text-blue-800 text-base">On-site reviews</div>
 				</div>
-				<h1 className="relative z-10 text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-600 via-cyan-600 to-blue-700 mb-4 drop-shadow-lg">
-					What Our Clients Say
-				</h1>
-				<p className="relative z-10 text-lg sm:text-xl text-blue-900 max-w-2xl mx-auto mb-6">
-					Our clients are at the heart of everything we do. We value their feedback and do our best to ensure they leave our website fully satisfied.
-				</p>
-				<div className="flex flex-wrap justify-center gap-4 mt-6">
-					<div className="bg-white/80 rounded-2xl shadow-lg p-6 border border-blue-100 min-w-[180px]">
-						<div className="text-2xl font-extrabold text-fuchsia-600 mb-1">45,000+</div>
-						<div className="text-blue-800 text-sm">On-site reviews</div>
-					</div>
-					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center flex flex-col items-center">
-						<img src={reviewsIoLogo} alt="Onsite Reviews" className="h-8 w-auto mb-2 rounded" />
-						<h3 className="font-bold text-blue-900 text-lg mb-2">Onsite Reviews</h3>
-						<div className="text-3xl font-extrabold text-green-600 mb-1">4.8/5</div>
-						<div className="text-blue-800 text-sm">Based on 2,000+ reviews</div>
-					</div>
-					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center flex flex-col items-center">
-						<img src={sitejabberLogo} alt="Sitejabber" className="h-8 w-auto mb-2" />
-						<h3 className="font-bold text-blue-900 text-lg mb-2">Sitejabber</h3>
-						<div className="text-3xl font-extrabold text-green-600 mb-1">4.7/5</div>
-						<div className="text-blue-800 text-sm">1,200+ reviews</div>
-					</div>
-					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center flex flex-col items-center">
-						<img src={trustpilotLogo} alt="Trustpilot" className="h-8 w-auto mb-2" />
-						<h3 className="font-bold text-blue-900 text-lg mb-2">Trustpilot</h3>
-						<div className="text-3xl font-extrabold text-green-600 mb-1">4.6/5</div>
-						<div className="text-blue-800 text-sm">900+ reviews</div>
-					</div>
-					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center flex flex-col items-center">
-						<img src={googleLogo} alt="Google Reviews" className="h-8 w-auto mb-2" />
-						<h3 className="font-bold text-blue-900 text-lg mb-2">Google Reviews</h3>
-						<div className="text-3xl font-extrabold text-green-600 mb-1">4.9/5</div>
-						<div className="text-blue-800 text-sm">500+ reviews</div>
-					</div>
+				<div className="bg-gradient-to-br from-cyan-100 via-white to-blue-100 rounded-3xl shadow-xl p-8 border-t-4 border-cyan-400 text-center flex flex-col items-center hover:scale-105 transition-transform duration-200">
+				  <img src={reviewsIoLogo} alt="Onsite Reviews" className="h-10 w-auto mb-2 rounded shadow" />
+				  <h3 className="font-bold text-blue-900 text-lg mb-2">Onsite Reviews</h3>
+				  <div className="text-4xl font-extrabold text-green-600 mb-1">4.8/5</div>
+				  <div className="text-blue-800 text-base">Based on 2,000+ reviews</div>
 				</div>
+				<div className="bg-gradient-to-br from-fuchsia-100 via-white to-cyan-100 rounded-3xl shadow-xl p-8 border-t-4 border-fuchsia-400 text-center flex flex-col items-center hover:scale-105 transition-transform duration-200">
+				  <img src={sitejabberLogo} alt="Sitejabber" className="h-10 w-auto mb-2" />
+				  <h3 className="font-bold text-blue-900 text-lg mb-2">Sitejabber</h3>
+				  <div className="text-4xl font-extrabold text-green-600 mb-1">4.7/5</div>
+				  <div className="text-blue-800 text-base">1,200+ reviews</div>
+				</div>
+				<div className="bg-gradient-to-br from-blue-100 via-white to-fuchsia-100 rounded-3xl shadow-xl p-8 border-t-4 border-blue-400 text-center flex flex-col items-center hover:scale-105 transition-transform duration-200">
+				  <img src={trustpilotLogo} alt="Trustpilot" className="h-10 w-auto mb-2" />
+				  <h3 className="font-bold text-blue-900 text-lg mb-2">Trustpilot</h3>
+				  <div className="text-4xl font-extrabold text-green-600 mb-1">4.6/5</div>
+				  <div className="text-blue-800 text-base">900+ reviews</div>
+				</div>
+				<div className="bg-gradient-to-br from-cyan-100 via-white to-fuchsia-100 rounded-3xl shadow-xl p-8 border-t-4 border-cyan-400 text-center flex flex-col items-center hover:scale-105 transition-transform duration-200">
+				  <img src={googleLogo} alt="Google Reviews" className="h-10 w-auto mb-2" />
+				  <h3 className="font-bold text-blue-900 text-lg mb-2">Google Reviews</h3>
+				  <div className="text-4xl font-extrabold text-green-600 mb-1">4.9/5</div>
+				  <div className="text-blue-800 text-base">500+ reviews</div>
+				</div>
+			  </div>
 			</section>
 
 			{/* WHY CHOOSE US */}
