@@ -203,9 +203,11 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 	<thead className="sticky top-0 bg-gradient-to-r from-white via-gray-100 to-gray-200 z-10">
 	  <tr>
 		<th className="px-4 py-3"></th>
+		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Order #</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Title</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Status</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Level</th>
+		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Order Date</th>
 		<th className="px-6 py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200">Order File</th>
 	  </tr>
 	</thead>
@@ -230,7 +232,9 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 				  )}
 				</button>
 			  </td>
-			  {/* Restored Title field */}
+			  {/* Order Number */}
+			  <td className="px-6 py-4 align-middle text-xs xs:text-sm sm:text-base text-gray-700 font-mono">{order.order_number || order.id}</td>
+			  {/* Title field */}
 			  <td className="px-6 py-4 align-middle max-w-xs whitespace-pre-line break-words">
 				{order.title ? (
 				  <span className="text-gray-900 text-sm sm:text-base w-full block">{order.title}</span>
@@ -242,6 +246,8 @@ const WriterOrders = ({ writerId: propWriterId }) => {
 				<span className={`px-2 py-1 rounded text-xs font-semibold ${order.status === 'approved' ? 'bg-green-100 text-green-700' : order.status === 'feedback' ? 'bg-yellow-100 text-yellow-700' : order.status === 'pending_payment' ? 'bg-red-100 text-red-700' : order.status === 'paid' ? 'bg-gray-200 text-gray-700' : order.status === 'awaiting_assignment' ? 'bg-gray-100 text-gray-700' : order.status === 'assigned' ? 'bg-gray-200 text-gray-700' : order.status === 'in_progress' ? 'bg-orange-100 text-orange-700' : order.status === 'submitted_for_review' ? 'bg-gray-100 text-gray-700' : order.status === 'completed' ? 'bg-green-200 text-green-900' : 'bg-gray-100 text-gray-700'}`}>{order.status}</span>
 			  </td>
 			  <td className="px-6 py-4 text-xs xs:text-sm sm:text-base align-middle">{order.level_name}</td>
+			  {/* Order Date */}
+			  <td className="px-6 py-4 align-middle text-xs xs:text-sm sm:text-base text-gray-700">{order.created_at ? new Date(order.created_at).toLocaleDateString() : '-'}</td>
 			  <td className="px-6 py-4 align-middle">
 				{order.original_order_file ? (
 				  <a
