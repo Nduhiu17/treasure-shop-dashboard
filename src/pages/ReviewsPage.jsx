@@ -1,8 +1,14 @@
 import React from "react";
+
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { Button } from "../components/ui/button";
 import { useAuth } from "../features/auth/AuthProvider";
+
+import sitejabberLogo from "../images/sitejabber-logo.png";
+import reviewsIoLogo from "../images/reviews-io.jpeg";
+import trustpilotLogo from "../images/trust-pilot-logo.png";
+import googleLogo from "../images/google-logo.png";
 
 const REVIEWS = [
 	{
@@ -204,61 +210,90 @@ export default function ReviewsPage() {
 	);
 
 	return (
-		<div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
-			<LandingNavbar user={user} onLogout={logout} />
-			<main className="flex-1 px-4 py-12 max-w-6xl mx-auto animate-fade-in">
-				<h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-6">
-					Reviews & Testimonials
+	  <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-100 via-cyan-100 to-blue-100">
+		<LandingNavbar user={user} onLogout={logout} />
+		<main className="flex-1 px-4 py-12 max-w-7xl mx-auto animate-fade-in">
+			{/* HERO SECTION */}
+			<section className="mb-10 text-center relative">
+				<div className="absolute inset-0 pointer-events-none z-0">
+					<div className="w-full h-40 bg-gradient-to-r from-fuchsia-300 via-cyan-200 to-blue-200 blur-2xl opacity-60 animate-gradient-x" />
+				</div>
+				<h1 className="relative z-10 text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-600 via-cyan-600 to-blue-700 mb-4 drop-shadow-lg">
+					What Our Clients Say
 				</h1>
-				<section className="mb-8">
-					<h2 className="text-xl font-bold text-blue-800 mb-2">
-						Why students choose us
-					</h2>
-					<ul className="list-disc pl-6 text-blue-900 mb-4">
-						<li>Expert writers in every discipline</li>
-						<li>100% original work, always on time</li>
-						<li>Confidential, secure, and easy to use</li>
-						<li>24/7 support and unlimited revisions</li>
-					</ul>
-				</section>
-				<section className="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center">
-						<h3 className="font-bold text-blue-900 text-lg mb-2">
-							Onsite Reviews
-						</h3>
-						<div className="text-3xl font-extrabold text-green-600 mb-1">
-							4.8/5
-						</div>
-						<div className="text-blue-800 text-sm">
-							Based on 2,000+ reviews
-						</div>
+				<p className="relative z-10 text-lg sm:text-xl text-blue-900 max-w-2xl mx-auto mb-6">
+					Our clients are at the heart of everything we do. We value their feedback and do our best to ensure they leave our website fully satisfied.
+				</p>
+				<div className="flex flex-wrap justify-center gap-4 mt-6">
+					<div className="bg-white/80 rounded-2xl shadow-lg p-6 border border-blue-100 min-w-[180px]">
+						<div className="text-2xl font-extrabold text-fuchsia-600 mb-1">45,000+</div>
+						<div className="text-blue-800 text-sm">On-site reviews</div>
 					</div>
-					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center">
-						<h3 className="font-bold text-blue-900 text-lg mb-2">
-							Sitejabber
-						</h3>
-						<div className="text-3xl font-extrabold text-green-600 mb-1">
-							4.7/5
-						</div>
+					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center flex flex-col items-center">
+						<img src={reviewsIoLogo} alt="Onsite Reviews" className="h-8 w-auto mb-2 rounded" />
+						<h3 className="font-bold text-blue-900 text-lg mb-2">Onsite Reviews</h3>
+						<div className="text-3xl font-extrabold text-green-600 mb-1">4.8/5</div>
+						<div className="text-blue-800 text-sm">Based on 2,000+ reviews</div>
+					</div>
+					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center flex flex-col items-center">
+						<img src={sitejabberLogo} alt="Sitejabber" className="h-8 w-auto mb-2" />
+						<h3 className="font-bold text-blue-900 text-lg mb-2">Sitejabber</h3>
+						<div className="text-3xl font-extrabold text-green-600 mb-1">4.7/5</div>
 						<div className="text-blue-800 text-sm">1,200+ reviews</div>
 					</div>
-					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center">
-						<h3 className="font-bold text-blue-900 text-lg mb-2">
-							Trustpilot
-						</h3>
-						<div className="text-3xl font-extrabold text-green-600 mb-1">
-							4.6/5
-						</div>
+					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center flex flex-col items-center">
+						<img src={trustpilotLogo} alt="Trustpilot" className="h-8 w-auto mb-2" />
+						<h3 className="font-bold text-blue-900 text-lg mb-2">Trustpilot</h3>
+						<div className="text-3xl font-extrabold text-green-600 mb-1">4.6/5</div>
 						<div className="text-blue-800 text-sm">900+ reviews</div>
 					</div>
-					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center">
-						<h3 className="font-bold text-blue-900 text-lg mb-2">
-							Google Reviews
-						</h3>
-						<div className="text-3xl font-extrabold text-green-600 mb-1">
-							4.9/5
-						</div>
+					<div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 text-center flex flex-col items-center">
+						<img src={googleLogo} alt="Google Reviews" className="h-8 w-auto mb-2" />
+						<h3 className="font-bold text-blue-900 text-lg mb-2">Google Reviews</h3>
+						<div className="text-3xl font-extrabold text-green-600 mb-1">4.9/5</div>
 						<div className="text-blue-800 text-sm">500+ reviews</div>
+					</div>
+				</div>
+			</section>
+
+			{/* WHY CHOOSE US */}
+
+				{/* TESTIMONIALS SECTION */}
+				<section className="mb-12">
+					<h2 className="text-2xl font-bold text-blue-800 mb-6 text-center">Latest Client Testimonials</h2>
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+						{/* Example testimonials, replace with real data as needed */}
+						<div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col gap-2 border-t-4 border-fuchsia-400 animate-fade-in">
+							<div className="flex items-center gap-2">
+								<span className="font-bold text-blue-900">Sarah K.</span>
+								<span className="text-xs text-blue-500">(UK)</span>
+							</div>
+							<p className="text-blue-800">“Absolutely amazing service! My essay was delivered ahead of time and exceeded my expectations.”</p>
+							<div className="flex gap-1 mt-1">
+								{Array(5).fill(0).map((_,i) => <span key={i} className="text-yellow-400">★</span>)}
+							</div>
+						</div>
+						<div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col gap-2 border-t-4 border-cyan-400 animate-fade-in delay-100">
+							<div className="flex items-center gap-2">
+								<span className="font-bold text-blue-900">James L.</span>
+								<span className="text-xs text-blue-500">(USA)</span>
+							</div>
+							<p className="text-blue-800">“The writer followed all my instructions perfectly. I got an A+ on my assignment!”</p>
+							<div className="flex gap-1 mt-1">
+								{Array(5).fill(0).map((_,i) => <span key={i} className="text-yellow-400">★</span>)}
+							</div>
+						</div>
+						<div className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col gap-2 border-t-4 border-blue-400 animate-fade-in delay-200">
+							<div className="flex items-center gap-2">
+								<span className="font-bold text-blue-900">Priya S.</span>
+								<span className="text-xs text-blue-500">(India)</span>
+							</div>
+							<p className="text-blue-800">“Customer support was super helpful and my paper was flawless. Highly recommend!”</p>
+							<div className="flex gap-1 mt-1">
+								{Array(5).fill(0).map((_,i) => <span key={i} className="text-yellow-400">★</span>)}
+							</div>
+						</div>
+						{/* Add more testimonials as needed */}
 					</div>
 				</section>
 				<section className="mb-10">
@@ -317,6 +352,48 @@ export default function ReviewsPage() {
 						)}
 					</div>
 				</section>
+				        {/* UNIVERSITIES SECTION */}
+				<section className="w-full px-4 mb-20 animate-fade-in-up">
+				<h2 className="text-3xl sm:text-4xl font-extrabold text-cyan-700 mb-10 text-center tracking-tight">Trusted by Students from Top Universities</h2>
+				<div className="w-full max-w-5xl mx-auto overflow-hidden relative">
+					<div
+					className="flex items-center gap-12 animate-universities-scroll"
+					style={{
+						width: 'max-content',
+						animation: 'universities-scroll 30s linear infinite',
+					}}
+					>
+					{[require("../images/universities/havard.jpeg"), require("../images/universities/oxford.png"), require("../images/universities/mit.png"), require("../images/universities/stanford.jpeg"), require("../images/universities/cambridge.png"), require("../images/universities/bekerly.png"), require("../images/universities/columbia.png"), require("../images/universities/toronto.png")].map((src, idx) => (
+						<img
+						key={idx}
+						src={src}
+						alt="University Logo"
+						className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300 rounded-xl shadow-md border border-slate-100 bg-white px-2 py-1 mx-2"
+						style={{ minWidth: 80 }}
+						/>
+					))}
+					{/* Duplicate for seamless loop */}
+					{[require("../images/universities/havard.jpeg"), require("../images/universities/oxford.png"), require("../images/universities/mit.png"), require("../images/universities/stanford.jpeg"), require("../images/universities/cambridge.png"), require("../images/universities/bekerly.png"), require("../images/universities/columbia.png"), require("../images/universities/toronto.png")].map((src, idx) => (
+						<img
+						key={idx + 100}
+						src={src}
+						alt="University Logo"
+						className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300 rounded-xl shadow-md border border-slate-100 bg-white px-2 py-1 mx-2"
+						style={{ minWidth: 80 }}
+						/>
+					))}
+					</div>
+				</div>
+				</section>
+				<style>{`
+				@keyframes universities-scroll {
+					0% { transform: translateX(0); }
+					100% { transform: translateX(-50%); }
+				}
+				.animate-universities-scroll {
+					animation: universities-scroll 30s linear infinite;
+				}
+				`}</style>
 				<section className="mb-10">
 					<h2 className="text-xl font-bold text-blue-800 mb-2">
 						How we ensure customer satisfaction
