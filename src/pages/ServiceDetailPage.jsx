@@ -1,4 +1,5 @@
 import React from "react";
+import FloatingWhatsAppIcon from "../components/ui/FloatingWhatsAppIcon";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { useParams, useNavigate } from "react-router-dom";
@@ -366,6 +367,7 @@ export default function ServiceDetailPage() {
         </section>
       </main>
       <LandingFooter />
+      <FloatingWhatsAppIcon />
     </div>
   );
 }

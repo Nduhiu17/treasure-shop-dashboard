@@ -1,6 +1,7 @@
 import React from "react";
 
 import LandingNavbar from "../components/LandingNavbar";
+import FloatingWhatsAppIcon from "../components/ui/FloatingWhatsAppIcon";
 import LandingFooter from "../components/LandingFooter";
 import { Button } from "../components/ui/button";
 import { useAuth } from "../features/auth/AuthProvider";
@@ -198,6 +199,8 @@ const TYPES = [
 	"Resume",
 	"Term Paper",
 ];
+
+<FloatingWhatsAppIcon />
 
 export default function ReviewsPage() {
 	const { user, logout } = useAuth();

@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import FloatingWhatsAppIcon from "../components/ui/FloatingWhatsAppIcon";
 import LoginPage from "../features/auth/LoginPage";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
@@ -60,6 +61,7 @@ export default function LandingPage({ user, onLogout }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-50 via-slate-50 to-cyan-100">
+      <FloatingWhatsAppIcon />
       <LandingNavbar user={authUser} onLogout={onLogout} />
       <main className="flex-1 flex flex-col items-center justify-center px-2 sm:px-4 py-0 sm:py-0">
         {/* HERO SECTION */}

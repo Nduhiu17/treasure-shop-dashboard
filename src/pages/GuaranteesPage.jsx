@@ -1,4 +1,5 @@
 import React from "react";
+import FloatingWhatsAppIcon from "../components/ui/FloatingWhatsAppIcon";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingFooter from "../components/LandingFooter";
 import { Button } from "../components/ui/button";
@@ -46,6 +47,7 @@ export default function GuaranteesPage() {
   return (
 	<div className="min-h-screen flex flex-col bg-gradient-to-br from-fuchsia-50 via-white to-cyan-50 overflow-x-hidden">
 	  <LandingNavbar user={user} onLogout={logout} />
+	  <FloatingWhatsAppIcon />
 	  <main className="flex-1 px-4 py-12 max-w-5xl mx-auto animate-fade-in relative">
 		{/* Animated background shapes */}
 		<div className="absolute -top-10 -left-10 w-40 h-40 bg-fuchsia-200 opacity-30 rounded-full blur-2xl animate-pulse-slow z-0" />
